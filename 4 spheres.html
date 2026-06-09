@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌍 Earth's 4 Spheres</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --atmo-c: #1565C0; --atmo-l: #E3F2FD; --atmo-m: #64B5F6;
+  --hydro-c: #006064; --hydro-l: #E0F7FA; --hydro-m: #4DD0E1;
+  --geo-c: #33691E; --geo-l: #F1F8E9; --geo-m: #AED581;
+  --bio-c: #E65100; --bio-l: #FFF3E0; --bio-m: #FFCC80;
+  --nav-h: 68px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #F0F9FF;
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  height: var(--nav-h);
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.10);
+  display: flex; align-items: center; padding: 0 24px; gap: 6px;
+}
+.nav-logo {
+  font-size: 20px; font-weight: 900; margin-right: auto;
+  background: linear-gradient(135deg, #1565C0, #2E7D32);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  white-space: nowrap;
+}
+.nav-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 9px 18px; border-radius: 50px; border: none;
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800;
+  cursor: pointer; transition: all 0.22s; background: transparent; color: #555;
+}
+.nav-btn:hover { background: #E3F2FD; color: #1565C0; transform: translateY(-1px); }
+.nav-btn.active { background: linear-gradient(135deg, #1565C0, #2E7D32); color: #fff; }
+
+/* ── SECTIONS ── */
+.section {
+  position: fixed; inset: 0;
+  top: var(--nav-h);
+  overflow-y: auto;
+  opacity: 0; pointer-events: none;
+  transform: translateY(24px);
+  transition: opacity 0.38s ease, transform 0.38s ease;
+}
+.section.active {
+  opacity: 1; pointer-events: auto; transform: translateY(0);
+}
+
+/* ══════════════ HOME ══════════════ */
+#home {
+  background: linear-gradient(160deg, #E3F2FD 0%, #E8F5E9 50%, #FFF3E0 100%);
+  min-height: calc(100vh - var(--nav-h));
+}
+.home-inner {
+  max-width: 1000px; margin: 0 auto; padding: 48px 20px 48px;
+  text-align: center;
+}
+.home-title {
+  font-size: clamp(32px,7vw,58px); font-weight: 900; line-height: 1.1;
+  background: linear-gradient(135deg,#1565C0,#2E7D32,#E65100);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+}
+.home-sub {
+  font-size: clamp(15px,2.5vw,19px); color: #555; margin-bottom: 10px;
+}
+.home-badge {
+  display: inline-block; background: white; border-radius: 50px;
+  padding: 6px 20px; font-size: 14px; font-weight: 700; color: #888;
+  margin-bottom: 36px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.spheres-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 20px;
+}
+.sphere-card {
+  border-radius: 24px; padding: 32px 20px; cursor: pointer;
+  transition: all 0.32s cubic-bezier(0.34,1.56,0.64,1);
+  text-align: center; border: 3px solid transparent;
+  position: relative; overflow: hidden;
+}
+.sphere-card:hover { transform: translateY(-10px) scale(1.03); }
+.sphere-card .s-emoji { font-size: 60px; display: block; margin-bottom: 12px; line-height: 1; }
+.sphere-card h3 { font-size: 20px; font-weight: 900; margin-bottom: 6px; }
+.sphere-card p { font-size: 13px; opacity: 0.8; }
+.sc-atmo { background: var(--atmo-l); color: var(--atmo-c); box-shadow: 0 6px 28px rgba(100,181,246,0.35); }
+.sc-hydro{ background: var(--hydro-l); color: var(--hydro-c); box-shadow: 0 6px 28px rgba(77,208,225,0.35); }
+.sc-geo  { background: var(--geo-l);   color: var(--geo-c);   box-shadow: 0 6px 28px rgba(174,213,129,0.35); }
+.sc-bio  { background: var(--bio-l);   color: var(--bio-c);   box-shadow: 0 6px 28px rgba(255,204,128,0.35); }
+
+/* ── SPHERE MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 900; display: flex; align-items: center; justify-content: center;
+  padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.25s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.modal-box {
+  background: white; border-radius: 28px; padding: 36px 32px;
+  max-width: 480px; width: 100%;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+  transform: scale(0.85) translateY(30px);
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  max-height: 90vh; overflow-y: auto;
+}
+.modal-overlay.open .modal-box { transform: scale(1) translateY(0); }
+.modal-top { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.modal-icon { font-size: 56px; line-height: 1; }
+.modal-title { font-size: 26px; font-weight: 900; }
+.modal-subtitle { font-size: 13px; font-weight: 700; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.5px; }
+.modal-section { margin-bottom: 20px; }
+.modal-section-title { font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; margin-bottom: 10px; }
+.modal-desc { font-size: 16px; line-height: 1.6; margin-bottom: 16px; }
+.modal-examples { display: flex; flex-wrap: wrap; gap: 8px; }
+.modal-ex-pill {
+  padding: 7px 14px; border-radius: 50px; font-size: 13px; font-weight: 700;
+  background: rgba(0,0,0,0.06);
+}
+.modal-fact {
+  border-radius: 16px; padding: 16px 20px; font-size: 14px; line-height: 1.6;
+  border-left: 4px solid currentColor;
+}
+.modal-fact strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 4px; }
+.modal-close {
+  position: absolute; top: 20px; right: 20px;
+  background: #F5F5F5; border: none; width: 36px; height: 36px;
+  border-radius: 50%; font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s; z-index: 2;
+}
+.modal-close:hover { background: #E0E0E0; }
+.modal-box { position: relative; }
+
+/* ══════════════ HOW THEY WORK ══════════════ */
+#how {
+  background: white;
+  min-height: calc(100vh - var(--nav-h));
+}
+.how-inner {
+  max-width: 1080px; margin: 0 auto;
+  padding: 32px 20px 40px;
+}
+.how-title { text-align: center; font-size: clamp(22px,4vw,34px); font-weight: 900; margin-bottom: 4px; }
+.how-sub { text-align: center; color: #777; font-size: 14px; margin-bottom: 24px; }
+
+/* Water Cycle SVG wrapper */
+.wc-wrap {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+  margin-bottom: 20px;
+  background: #B3E5FC;
+}
+.wc-wrap svg { display: block; width: 100%; height: auto; }
+
+/* SVG highlight transitions */
+.wc-part { transition: opacity 0.4s, filter 0.4s; }
+.wc-dimmed { opacity: 0.15 !important; filter: grayscale(0.8) !important; }
+.wc-lit { filter: drop-shadow(0 0 10px rgba(255,255,100,0.9)) brightness(1.15) !important; opacity: 1 !important; }
+
+/* Sphere highlight cards */
+.hl-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap: 14px;
+  margin-bottom: 16px;
+}
+.hl-card {
+  border-radius: 16px; padding: 14px 16px; cursor: pointer; border: 3px solid transparent;
+  transition: all 0.28s cubic-bezier(0.34,1.56,0.64,1);
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Nunito', sans-serif;
+}
+.hl-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+.hl-card.active { border-color: currentColor; transform: scale(1.03); }
+.hl-card .hc-emoji { font-size: 30px; }
+.hl-card h4 { font-size: 15px; font-weight: 900; }
+.hl-card p  { font-size: 11px; opacity: 0.75; }
+.hc-atmo { background: var(--atmo-l); color: var(--atmo-c); }
+.hc-hydro{ background: var(--hydro-l); color: var(--hydro-c); }
+.hc-geo  { background: var(--geo-l);   color: var(--geo-c); }
+.hc-bio  { background: var(--bio-l);   color: var(--bio-c); }
+
+.hl-msg {
+  border-radius: 16px; padding: 16px 20px; font-size: 15px; font-weight: 700;
+  line-height: 1.5; display: none; animation: fadeUp 0.3s ease;
+}
+.hl-msg.visible { display: block; }
+
+/* ══════════════ QUIZ ══════════════ */
+#quiz {
+  background: linear-gradient(160deg, #F3E5F5 0%, #E8EAF6 100%);
+  min-height: calc(100vh - var(--nav-h));
+}
+.quiz-inner { max-width: 780px; margin: 0 auto; padding: 36px 20px 48px; }
+.quiz-title { text-align: center; font-size: clamp(24px,5vw,38px); font-weight: 900; margin-bottom: 6px; }
+.quiz-sub { text-align: center; color: #777; margin-bottom: 28px; font-size: 14px; }
+
+.q-card {
+  background: white; border-radius: 20px; padding: 26px;
+  margin-bottom: 18px; box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+  border: 2px solid transparent; transition: border-color 0.3s;
+}
+.q-card.q-correct { border-color: #4CAF50; background: #F1F8E9; }
+.q-card.q-wrong   { border-color: #F44336; background: #FFF3F3; }
+.q-text { font-size: 16px; font-weight: 800; margin-bottom: 16px; line-height: 1.5; }
+.q-opts { display: flex; flex-direction: column; gap: 10px; }
+.q-opt {
+  padding: 13px 18px; border-radius: 12px; border: 2px solid #E0E0E0;
+  background: #FAFAFA; cursor: pointer;
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700;
+  text-align: left; transition: all 0.2s; color: #333;
+}
+.q-opt:hover { background: #EDE7F6; border-color: #9575CD; transform: translateX(4px); }
+.q-opt.sel { background: #EDE7F6; border-color: #7E57C2; }
+.q-opt.opt-correct { background: #E8F5E9; border-color: #4CAF50; color: #1B5E20; }
+.q-opt.opt-wrong   { background: #FFEBEE; border-color: #F44336; color: #B71C1C; }
+
+.q-tf { display: flex; gap: 12px; }
+.q-tf-btn {
+  flex: 1; padding: 14px; border-radius: 12px; border: 2px solid #E0E0E0;
+  background: #FAFAFA; font-family: 'Nunito', sans-serif;
+  font-size: 16px; font-weight: 900; cursor: pointer; transition: all 0.2s; color: #333;
+}
+.q-tf-btn:hover { transform: scale(1.04); }
+.q-tf-btn.sel { background: #EDE7F6; border-color: #7E57C2; }
+.q-tf-btn.opt-correct { background: #E8F5E9; border-color: #4CAF50; color: #1B5E20; }
+.q-tf-btn.opt-wrong   { background: #FFEBEE; border-color: #F44336; color: #B71C1C; }
+
+.q-submit {
+  display: block; width: 100%; padding: 18px;
+  background: linear-gradient(135deg,#7E57C2,#5C6BC0);
+  color: white; border: none; border-radius: 16px;
+  font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900;
+  cursor: pointer; transition: all 0.3s; margin-top: 8px;
+}
+.q-submit:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(126,87,194,0.45); }
+
+/* Results */
+.quiz-results { display: none; margin-top: 32px; animation: fadeUp 0.5s ease; }
+.quiz-results.vis { display: block; }
+.res-card {
+  background: white; border-radius: 24px; padding: 32px; text-align: center;
+  box-shadow: 0 8px 36px rgba(0,0,0,0.1); margin-bottom: 24px;
+}
+.res-emoji { font-size: 64px; margin-bottom: 8px; }
+.res-msg { font-size: 26px; font-weight: 900; margin-bottom: 6px; }
+.res-score { font-size: 52px; font-weight: 900; margin: 14px 0; }
+.res-pct { font-size: 18px; color: #888; margin-bottom: 12px; }
+.res-badges { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.res-badge {
+  padding: 10px 22px; border-radius: 50px; font-size: 15px; font-weight: 800;
+}
+.rb-ok { background: #E8F5E9; color: #2E7D32; }
+.rb-no { background: #FFEBEE; color: #C62828; }
+
+.rev-item {
+  background: white; border-radius: 18px; padding: 22px;
+  margin-bottom: 14px; text-align: left; box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+.rev-q { font-size: 15px; font-weight: 800; margin-bottom: 8px; }
+.rev-user { font-size: 13px; margin-bottom: 4px; }
+.rev-correct { color: #2E7D32; font-weight: 700; }
+.rev-wrong   { color: #C62828; font-weight: 700; }
+.rev-exp { font-size: 13px; color: #666; background: #F5F5F5; padding: 10px 14px; border-radius: 10px; margin-top: 8px; line-height: 1.5; }
+
+.retry-btn {
+  display: block; width: 100%; padding: 16px;
+  background: linear-gradient(135deg,#7E57C2,#5C6BC0);
+  color: white; border: none; border-radius: 14px;
+  font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 900;
+  cursor: pointer; transition: all 0.3s;
+}
+.retry-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(126,87,194,0.4); }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes float { 0%,100%{transform:translateX(0)} 50%{transform:translateX(8px)} }
+@keyframes sunpulse { 0%,100%{opacity:1} 50%{opacity:.75} }
+@keyframes raindrop { 0%{transform:translateY(0);opacity:1} 100%{transform:translateY(28px);opacity:0} }
+@keyframes arrowDash { from{stroke-dashoffset:120} to{stroke-dashoffset:0} }
+@keyframes confettiFall { to{transform:translateY(110vh) rotate(720deg);opacity:0} }
+@media (prefers-reduced-motion:reduce) { *{animation:none!important;transition:none!important} }
+
+/* ── Confetti ── */
+.confetti-piece {
+  position: fixed; width: 10px; height: 10px; top: -10px;
+  border-radius: 2px; animation: confettiFall linear forwards;
+  pointer-events: none; z-index: 9999;
+}
+
+@media (max-width: 600px) {
+  .nav-btn span.nav-label { display: none; }
+  .how-inner, .quiz-inner, .home-inner { padding: 20px 12px 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-logo">🌍 Earth's 4 Spheres</div>
+  <button class="nav-btn active" onclick="showSection('home',this)">🏠 <span class="nav-label">Home</span></button>
+  <button class="nav-btn" onclick="showSection('how',this)">🔄 <span class="nav-label">How They Work</span></button>
+  <button class="nav-btn" onclick="showSection('quiz',this)">📝 <span class="nav-label">Quiz</span></button>
+</nav>
+
+<!-- ══════════ HOME ══════════ -->
+<div class="section active" id="home">
+  <div class="home-inner">
+    <h1 class="home-title">🌍 Earth's 4 Spheres</h1>
+    <p class="home-sub">Discover how Earth's spheres work together to support life.</p>
+    <div class="home-badge">👇 Click any sphere to explore!</div>
+    <div class="spheres-grid">
+      <div class="sphere-card sc-atmo" onclick="openModal('atmo')">
+        <span class="s-emoji">🌤</span>
+        <h3>Atmosphere</h3>
+        <p>The air around Earth</p>
+      </div>
+      <div class="sphere-card sc-hydro" onclick="openModal('hydro')">
+        <span class="s-emoji">💧</span>
+        <h3>Hydrosphere</h3>
+        <p>All water on Earth</p>
+      </div>
+      <div class="sphere-card sc-geo" onclick="openModal('geo')">
+        <span class="s-emoji">🏔</span>
+        <h3>Geosphere</h3>
+        <p>Land, rocks & soil</p>
+      </div>
+      <div class="sphere-card sc-bio" onclick="openModal('bio')">
+        <span class="s-emoji">🌱</span>
+        <h3>Biosphere</h3>
+        <p>All living things</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ HOW THEY WORK ══════════ -->
+<div class="section" id="how">
+  <div class="how-inner">
+    <h2 class="how-title">🔄 How They Work Together</h2>
+    <p class="how-sub">Click a sphere below to see its role in the Water Cycle!</p>
+
+    <!-- WATER CYCLE SVG DIAGRAM -->
+    <div class="wc-wrap">
+      <svg id="wc-svg" viewBox="0 0 860 480" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="marr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+          <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#81D4FA"/>
+            <stop offset="100%" stop-color="#E1F5FE"/>
+          </linearGradient>
+          <linearGradient id="gndG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#8BC34A"/>
+            <stop offset="30%" stop-color="#795548"/>
+            <stop offset="100%" stop-color="#5D4037"/>
+          </linearGradient>
+          <linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#29B6F6"/>
+            <stop offset="100%" stop-color="#0277BD"/>
+          </linearGradient>
+          <radialGradient id="sunG" cx="50%" cy="50%" r="50%">
+            <stop offset="55%" stop-color="#FFD54F"/>
+            <stop offset="100%" stop-color="#FFD54F" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- SKY -->
+        <rect x="0" y="0" width="860" height="340" fill="url(#skyG)"/>
+        <!-- GROUND -->
+        <rect x="0" y="340" width="860" height="140" fill="url(#gndG)"/>
+        <rect x="0" y="336" width="860" height="14" fill="#66BB6A"/>
+
+        <!-- OCEAN -->
+        <rect class="wc-part" id="wcp-ocean" x="600" y="338" width="260" height="142" fill="url(#seaG)"/>
+        <text x="730" y="396" fill="white" font-family="Nunito" font-size="16" font-weight="800" text-anchor="middle">🌊 Ocean</text>
+        <text x="730" y="414" fill="rgba(255,255,255,0.75)" font-family="Nunito" font-size="11" text-anchor="middle">Hydrosphere</text>
+
+        <!-- RIVER -->
+        <path class="wc-part" id="wcp-river" d="M310,340 Q390,346 480,340 Q540,334 598,340" stroke="#29B6F6" stroke-width="16" fill="none" stroke-linecap="round"/>
+        <text x="450" y="333" fill="#0277BD" font-family="Nunito" font-size="12" font-weight="700" text-anchor="middle">🏞 River</text>
+
+        <!-- MOUNTAIN -->
+        <polygon class="wc-part" id="wcp-mountain" points="100,340 205,170 315,340" fill="#78909C"/>
+        <polygon points="155,340 205,225 260,340" fill="#90A4AE"/>
+        <polygon points="190,202 205,168 221,202 213,210 198,210" fill="white"/>
+        <text x="205" y="362" fill="#37474F" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">🏔 Mountain</text>
+        <text x="205" y="376" fill="#546E7A" font-family="Nunito" font-size="10" text-anchor="middle">Geosphere</text>
+
+        <!-- SOIL/GROUND LABEL -->
+        <text x="60" y="396" fill="#4E342E" font-family="Nunito" font-size="12" font-weight="700">🌱 Soil</text>
+        <text x="60" y="412" fill="#795548" font-family="Nunito" font-size="10">(Geosphere)</text>
+
+        <!-- TREES -->
+        <g class="wc-part" id="wcp-trees">
+          <rect x="334" y="296" width="9" height="44" fill="#5D4037"/>
+          <ellipse cx="338" cy="280" rx="22" ry="26" fill="#2E7D32"/>
+          <ellipse cx="348" cy="288" rx="16" ry="20" fill="#388E3C"/>
+          <rect x="372" y="300" width="8" height="40" fill="#5D4037"/>
+          <ellipse cx="376" cy="284" rx="19" ry="23" fill="#2E7D32"/>
+          <ellipse cx="385" cy="291" rx="14" ry="18" fill="#388E3C"/>
+          <rect x="406" y="298" width="9" height="42" fill="#5D4037"/>
+          <ellipse cx="410" cy="281" rx="21" ry="25" fill="#338733"/>
+          <text x="375" y="374" fill="#1B5E20" font-family="Nunito" font-size="12" font-weight="800" text-anchor="middle">🌳 Trees &amp; Plants</text>
+          <text x="375" y="387" fill="#2E7D32" font-family="Nunito" font-size="10" text-anchor="middle">Biosphere</text>
+        </g>
+
+        <!-- SUN -->
+        <g class="wc-part" id="wcp-sun">
+          <circle cx="760" cy="62" r="44" fill="url(#sunG)" style="animation:sunpulse 3s ease-in-out infinite"/>
+          <circle cx="760" cy="62" r="32" fill="#FFD54F" style="animation:sunpulse 2s ease-in-out infinite"/>
+          <g stroke="#FFB300" stroke-width="2.5" stroke-linecap="round">
+            <line x1="760" y1="16" x2="760" y2="7"/>
+            <line x1="760" y1="108" x2="760" y2="117"/>
+            <line x1="714" y1="62" x2="705" y2="62"/>
+            <line x1="806" y1="62" x2="815" y2="62"/>
+            <line x1="727" y1="29" x2="721" y2="23"/>
+            <line x1="793" y1="95" x2="799" y2="101"/>
+            <line x1="793" y1="29" x2="799" y2="23"/>
+            <line x1="727" y1="95" x2="721" y2="101"/>
+          </g>
+          <text x="760" y="66" fill="#E65100" font-family="Nunito" font-size="14" font-weight="900" text-anchor="middle">☀ Sun</text>
+        </g>
+
+        <!-- CLOUDS -->
+        <g class="wc-part" id="wcp-clouds" style="animation:float 4.5s ease-in-out infinite">
+          <ellipse cx="215" cy="95" rx="58" ry="36" fill="white" opacity="0.96"/>
+          <ellipse cx="180" cy="104" rx="34" ry="25" fill="white" opacity="0.96"/>
+          <ellipse cx="252" cy="103" rx="36" ry="23" fill="white" opacity="0.96"/>
+          <ellipse cx="215" cy="112" rx="58" ry="20" fill="white"/>
+          <text x="215" y="98" fill="#0277BD" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">☁ Clouds</text>
+          <text x="215" y="113" fill="#29B6F6" font-family="Nunito" font-size="10" text-anchor="middle">Atmosphere</text>
+        </g>
+
+        <!-- Cloud 2 smaller -->
+        <g class="wc-part" id="wcp-clouds2" style="animation:float 6s ease-in-out infinite 1s">
+          <ellipse cx="490" cy="80" rx="46" ry="28" fill="white" opacity="0.85"/>
+          <ellipse cx="460" cy="88" rx="28" ry="20" fill="white" opacity="0.85"/>
+          <ellipse cx="520" cy="87" rx="30" ry="18" fill="white" opacity="0.85"/>
+        </g>
+
+        <!-- ── PROCESS ARROWS & LABELS ── -->
+
+        <!-- EVAPORATION ocean → cloud -->
+        <path class="wc-part" id="wcp-evap" d="M670,335 Q640,210 530,110"
+          stroke="#29B6F6" stroke-width="3" fill="none" stroke-dasharray="10 6"
+          marker-end="url(#marr)"
+          style="animation:arrowDash 2.5s linear infinite"/>
+        <rect x="555" y="185" width="120" height="28" rx="11" fill="#E1F5FE" opacity="0.93"/>
+        <text x="615" y="203" fill="#0277BD" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">⬆ Evaporation</text>
+
+        <!-- CONDENSATION label near clouds -->
+        <rect x="265" y="65" width="130" height="26" rx="11" fill="#E3F2FD" opacity="0.92"/>
+        <text x="330" y="82" fill="#1565C0" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">☁ Condensation</text>
+
+        <!-- PRECIPITATION clouds → ground -->
+        <path class="wc-part" id="wcp-precip" d="M215,132 Q225,225 270,320"
+          stroke="#1565C0" stroke-width="3" fill="none" stroke-dasharray="10 6"
+          marker-end="url(#marr)"
+          style="animation:arrowDash 2s linear infinite 0.5s"/>
+        <!-- rain drops -->
+        <g id="wcp-rain" style="animation:raindrop 1.6s ease-in infinite">
+          <text x="190" y="165" font-size="13">💧</text>
+          <text x="206" y="180" font-size="13">💧</text>
+          <text x="222" y="165" font-size="13">💧</text>
+          <text x="237" y="180" font-size="13">💧</text>
+        </g>
+        <rect x="100" y="160" width="124" height="27" rx="11" fill="#E8EAF6" opacity="0.92"/>
+        <text x="162" y="178" fill="#283593" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">⬇ Precipitation</text>
+
+        <!-- TRANSPIRATION trees → cloud2 -->
+        <path class="wc-part" id="wcp-transp" d="M390,276 Q420,190 460,108"
+          stroke="#4CAF50" stroke-width="3" fill="none" stroke-dasharray="10 6"
+          marker-end="url(#marr)"
+          style="animation:arrowDash 3s linear infinite 1s"/>
+        <rect x="398" y="186" width="118" height="27" rx="11" fill="#E8F5E9" opacity="0.93"/>
+        <text x="457" y="204" fill="#1B5E20" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">🌱 Transpiration</text>
+
+        <!-- COLLECTION river → ocean -->
+        <path class="wc-part" id="wcp-collect" d="M500,344 Q548,352 598,344"
+          stroke="#0277BD" stroke-width="3" fill="none"
+          marker-end="url(#marr)"
+          style="animation:arrowDash 2s linear infinite 0.2s"/>
+        <rect x="482" y="356" width="110" height="26" rx="11" fill="#E0F7FA" opacity="0.93"/>
+        <text x="537" y="373" fill="#006064" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">🌊 Collection</text>
+
+        <!-- SUN energy arrow -->
+        <path d="M740,100 Q700,190 660,320" stroke="#FFB300" stroke-width="2.5" fill="none"
+          stroke-dasharray="8 5" marker-end="url(#marr)" opacity="0.55"/>
+        <text x="712" y="215" fill="#E65100" font-family="Nunito" font-size="11" font-weight="700" text-anchor="middle" transform="rotate(-60,712,215)">Energy</text>
+
+        <!-- Title tag -->
+        <rect x="8" y="8" width="228" height="40" rx="12" fill="rgba(255,255,255,0.88)"/>
+        <text x="122" y="33" fill="#1565C0" font-family="Nunito" font-size="16" font-weight="900" text-anchor="middle">💧 The Water Cycle</text>
+      </svg>
+    </div>
+
+    <!-- SPHERE HIGHLIGHT BUTTONS -->
+    <div class="hl-grid">
+      <div class="hl-card hc-atmo" onclick="hlSphere('atmo')">
+        <span class="hc-emoji">🌤</span>
+        <div><h4>Atmosphere</h4><p>Air & clouds</p></div>
+      </div>
+      <div class="hl-card hc-hydro" onclick="hlSphere('hydro')">
+        <span class="hc-emoji">💧</span>
+        <div><h4>Hydrosphere</h4><p>All water</p></div>
+      </div>
+      <div class="hl-card hc-geo" onclick="hlSphere('geo')">
+        <span class="hc-emoji">🏔</span>
+        <div><h4>Geosphere</h4><p>Land & rocks</p></div>
+      </div>
+      <div class="hl-card hc-bio" onclick="hlSphere('bio')">
+        <span class="hc-emoji">🌱</span>
+        <div><h4>Biosphere</h4><p>Living things</p></div>
+      </div>
+    </div>
+
+    <div id="hl-msg" class="hl-msg"></div>
+  </div>
+</div>
+
+<!-- ══════════ QUIZ ══════════ -->
+<div class="section" id="quiz">
+  <div class="quiz-inner">
+    <h2 class="quiz-title">📝 Quiz Time!</h2>
+    <p class="quiz-sub">Test your knowledge of Earth's 4 Spheres! 🧠</p>
+    <div id="q-form"></div>
+    <button class="q-submit" onclick="submitQuiz()">🚀 Submit My Answers!</button>
+    <div id="quiz-results" class="quiz-results"></div>
+  </div>
+</div>
+
+<!-- ══ SPHERE DETAIL MODAL ══ -->
+<div class="modal-overlay" id="sphere-modal" onclick="closeModalOutside(event)">
+  <div class="modal-box" id="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-top">
+      <div class="modal-icon" id="m-icon"></div>
+      <div>
+        <div class="modal-title" id="m-title"></div>
+        <div class="modal-subtitle" id="m-subtitle"></div>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">What is it?</div>
+      <p class="modal-desc" id="m-desc"></p>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Real-life examples</div>
+      <div class="modal-examples" id="m-examples"></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-fact" id="m-fact">
+        <strong>⭐ Fun Fact!</strong>
+        <span id="m-fact-text"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── SECTION SWITCHER ──
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── SPHERE MODAL DATA ──
+const sphereData = {
+  atmo: {
+    icon:'🌤', title:'Atmosphere', subtitle:'The Air Sphere',
+    desc:'The atmosphere is the layer of air and gases that wraps around Earth like a giant blanket. It gives us air to breathe and protects us from the sun!',
+    examples:['☁ Clouds','💨 Wind','🐦 Flying birds','🫁 Breathing','🌈 Rainbows','⛈ Storms'],
+    fact:'The atmosphere helps protect Earth from harmful rays of the Sun.',
+    factBg:'#E3F2FD', factColor:'#1565C0'
+  },
+  hydro: {
+    icon:'💧', title:'Hydrosphere', subtitle:'The Water Sphere',
+    desc:'The hydrosphere includes ALL the water on Earth — in oceans, rivers, lakes, glaciers, and even underground. About 71% of Earth\'s surface is covered by water!',
+    examples:['🌊 Oceans','🏞 Rivers','🌧 Rain','🥤 Drinking water','🧊 Glaciers','🌊 Waves'],
+    fact:'About 71% of Earth is covered by water!',
+    factBg:'#E0F7FA', factColor:'#006064'
+  },
+  geo: {
+    icon:'🏔', title:'Geosphere', subtitle:'The Land Sphere',
+    desc:'The geosphere is the solid part of Earth — from the surface all the way down to the hot core! It includes land, rocks, mountains, and soil.',
+    examples:['🏔 Mountains','🪨 Rocks','🌱 Soil','🌋 Volcanoes','🏖 Beaches','🪨 Caves'],
+    fact:"The Earth's crust is part of the geosphere.",
+    factBg:'#F1F8E9', factColor:'#33691E'
+  },
+  bio: {
+    icon:'🌱', title:'Biosphere', subtitle:'The Life Sphere',
+    desc:'The biosphere includes every living thing on Earth! From tiny bacteria to giant whales, from mosses to tall trees — if it\'s alive, it\'s in the biosphere.',
+    examples:['🌳 Trees','🌸 Flowers','🐘 Animals','👤 Humans','🐟 Fish','🦋 Insects'],
+    fact:'Plants and animals are all part of the biosphere.',
+    factBg:'#FFF3E0', factColor:'#E65100'
+  }
+};
+
+function openModal(id) {
+  const d = sphereData[id];
+  document.getElementById('m-icon').textContent = d.icon;
+  document.getElementById('m-title').textContent = d.title;
+  document.getElementById('m-subtitle').textContent = d.subtitle;
+  document.getElementById('m-desc').textContent = d.desc;
+  document.getElementById('m-fact-text').textContent = d.fact;
+  const fact = document.getElementById('m-fact');
+  fact.style.background = d.factBg;
+  fact.style.color = d.factColor;
+  const ex = document.getElementById('m-examples');
+  ex.innerHTML = d.examples.map(e => `<span class="modal-ex-pill">${e}</span>`).join('');
+  // Color the box
+  const box = document.getElementById('modal-box');
+  box.style.borderTop = `6px solid ${d.factColor}`;
+  document.getElementById('sphere-modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('sphere-modal').classList.remove('open');
+}
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('sphere-modal')) closeModal();
+}
+
+// ── WATER CYCLE HIGHLIGHT ──
+const allWcParts = ['wcp-ocean','wcp-river','wcp-mountain','wcp-trees','wcp-sun','wcp-clouds','wcp-clouds2','wcp-evap','wcp-precip','wcp-transp','wcp-collect','wcp-rain'];
+const hlData = {
+  atmo:{
+    parts:['wcp-clouds','wcp-clouds2','wcp-precip','wcp-rain'],
+    msg:'🌤 <strong>Atmosphere:</strong> The atmosphere contains air and water vapor. Clouds form here and rain falls from here.',
+    bg:'#E3F2FD', color:'#1565C0'
+  },
+  hydro:{
+    parts:['wcp-ocean','wcp-river','wcp-evap','wcp-collect'],
+    msg:'💧 <strong>Hydrosphere:</strong> The hydrosphere contains all the water on Earth — oceans, rivers, rain, and more!',
+    bg:'#E0F7FA', color:'#006064'
+  },
+  geo:{
+    parts:['wcp-mountain'],
+    msg:'🏔 <strong>Geosphere:</strong> The geosphere includes land, rocks, and soil. Mountains and soil shape where water flows.',
+    bg:'#F1F8E9', color:'#33691E'
+  },
+  bio:{
+    parts:['wcp-trees','wcp-transp'],
+    msg:'🌱 <strong>Biosphere:</strong> The biosphere contains all living things. Plants absorb water from soil and release it into the air through transpiration!',
+    bg:'#FFF3E0', color:'#E65100'
+  }
+};
+
+let activeHl = null;
+
+function hlSphere(id) {
+  if (activeHl === id) {
+    // reset
+    allWcParts.forEach(p => {
+      const el = document.getElementById(p);
+      if(el){ el.classList.remove('wc-dimmed','wc-lit'); }
+    });
+    document.querySelectorAll('.hl-card').forEach(c => c.classList.remove('active'));
+    const msg = document.getElementById('hl-msg');
+    msg.classList.remove('visible');
+    activeHl = null;
+    return;
+  }
+  activeHl = id;
+  const data = hlData[id];
+  allWcParts.forEach(p => {
+    const el = document.getElementById(p);
+    if(!el) return;
+    if(data.parts.includes(p)){
+      el.classList.remove('wc-dimmed'); el.classList.add('wc-lit');
+    } else {
+      el.classList.remove('wc-lit'); el.classList.add('wc-dimmed');
+    }
+  });
+  document.querySelectorAll('.hl-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.hl-card')[['atmo','hydro','geo','bio'].indexOf(id)].classList.add('active');
+  const msg = document.getElementById('hl-msg');
+  msg.style.background = data.bg;
+  msg.style.color = data.color;
+  msg.innerHTML = data.msg;
+  msg.classList.add('visible');
+}
+
+// ── QUIZ ──
+const questions = [
+  {type:'mc',q:'Which sphere contains ALL the water on Earth?',opts:['Atmosphere','Hydrosphere','Geosphere','Biosphere'],correct:1,exp:'The Hydrosphere includes rivers, lakes, oceans, rain, and all water found on Earth.'},
+  {type:'mc',q:'What is the name of the layer of air around Earth?',opts:['Geosphere','Biosphere','Hydrosphere','Atmosphere'],correct:3,exp:'The Atmosphere is the blanket of air and gases surrounding our planet.'},
+  {type:'mc',q:'In the water cycle, water rising from the ocean as vapor is called:',opts:['Precipitation','Condensation','Evaporation','Transpiration'],correct:2,exp:'Evaporation is when the sun heats water, turning it into vapor that rises into the atmosphere.'},
+  {type:'tf',q:'The Geosphere includes mountains, rocks, and soil.',correct:true,exp:"True! The Geosphere is the solid part of Earth — land, rocks, mountains, and soil all the way to the core."},
+  {type:'mc',q:'Which sphere do YOU belong to?',opts:['Hydrosphere','Geosphere','Biosphere','Atmosphere'],correct:2,exp:'All living things — including humans, animals, and plants — are part of the Biosphere!'},
+  {type:'tf',q:'Transpiration is when plants release water vapor through their leaves.',correct:true,exp:'True! Plants absorb water from soil and release it as water vapor — this is called transpiration.'},
+  {type:'mc',q:'When water vapor cools and forms clouds, it is called:',opts:['Evaporation','Collection','Transpiration','Condensation'],correct:3,exp:'Condensation happens when water vapor cools and turns into tiny droplets that form clouds.'},
+  {type:'tf',q:'About 71% of Earth is covered by water.',correct:true,exp:"True! That's why Earth is sometimes called the Blue Planet."},
+  {type:'mc',q:'Rain, snow and hail falling from clouds is called:',opts:['Evaporation','Collection','Precipitation','Transpiration'],correct:2,exp:'Precipitation is any form of water falling from clouds — rain, snow, sleet, or hail!'},
+  {type:'mc',q:'Which sphere contains all living things?',opts:['Atmosphere','Hydrosphere','Geosphere','Biosphere'],correct:3,exp:'The Biosphere includes every organism on Earth — from bacteria to blue whales!'}
+];
+
+let answers = Array(questions.length).fill(null);
+let submitted = false;
+
+function buildQuiz(){
+  const f = document.getElementById('q-form');
+  f.innerHTML = '';
+  questions.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'q-card'; div.id = `qc-${i}`;
+    const txt = document.createElement('p');
+    txt.className = 'q-text';
+    txt.textContent = `${i+1}. ${q.q}`;
+    div.appendChild(txt);
+    if(q.type==='mc'){
+      const opts = document.createElement('div');
+      opts.className = 'q-opts';
+      q.opts.forEach((o,j)=>{
+        const b = document.createElement('button');
+        b.className='q-opt'; b.textContent=o; b.id=`qo-${i}-${j}`;
+        b.onclick = ()=>pickAnswer(i,j);
+        opts.appendChild(b);
+      });
+      div.appendChild(opts);
+    } else {
+      const tf = document.createElement('div');
+      tf.className = 'q-tf';
+      [['✅ True',true],['❌ False',false]].forEach(([lbl,val],j)=>{
+        const b = document.createElement('button');
+        b.className='q-tf-btn'; b.textContent=lbl; b.id=`qtf-${i}-${j}`;
+        b.onclick=()=>pickAnswer(i,val);
+        tf.appendChild(b);
+      });
+      div.appendChild(tf);
+    }
+    f.appendChild(div);
+  });
+}
+
+function pickAnswer(qi,val){
+  if(submitted) return;
+  answers[qi]=val;
+  const q=questions[qi];
+  if(q.type==='mc'){
+    q.opts.forEach((_,j)=>document.getElementById(`qo-${qi}-${j}`).classList.remove('sel'));
+    document.getElementById(`qo-${qi}-${val}`).classList.add('sel');
+  } else {
+    [0,1].forEach(j=>document.getElementById(`qtf-${qi}-${j}`).classList.remove('sel'));
+    document.getElementById(`qtf-${qi}-${val===true?0:1}`).classList.add('sel');
+  }
+}
+
+function submitQuiz(){
+  const unan = answers.filter(a=>a===null).length;
+  if(unan>0){alert(`Please answer all questions! ${unan} left.`);return;}
+  submitted=true;
+  let correct=0;
+  questions.forEach((q,i)=>{
+    const ok = answers[i]===q.correct;
+    if(ok) correct++;
+    const card = document.getElementById(`qc-${i}`);
+    card.classList.add(ok?'q-correct':'q-wrong');
+    if(q.type==='mc'){
+      q.opts.forEach((_,j)=>{
+        const btn=document.getElementById(`qo-${i}-${j}`);
+        if(!btn)return;
+        if(j===q.correct) btn.classList.add('opt-correct');
+        else if(j===answers[i]) btn.classList.add('opt-wrong');
+      });
+    } else {
+      [0,1].forEach(j=>{
+        const btn=document.getElementById(`qtf-${i}-${j}`);
+        const bv=j===0;
+        if(bv===q.correct) btn.classList.add('opt-correct');
+        else if(bv===answers[i]) btn.classList.add('opt-wrong');
+      });
+    }
+  });
+  const pct=Math.round(correct/questions.length*100);
+  let emoji,msg,grad;
+  if(pct>=90){emoji='⭐';msg='Excellent! You\'re an Earth expert!';grad='linear-gradient(135deg,#FFD54F,#FF8F00)';}
+  else if(pct>=70){emoji='🌟';msg='Great Job! Keep it up!';grad='linear-gradient(135deg,#4CAF50,#1B5E20)';}
+  else{emoji='📚';msg='Keep Learning! You can do it!';grad='linear-gradient(135deg,#2196F3,#0D47A1)';}
+
+  let revHTML='';
+  questions.forEach((q,i)=>{
+    const ok=answers[i]===q.correct;
+    const corrLabel=q.type==='mc'?q.opts[q.correct]:(q.correct?'True':'False');
+    const userLabel=q.type==='mc'?q.opts[answers[i]]:(answers[i]?'True':'False');
+    revHTML+=`<div class="rev-item">
+      <p class="rev-q">${i+1}. ${q.q}</p>
+      ${!ok?`<p class="rev-user rev-wrong">❌ Your answer: ${userLabel}</p>`:''}
+      <p class="rev-user rev-correct">✅ Correct answer: ${corrLabel}</p>
+      <div class="rev-exp">${q.exp}</div>
+    </div>`;
+  });
+
+  const res=document.getElementById('quiz-results');
+  res.innerHTML=`
+    <div class="res-card">
+      <div class="res-emoji">${emoji}</div>
+      <div class="res-msg">${msg}</div>
+      <div class="res-score" style="background:${grad};-webkit-background-clip:text;-webkit-text-fill-color:transparent">${correct}/${questions.length}</div>
+      <div class="res-pct">${pct}%</div>
+      <div class="res-badges">
+        <span class="res-badge rb-ok">✅ ${correct} Correct</span>
+        <span class="res-badge rb-no">❌ ${questions.length-correct} Incorrect</span>
+      </div>
+    </div>
+    <h3 style="font-size:20px;font-weight:900;margin-bottom:14px">📋 Review Your Answers</h3>
+    ${revHTML}
+    <button class="retry-btn" onclick="retryQuiz()">🔄 Try Again!</button>
+  `;
+  res.classList.add('vis');
+  res.scrollIntoView({behavior:'smooth',block:'start'});
+  if(pct>=70) launchConfetti();
+}
+
+function retryQuiz(){
+  submitted=false; answers=Array(questions.length).fill(null);
+  buildQuiz();
+  const r=document.getElementById('quiz-results');
+  r.classList.remove('vis'); r.innerHTML='';
+  document.getElementById('q-form').scrollIntoView({behavior:'smooth'});
+}
+
+function launchConfetti(){
+  const colors=['#FFD54F','#4FC3F7','#A5D6A7','#FF8A65','#CE93D8','#EF9A9A','#80DEEA','#F48FB1'];
+  const c=document.createElement('div');
+  c.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:9999';
+  document.body.appendChild(c);
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div');
+    p.className='confetti-piece';
+    p.style.left=Math.random()*100+'%';
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDuration=(Math.random()*2+1.5)+'s';
+    p.style.animationDelay=Math.random()+'s';
+    p.style.transform=`rotate(${Math.random()*360}deg)`;
+    c.appendChild(p);
+  }
+  setTimeout(()=>c.remove(),4500);
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
