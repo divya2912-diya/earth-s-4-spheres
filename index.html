@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🌍 Earth's 4 Spheres & Water Cycle Lab</title>
+<title>🌍 Earth Balance Simulator</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root {
-  --atmo-c: #0277BD; --atmo-l: #E3F2FD; --atmo-m: #4FC3F7;
-  --hydro-c: #006064; --hydro-l: #E0F7FA; --hydro-m: #26C6DA;
-  --geo-c: #2E7D32; --geo-l: #F1F8E9; --geo-m: #81C784;
-  --bio-c: #D84315; --bio-l: #FBE9E7; --bio-m: #FF8A65;
+  --atmo-c: #0288D1; --atmo-l: #E3F2FD;
+  --hydro-c: #00838F; --hydro-l: #E0F7FA;
+  --geo-c: #2E7D32; --geo-l: #F1F8E9;
+  --bio-c: #D84315; --bio-l: #FBE9E7;
   --nav-h: 70px;
-  --card-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
   --focus-ring: 4px dashed #FF8F00;
 }
 
@@ -38,7 +38,7 @@ nav {
 }
 .nav-logo {
   font-size: 22px; font-weight: 900; margin-right: auto;
-  background: linear-gradient(135deg, #1565C0, #2E7D32, #D84315);
+  background: linear-gradient(135deg, #0288D1, #2E7D32, #D84315);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   white-space: nowrap;
 }
@@ -49,8 +49,8 @@ nav {
   cursor: pointer; transition: all 0.2s; background: transparent; color: #555;
   min-height: 44px;
 }
-.nav-btn:hover { background: #E1F5FE; color: #0277BD; transform: translateY(-1px); }
-.nav-btn.active { background: linear-gradient(135deg, #0277BD, #2E7D32); color: #fff; }
+.nav-btn:hover { background: #E1F5FE; color: #0288D1; transform: translateY(-1px); }
+.nav-btn.active { background: linear-gradient(135deg, #0288D1, #2E7D32); color: #fff; }
 
 /* Keyboard Accessibility Outline */
 *:focus-visible {
@@ -82,7 +82,7 @@ nav {
 }
 .home-title {
   font-size: clamp(36px, 6vw, 56px); font-weight: 900; line-height: 1.1;
-  background: linear-gradient(135deg, #0277BD, #2E7D32, #D84315);
+  background: linear-gradient(135deg, #0288D1, #2E7D32, #D84315);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   margin-bottom: 16px;
 }
@@ -110,24 +110,24 @@ nav {
 .sphere-card:hover .s-emoji { transform: scale(1.15) rotate(5deg); }
 .sphere-card h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
 .sphere-card p { font-size: 14px; opacity: 0.85; line-height: 1.4; }
-.sc-atmo { background: var(--atmo-l); color: var(--atmo-c); box-shadow: 0 10px 30px rgba(2,119,189,0.15); }
-.sc-hydro{ background: var(--hydro-l); color: var(--hydro-c); box-shadow: 0 10px 30px rgba(0,96,100,0.15); }
-.sc-geo  { background: var(--geo-l);   color: var(--geo-c);   box-shadow: 0 10px 30px rgba(46,125,50,0.15); }
-.sc-bio  { background: var(--bio-l);   color: var(--bio-c);   box-shadow: 0 10px 30px rgba(216,67,21,0.15); }
+.sc-atmo { background: var(--atmo-l); color: var(--atmo-c); box-shadow: 0 10px 30px rgba(2,119,189,0.12); }
+.sc-hydro{ background: var(--hydro-l); color: var(--hydro-c); box-shadow: 0 10px 30px rgba(0,96,100,0.12); }
+.sc-geo  { background: var(--geo-l);   color: var(--geo-c);   box-shadow: 0 10px 30px rgba(46,125,50,0.12); }
+.sc-bio  { background: var(--bio-l);   color: var(--bio-c);   box-shadow: 0 10px 30px rgba(216,67,21,0.12); }
 
-/* ══════════════ SIMULATION LAB ══════════════ */
+/* ══════════════ EARTH BALANCE SIMULATOR ══════════════ */
 #how {
   background: #ECEFF1;
   min-height: calc(100vh - var(--nav-h));
 }
 .sim-inner {
-  max-width: 1300px; margin: 0 auto;
+  max-width: 1350px; margin: 0 auto;
   padding: 24px 20px;
 }
 
 .sim-dashboard {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1.2fr 1fr;
   gap: 24px;
 }
 
@@ -143,94 +143,163 @@ nav {
   gap: 20px;
 }
 
-/* Water Cycle SVG & Canvas Container */
-.wc-wrap {
-  position: relative;
-  border-radius: 24px;
-  overflow: hidden;
+/* Globe Display Panel */
+.globe-panel {
+  background: #0D1B2A;
+  border-radius: 28px;
+  padding: 24px;
   box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-  background: #B3E5FC;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 }
-.wc-wrap svg { display: block; width: 100%; height: auto; }
-#sim-canvas {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* SVG Highlight animations */
-.wc-part { transition: opacity 0.3s, filter 0.3s; }
-.wc-dimmed { opacity: 0.12 !important; filter: grayscale(0.9) !important; }
-.wc-lit { filter: drop-shadow(0 0 12px rgba(255,235,59,0.9)) brightness(1.2) !important; opacity: 1 !important; }
-
-/* SVG Keyboard Focus Rings */
-.svg-interactive { cursor: pointer; outline: none; }
-.svg-interactive:focus-visible {
-  filter: drop-shadow(0 0 8px #FFD54F) brightness(1.2) !important;
+.globe-header-title {
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* Tooltip (Floating, Glassmorphism) */
-.sim-tooltip {
-  position: absolute;
-  z-index: 200;
+/* Container hosting earth SVG */
+.earth-container {
   width: 280px;
-  background: rgba(255,255,255,0.9);
-  backdrop-filter: blur(12px);
-  border-radius: 18px;
-  padding: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.5);
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0.9) translateY(10px);
-  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  height: 280px;
+  position: relative;
+  margin: 10px 0 20px;
 }
-.sim-tooltip.visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: scale(1) translateY(0);
+#earth-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
-.tooltip-close {
-  position: absolute; top: 12px; right: 12px;
-  background: rgba(0,0,0,0.05); border: none; width: 24px; height: 24px;
-  border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: bold; transition: background 0.2s;
-}
-.tooltip-close:hover { background: rgba(0,0,0,0.15); }
-.tooltip-title { font-size: 16px; font-weight: 800; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-.tooltip-body { font-size: 13px; line-height: 1.4; color: #444; }
-.tooltip-body p { margin-bottom: 8px; }
-.tt-examples { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; margin-bottom: 8px; }
-.tt-pill { font-size: 11px; padding: 3px 8px; background: rgba(0,0,0,0.06); border-radius: 50px; font-weight: 700; }
-.tt-fact { background: rgba(255,213,79,0.15); border-left: 3px solid #FFD54F; padding: 6px 10px; border-radius: 4px; font-size: 11px; font-style: italic; }
 
-/* ── Sphere Exploration Dashboard Cards ── */
-.dashboard-spheres-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+/* Infinite rotation of continents group */
+@keyframes rotateEarth {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-400px); }
 }
-@media (max-width: 640px) {
-  .dashboard-spheres-grid {
+
+/* Live indicators overlay layout surrounding Earth */
+.health-meters-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+.health-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 12px 16px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+.hc-title-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+.hc-val {
+  font-size: 18px;
+  font-weight: 900;
+}
+.hc-bar-track {
+  height: 8px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.hc-bar-fill {
+  height: 100%;
+  width: 50%;
+  transition: width 0.3s, background-color 0.3s;
+}
+
+/* Specific theme highlights */
+.hc-atmo { border-left: 4px solid var(--atmo-m); }
+.hc-hydro { border-left: 4px solid var(--hydro-m); }
+.hc-geo { border-left: 4px solid var(--geo-m); }
+.hc-bio { border-left: 4px solid var(--bio-m); }
+
+/* Superpower actions wrap */
+.superpowers-container {
+  background: white;
+  border-radius: 24px;
+  padding: 20px;
+  box-shadow: var(--card-shadow);
+}
+.sp-title {
+  font-size: 16px;
+  font-weight: 900;
+  margin-bottom: 12px;
+  color: #37474F;
+  border-bottom: 1.5px solid #ECEFF1;
+  padding-bottom: 6px;
+}
+.sp-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+@media (max-width: 600px) {
+  .sp-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-.dash-sphere-card {
-  border-radius: 20px; padding: 14px 10px; cursor: pointer; border: 3px solid transparent;
-  transition: all 0.25s; display: flex; flex-direction: column; align-items: center; gap: 6px;
-  font-family: 'Nunito', sans-serif; background: white; box-shadow: var(--card-shadow);
+.sp-action-btn {
+  padding: 10px 4px;
+  border-radius: 12px;
+  border: 1.5px solid #CFD8DC;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  background: #FAFAFA;
+  color: #455A64;
+  transition: all 0.2s;
   min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
 }
-.dash-sphere-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
-.dash-sphere-card.active { border-color: currentColor; transform: scale(1.03); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
-.dash-sphere-card .ds-emoji { font-size: 30px; }
-.dash-sphere-card .ds-title { font-size: 14px; font-weight: 900; }
-.dash-sphere-card.sc-atmo { color: var(--atmo-c); background: var(--atmo-l); }
-.dash-sphere-card.sc-hydro { color: var(--hydro-c); background: var(--hydro-l); }
-.dash-sphere-card.sc-geo { color: var(--geo-c); background: var(--geo-l); }
-.dash-sphere-card.sc-bio { color: var(--bio-c); background: var(--bio-l); }
+.sp-action-btn:hover {
+  background: #ECEFF1;
+  border-color: #B0BEC5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+.sp-action-btn:active {
+  transform: translateY(0);
+}
+.sp-action-btn.danger {
+  color: #C62828;
+  border-color: #FFCDD2;
+}
+.sp-action-btn.danger:hover {
+  background: #FFEBEE;
+  border-color: #EF9A9A;
+}
+.sp-action-btn.success {
+  color: #2E7D32;
+  border-color: #C8E6C9;
+}
+.sp-action-btn.success:hover {
+  background: #E8F5E9;
+  border-color: #A5D6A7;
+}
 
-/* ── SIDE COLUMN (CONTROLS & GAUGES) ── */
+/* ── SIDE COLUMN (CONTROLS & MISSION PANEL) ── */
 .sim-side-col {
   display: flex;
   flex-direction: column;
@@ -242,58 +311,88 @@ nav {
 }
 .side-card .sc-title { font-size: 17px; font-weight: 900; margin-bottom: 16px; border-bottom: 2px solid #ECEFF1; padding-bottom: 8px; }
 
-/* Quest Card (Active Mission) */
-.quest-card {
-  background: linear-gradient(135deg, #1565C0, #0D47A1);
+/* Mission Control Card */
+.mission-card {
+  background: linear-gradient(135deg, #1A237E, #0D47A1);
   color: white; border-radius: 24px;
 }
-.qc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.qc-badge { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-.qc-stars { font-size: 15px; font-weight: 900; background: #FFD54F; color: #5D4037; padding: 4px 10px; border-radius: 50px; }
-.qc-title { font-size: 19px; font-weight: 900; margin-bottom: 6px; }
-.qc-desc { font-size: 14px; opacity: 0.9; margin-bottom: 12px; line-height: 1.4; }
-.qc-hint { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 8px 12px; font-size: 12px; margin-bottom: 16px; border-left: 3px solid #FFD54F; }
-.qc-progress-bar { height: 10px; background: rgba(255,255,255,0.25); border-radius: 5px; overflow: hidden; margin-bottom: 6px; }
-.qc-progress-fill { height: 100%; background: #4CAF50; transition: width 0.3s; }
-.qc-progress-text { font-size: 11px; text-align: right; opacity: 0.8; font-weight: 700; }
+.mc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.mc-badge { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 50px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+.mc-stars { font-size: 14px; font-weight: 900; background: #FFD54F; color: #5D4037; padding: 4px 10px; border-radius: 50px; }
+.mc-title-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.mc-select {
+  flex: 1;
+  padding: 8px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.25);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+}
+.mc-select option {
+  background: #1A237E;
+  color: white;
+}
+.mc-desc { font-size: 13px; opacity: 0.85; margin: 10px 0; line-height: 1.4; min-height: 38px; }
+.mc-goals-box {
+  background: rgba(255,255,255,0.08);
+  border-radius: 14px; padding: 12px 14px; margin-bottom: 12px;
+}
+.mc-goal-item {
+  display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; margin-bottom: 6px;
+}
+.mc-goal-item:last-child { margin-bottom: 0; }
+.mc-goal-chk { font-size: 16px; }
 
-/* Measurement Tools / Gauges */
-.meter-item { margin-bottom: 14px; }
-.meter-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 800; margin-bottom: 6px; color: #555; }
-.meter-value { font-weight: 900; color: #111; }
-.meter-bar { height: 12px; background: #ECEFF1; border-radius: 50px; overflow: hidden; }
-.meter-fill { height: 100%; transition: width 0.2s, background-color 0.2s; }
+/* Status event log card */
+.log-box {
+  border-left: 4px solid #0288D1;
+  background: #E1F5FE;
+  color: #01579B;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.5;
+  transition: all 0.3s;
+}
 
 /* Control panel / slider */
-.slider-container { margin-bottom: 20px; }
-.slider-label-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 14px; margin-bottom: 8px; color: #444; }
-.slider-val { font-size: 15px; color: #D84315; font-weight: 900; }
+.slider-container { margin-bottom: 14px; }
+.slider-container:last-child { margin-bottom: 0; }
+.slider-label-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 13px; margin-bottom: 6px; color: #555; }
+.slider-val { font-size: 14px; color: #D84315; font-weight: 900; }
 .slider-wrapper { display: flex; align-items: center; gap: 8px; }
-.slider-side-label { font-size: 12px; font-weight: bold; color: #777; }
+.slider-side-label { font-size: 11px; font-weight: bold; color: #777; width: 30px; }
 input[type="range"] {
   flex: 1; -webkit-appearance: none; appearance: none; height: 8px; border-radius: 4px; background: #CFD8DC; outline: none; cursor: pointer;
 }
 input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #D84315; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: transform 0.1s;
+  -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #D84315; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: transform 0.1s;
 }
 input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 
-/* Superpower Controls */
-.superpowers-row { display: flex; gap: 8px; }
-.sp-btn {
-  flex: 1; padding: 12px 6px; border-radius: 12px; border: none; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800;
-  cursor: pointer; background: #ECEFF1; color: #37474F; transition: all 0.2s; min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 4px;
+/* Quiz Access Card */
+.quiz-promo-card {
+  background: linear-gradient(135deg, #9C27B0, #673AB7);
+  color: white; border-radius: 24px; text-align: center; padding: 18px 12px;
 }
-.sp-btn:hover { background: #CFD8DC; transform: translateY(-1px); }
-.sp-btn:active { transform: translateY(1px); }
-.sp-btn.active { background: #E0F2F1; border: 1.5px solid #009688; color: #00796B; }
+.qp-btn {
+  display: inline-block; padding: 10px 24px; border-radius: 50px; border: none; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900;
+  cursor: pointer; background: white; color: #673AB7; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.qp-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
 
-/* ══════════════ ACHIEVEMENTS ══════════════ */
+/* ── ACHIEVEMENTS ── */
 #quiz {
   background: linear-gradient(135deg, #F3E5F5 0%, #EDE7F6 100%);
   min-height: calc(100vh - var(--nav-h));
 }
-.achieve-inner { max-width: 800px; margin: 0 auto; padding: 36px 20px; }
+.achieve-inner { max-width: 820px; margin: 0 auto; padding: 36px 20px; }
 .achieve-title { text-align: center; font-size: 32px; font-weight: 900; margin-bottom: 6px; color: #4A148C; }
 .achieve-sub { text-align: center; color: #666; margin-bottom: 30px; font-size: 15px; }
 
@@ -316,11 +415,11 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
   display: flex; align-items: center; gap: 18px; border: 2.5px solid transparent; transition: all 0.3s;
 }
 .badge-card.unlocked { border-color: #81C784; background: #F1F8E9; }
-.badge-card.locked { opacity: 0.7; background: #FAFAFA; border-color: #E0E0E0; }
+.badge-card.locked { opacity: 0.75; background: #FAFAFA; border-color: #E0E0E0; }
 .badge-icon {
-  font-size: 48px; min-width: 60px; height: 60px; border-radius: 50%; background: #ECEFF1; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  font-size: 36px; min-width: 60px; height: 60px; border-radius: 50%; background: #ECEFF1; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
-.badge-card.unlocked .badge-icon { background: #FFD54F; animation: badgePulse 2s infinite; }
+.badge-card.unlocked .badge-icon { background: #FFD54F; animation: badgePulse 2.5s infinite; }
 .badge-card.locked .badge-icon { filter: grayscale(1.0); }
 .badge-info { flex: 1; }
 .badge-name { font-size: 17px; font-weight: 900; display: flex; align-items: center; gap: 6px; }
@@ -341,7 +440,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 }
 .reset-game-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(126,87,194,0.4); }
 
-/* ── MODALS (SUCCESS / BADGES) ── */
+/* ── QUIZ MODAL OVERLAY ── */
 .game-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.6);
   z-index: 1000; display: flex; align-items: center; justify-content: center;
@@ -350,12 +449,14 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 .game-overlay.open { opacity: 1; pointer-events: auto; }
 .game-modal-box {
   background: white; border-radius: 28px; padding: 36px 24px;
-  max-width: 460px; width: 100%; text-align: center;
+  max-width: 480px; width: 100%; text-align: center;
   box-shadow: 0 24px 80px rgba(0,0,0,0.3);
   transform: scale(0.8) translateY(20px);
   transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.25);
   border-top: 8px solid #FFD54F;
   position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 .game-overlay.open .game-modal-box { transform: scale(1) translateY(0); }
 .gm-emoji { font-size: 64px; margin-bottom: 12px; line-height: 1; }
@@ -364,10 +465,45 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 .gm-btn {
   padding: 12px 28px; border-radius: 50px; border: none;
   font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800;
-  cursor: pointer; background: linear-gradient(135deg, #0277BD, #2E7D32);
+  cursor: pointer; background: linear-gradient(135deg, #0288D1, #2E7D32);
   color: white; transition: all 0.2s; min-height: 44px;
 }
 .gm-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(2,119,189,0.3); }
+
+/* Close X buttons on modal overlays */
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: rgba(0,0,0,0.05); border: none; width: 30px; height: 30px;
+  border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: bold; transition: background 0.2s; z-index: 2;
+}
+.modal-close:hover { background: rgba(0,0,0,0.15); }
+
+/* Inside Quiz Modal styles */
+.quiz-header {
+  display: flex; justify-content: space-between; font-size: 13px; font-weight: 800; margin-bottom: 10px; color: #666;
+}
+.quiz-prog-track { height: 6px; background: #ECEFF1; border-radius: 3px; overflow: hidden; margin-bottom: 20px; }
+.quiz-prog-fill { height: 100%; background: #9C27B0; transition: width 0.3s; }
+.quiz-q-text { font-size: 17px; font-weight: 900; color: #333; margin-bottom: 20px; text-align: left; line-height: 1.5; }
+.quiz-opts-stack { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.quiz-opt-btn {
+  padding: 12px 16px; border-radius: 12px; border: 2px solid #CFD8DC; background: #FAFAFA; text-align: left;
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; color: #37474F;
+  min-height: 44px;
+}
+.quiz-opt-btn:hover { background: #F3E5F5; border-color: #BA68C8; transform: translateX(3px); }
+.quiz-opt-btn.correct { background: #E8F5E9; border-color: #81C784; color: #2E7D32; }
+.quiz-opt-btn.incorrect { background: #FFEBEE; border-color: #EF9A9A; color: #C62828; }
+.quiz-exp-box {
+  background: #ECEFF1; border-radius: 14px; padding: 14px; font-size: 13px; line-height: 1.5; text-align: left; margin-bottom: 20px;
+  border-left: 4px solid #607D8B; display: none;
+}
+.quiz-next-btn {
+  width: 100%; padding: 14px; border-radius: 16px; border: none; font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900;
+  cursor: pointer; background: #9C27B0; color: white; display: none;
+}
+.quiz-next-btn:hover { background: #7B1FA2; }
 
 /* Confetti Piece */
 .confetti-piece {
@@ -379,9 +515,8 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 /* ── ANIMATIONS ── */
 @keyframes float { 0%,100%{transform:translateX(0)} 50%{transform:translateX(8px)} }
 @keyframes sunpulse { 0%,100%{opacity:1; transform:scale(1)} 50%{opacity:.8; transform:scale(1.03)} }
-@keyframes arrowDash { from{stroke-dashoffset:120} to{stroke-dashoffset:0} }
 @keyframes confettiFall { to{transform:translateY(110vh) rotate(720deg);opacity:0} }
-@keyframes badgePulse { 0%,100%{transform:scale(1);box-shadow:0 4px 10px rgba(0,0,0,0.05)} 50%{transform:scale(1.05);box-shadow:0 8px 20px rgba(255,213,79,0.4)} }
+@keyframes badgePulse { 0%,100%{transform:scale(1);box-shadow:0 4px 10px rgba(0,0,0,0.05)} 50%{transform:scale(1.04);box-shadow:0 8px 20px rgba(255,213,79,0.3)} }
 
 @media (max-width: 600px) {
   .nav-btn span { display: none; }
@@ -394,38 +529,38 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 
 <!-- ══ NAV ══ -->
 <nav>
-  <div class="nav-logo" id="logo" tabindex="0">🌍 Water Cycle Lab</div>
+  <div class="nav-logo" id="logo" tabindex="0">🌍 Earth Care Center</div>
   <button class="nav-btn active" id="nav-home" onclick="showSection('home',this)" aria-label="Home page">🏠 <span>Home</span></button>
-  <button class="nav-btn" id="nav-how" onclick="showSection('how',this)" aria-label="Simulation Lab">🔬 <span>Simulation Lab</span></button>
+  <button class="nav-btn" id="nav-how" onclick="showSection('how',this)" aria-label="Earth Balance Simulator">🔬 <span>Earth Simulator</span></button>
   <button class="nav-btn" id="nav-quiz" onclick="showSection('quiz',this)" aria-label="Achievements Center">🏆 <span>Achievements</span></button>
 </nav>
 
 <!-- ══════════ HOME ══════════ -->
 <div class="section active" id="home">
   <div class="home-inner">
-    <h1 class="home-title" tabindex="0">🌍 Earth's 4 Spheres & The Water Cycle</h1>
-    <p class="home-sub" tabindex="0">How do the Atmosphere, Hydrosphere, Geosphere, and Biosphere work together?</p>
-    <div class="home-badge" tabindex="0">👇 Click any sphere card below to launch the Simulation!</div>
+    <h1 class="home-title" tabindex="0">🌍 Earth Balance Simulator</h1>
+    <p class="home-sub" tabindex="0">Take control of the planet's systems and see how Atmosphere, Hydrosphere, Geosphere, and Biosphere react!</p>
+    <div class="home-badge" tabindex="0">👇 Choose your path below to begin the simulation!</div>
     <div class="spheres-grid">
-      <div class="sphere-card sc-atmo" tabindex="0" onclick="homeCardClicked('atmo')" role="button" aria-label="Explore Atmosphere in simulation">
+      <div class="sphere-card sc-atmo" tabindex="0" onclick="homeCardClicked('atmo')" role="button" aria-label="Open simulator for Atmosphere">
         <span class="s-emoji">🌤</span>
         <h3>Atmosphere</h3>
-        <p>The air and gases wrapping around Earth. Contains clouds, condensation, and rain!</p>
+        <p>The air sphere. Adjust heat and carbon gases to discover how it forms clouds and shields life.</p>
       </div>
-      <div class="sphere-card sc-hydro" tabindex="0" onclick="homeCardClicked('hydro')" role="button" aria-label="Explore Hydrosphere in simulation">
+      <div class="sphere-card sc-hydro" tabindex="0" onclick="homeCardClicked('hydro')" role="button" aria-label="Open simulator for Hydrosphere">
         <span class="s-emoji">💧</span>
         <h3>Hydrosphere</h3>
-        <p>All liquid and solid water. Includes oceans, rivers, rain, collection, and evaporation!</p>
+        <p>The water sphere. Change water levels and observe standard flows, floods, or severe droughts.</p>
       </div>
-      <div class="sphere-card sc-geo" tabindex="0" onclick="homeCardClicked('geo')" role="button" aria-label="Explore Geosphere in simulation">
+      <div class="sphere-card sc-geo" tabindex="0" onclick="homeCardClicked('geo')" role="button" aria-label="Open simulator for Geosphere">
         <span class="s-emoji">🏔</span>
         <h3>Geosphere</h3>
-        <p>The solid land, soil, mountains, and groundwater storage beneath our feet!</p>
+        <p>The rock and land sphere. Control soil quality and mountains, preventing natural land erosion.</p>
       </div>
-      <div class="sphere-card sc-bio" tabindex="0" onclick="homeCardClicked('bio')" role="button" aria-label="Explore Biosphere in simulation">
+      <div class="sphere-card sc-bio" tabindex="0" onclick="homeCardClicked('bio')" role="button" aria-label="Open simulator for Biosphere">
         <span class="s-emoji">🌱</span>
         <h3>Biosphere</h3>
-        <p>Every living organism. Plants absorb groundwater and drive transpiration back into the air!</p>
+        <p>The life sphere. Manage plant and forest density, purifying the air and supporting all organisms.</p>
       </div>
     </div>
   </div>
@@ -436,284 +571,264 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
   <div class="sim-inner">
     <div class="sim-dashboard">
       
-      <!-- Main Columns -->
+      <!-- Left Column (Visuals & Superpowers) -->
       <div class="sim-main-col">
-        <!-- SVG diagram & Canvas -->
-        <div class="wc-wrap" id="wc-container">
-          <svg id="wc-svg" viewBox="0 0 860 480" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <marker id="marr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </marker>
-              <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#81D4FA"/>
-                <stop offset="100%" stop-color="#E1F5FE"/>
-              </linearGradient>
-              <linearGradient id="gndG" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#8BC34A"/>
-                <stop offset="30%" stop-color="#795548"/>
-                <stop offset="100%" stop-color="#5D4037"/>
-              </linearGradient>
-              <linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#29B6F6"/>
-                <stop offset="100%" stop-color="#0277BD"/>
-              </linearGradient>
-              <radialGradient id="sunG" cx="50%" cy="50%" r="50%">
-                <stop offset="55%" stop-color="#FFD54F"/>
-                <stop offset="100%" stop-color="#FFD54F" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
+        
+        <!-- Animated Earth Screen -->
+        <div class="globe-panel">
+          <div class="globe-header-title">
+            <span>🌍 Central Earth Status</span>
+          </div>
 
-            <!-- SKY -->
-            <rect x="0" y="0" width="860" height="340" fill="url(#skyG)"/>
-            <!-- GROUND -->
-            <rect x="0" y="340" width="860" height="140" fill="url(#gndG)"/>
-            <rect x="0" y="336" width="860" height="14" fill="#66BB6A" id="wcp-soil"/>
+          <!-- Earth SVG wrapper -->
+          <div class="earth-container">
+            <svg id="earth-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <clipPath id="earth-clip">
+                  <circle cx="200" cy="200" r="140" />
+                </clipPath>
+              </defs>
 
-            <!-- OCEAN -->
-            <g tabindex="0" class="svg-interactive wc-part" id="wcp-ocean" role="button" aria-label="Ocean (Hydrosphere)" onclick="svgItemClicked('hydro')">
-              <rect x="600" y="338" width="260" height="142" fill="url(#seaG)"/>
-              <text x="730" y="396" fill="white" font-family="Nunito" font-size="16" font-weight="800" text-anchor="middle">🌊 Ocean</text>
-              <text x="730" y="414" fill="rgba(255,255,255,0.75)" font-family="Nunito" font-size="11" text-anchor="middle">Hydrosphere</text>
-            </g>
+              <!-- Atmosphere outer glowing circle -->
+              <circle id="earth-atmosphere" cx="200" cy="200" r="143" stroke="#80DEEA" stroke-width="6" fill="none" opacity="0.8" style="transition: all 0.5s; filter: drop-shadow(0 0 15px rgba(128,222,234,0.65));" />
 
-            <!-- RIVER -->
-            <g tabindex="0" class="svg-interactive wc-part" id="wcp-river" role="button" aria-label="River (Hydrosphere)" onclick="svgItemClicked('hydro')">
-              <path d="M310,340 Q390,346 480,340 Q540,334 598,340" stroke="#29B6F6" stroke-width="16" fill="none" stroke-linecap="round"/>
-              <text x="450" y="333" fill="#0277BD" font-family="Nunito" font-size="12" font-weight="700" text-anchor="middle">🏞 River</text>
-            </g>
+              <!-- Hydrosphere water background (ocean fill) -->
+              <circle id="earth-ocean" cx="200" cy="200" r="140" fill="#29B6F6" style="transition: fill 0.8s;" clip-path="url(#earth-clip)" />
 
-            <!-- MOUNTAIN -->
-            <g tabindex="0" class="svg-interactive wc-part" id="wcp-mountain" role="button" aria-label="Mountain (Geosphere)" onclick="svgItemClicked('geo')">
-              <polygon points="100,340 205,170 315,340" fill="#78909C"/>
-              <polygon points="155,340 205,225 260,340" fill="#90A4AE"/>
-              <polygon points="190,202 205,168 221,202 213,210 198,210" fill="white"/>
-              <text x="205" y="362" fill="#37474F" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">🏔 Mountain</text>
-              <text x="205" y="376" fill="#546E7A" font-family="Nunito" font-size="10" text-anchor="middle">Geosphere</text>
-            </g>
+              <!-- Rotating continent landmasses group -->
+              <g clip-path="url(#earth-clip)">
+                <g id="earth-landmasses" style="animation: rotateEarth 22s linear infinite;">
+                  
+                  <!-- Set 1 -->
+                  <!-- Base Land (Geosphere) -->
+                  <g class="land-grp">
+                    <path class="earth-land" d="M 60,180 Q 90,120 140,130 Q 180,150 200,200 Q 160,250 120,240 Q 80,250 60,180 Z" fill="#81C784" style="transition: fill 0.8s;"/>
+                    <path class="earth-land" d="M 120,240 Q 150,220 180,250 Q 170,290 140,300 Q 110,280 120,240 Z" fill="#81C784" style="transition: fill 0.8s;"/>
+                    <path class="earth-land" d="M 220,120 Q 280,100 320,140 Q 300,200 280,240 Q 250,260 220,200 Z" fill="#81C784" style="transition: fill 0.8s;"/>
+                    <path class="earth-land" d="M 260,260 Q 300,250 320,280 Q 290,320 270,300 Z" fill="#81C784" style="transition: fill 0.8s;"/>
+                  </g>
+                  <!-- Forests (Biosphere) -->
+                  <g class="forest-grp">
+                    <path class="earth-forest" d="M 80,170 Q 100,140 130,140 Q 160,160 170,190 Q 150,220 110,220 Z" fill="#2E7D32" style="transition: fill 0.8s, opacity 0.5s;"/>
+                    <path class="earth-forest" d="M 240,130 Q 270,120 290,150 Q 280,180 260,210 Q 240,210 240,170 Z" fill="#2E7D32" style="transition: fill 0.8s, opacity 0.5s;"/>
+                  </g>
+                  <!-- Mountains (Geosphere peaks) -->
+                  <g class="mount-grp">
+                    <polygon class="earth-mountain" points="130,160 145,130 160,160" fill="#78909C" style="transition: opacity 0.5s;"/>
+                    <polygon class="earth-mountain" points="260,170 275,140 290,170" fill="#78909C" style="transition: opacity 0.5s;"/>
+                  </g>
 
-            <!-- GROUNDWATER (Geosphere) -->
-            <g tabindex="0" class="svg-interactive wc-part" id="wcp-groundwater" role="button" aria-label="Groundwater (Geosphere)" onclick="svgItemClicked('geo')">
-              <path d="M50,430 Q250,440 450,420 T750,430" stroke="#80DEEA" stroke-width="6" stroke-dasharray="10 8" fill="none" opacity="0.8"/>
-              <text x="350" y="460" fill="#006064" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">💧 Groundwater Storage</text>
-            </g>
+                  <!-- Set 2 (Shifted right by 400px to loop rotation) -->
+                  <g transform="translate(400,0)">
+                    <g class="land-grp">
+                      <path class="earth-land" d="M 60,180 Q 90,120 140,130 Q 180,150 200,200 Q 160,250 120,240 Q 80,250 60,180 Z" fill="#81C784" style="transition: fill 0.8s;"/>
+                      <path class="earth-land" d="M 120,240 Q 150,220 180,250 Q 170,290 140,300 Q 110,280 120,240 Z" fill="#81C784" style="transition: fill 0.8s;"/>
+                      <path class="earth-land" d="M 220,120 Q 280,100 320,140 Q 300,200 280,240 Q 250,260 220,200 Z" fill="#81C784" style="transition: fill 0.8s;"/>
+                      <path class="earth-land" d="M 260,260 Q 300,250 320,280 Q 290,320 270,300 Z" fill="#81C784" style="transition: fill 0.8s;"/>
+                    </g>
+                    <g class="forest-grp">
+                      <path class="earth-forest" d="M 80,170 Q 100,140 130,140 Q 160,160 170,190 Q 150,220 110,220 Z" fill="#2E7D32" style="transition: fill 0.8s, opacity 0.5s;"/>
+                      <path class="earth-forest" d="M 240,130 Q 270,120 290,150 Q 280,180 260,210 Q 240,210 240,170 Z" fill="#2E7D32" style="transition: fill 0.8s, opacity 0.5s;"/>
+                    </g>
+                    <g class="mount-grp">
+                      <polygon class="earth-mountain" points="130,160 145,130 160,160" fill="#78909C" style="transition: opacity 0.5s;"/>
+                      <polygon class="earth-mountain" points="260,170 275,140 290,170" fill="#78909C" style="transition: opacity 0.5s;"/>
+                    </g>
+                  </g>
 
-            <!-- SOIL/GROUND LABEL -->
-            <g tabindex="0" class="svg-interactive wc-part" id="wcp-soil-label" role="button" aria-label="Soil (Geosphere)" onclick="svgItemClicked('geo')">
-              <text x="60" y="396" fill="#4E342E" font-family="Nunito" font-size="12" font-weight="700">🌱 Soil</text>
-              <text x="60" y="412" fill="#795548" font-family="Nunito" font-size="10">(Geosphere)</text>
-            </g>
-
-            <!-- TREES -->
-            <g tabindex="0" class="svg-interactive wc-part" id="wcp-trees" role="button" aria-label="Trees and Plants (Biosphere)" onclick="svgItemClicked('bio')">
-              <rect x="334" y="296" width="9" height="44" fill="#5D4037"/>
-              <ellipse cx="338" cy="280" rx="22" ry="26" fill="#2E7D32"/>
-              <ellipse cx="348" cy="288" rx="16" ry="20" fill="#388E3C"/>
-              <rect x="372" y="300" width="8" height="40" fill="#5D4037"/>
-              <ellipse cx="376" cy="284" rx="19" ry="23" fill="#2E7D32"/>
-              <ellipse cx="385" cy="291" rx="14" ry="18" fill="#388E3C"/>
-              <rect x="406" y="298" width="9" height="42" fill="#5D4037"/>
-              <ellipse cx="410" cy="281" rx="21" ry="25" fill="#338733"/>
-              <text x="375" y="374" fill="#1B5E20" font-family="Nunito" font-size="12" font-weight="800" text-anchor="middle">🌳 Trees &amp; Plants</text>
-              <text x="375" y="387" fill="#2E7D32" font-family="Nunito" font-size="10" text-anchor="middle">Biosphere</text>
-            </g>
-
-            <!-- SUN -->
-            <g class="wc-part" id="wcp-sun">
-              <circle cx="760" cy="62" r="44" fill="url(#sunG)" style="animation:sunpulse 3s ease-in-out infinite"/>
-              <circle cx="760" cy="62" r="32" fill="#FFD54F" style="animation:sunpulse 2s ease-in-out infinite"/>
-              <g stroke="#FFB300" stroke-width="2.5" stroke-linecap="round">
-                <line x1="760" y1="16" x2="760" y2="7"/>
-                <line x1="760" y1="108" x2="760" y2="117"/>
-                <line x1="714" y1="62" x2="705" y2="62"/>
-                <line x1="806" y1="62" x2="815" y2="62"/>
-                <line x1="727" y1="29" x2="721" y2="23"/>
-                <line x1="793" y1="95" x2="799" y2="101"/>
-                <line x1="793" y1="29" x2="799" y2="23"/>
-                <line x1="727" y1="95" x2="721" y2="101"/>
+                </g>
               </g>
-              <text x="760" y="66" fill="#E65100" font-family="Nunito" font-size="14" font-weight="900" text-anchor="middle">☀ Sun</text>
-            </g>
+            </svg>
+          </div>
 
-            <!-- CLOUDS -->
-            <g tabindex="0" class="svg-interactive wc-part" id="wcp-clouds" role="button" aria-label="Clouds (Atmosphere)" style="animation:float 4.5s ease-in-out infinite" onclick="svgItemClicked('atmo')">
-              <ellipse cx="215" cy="95" rx="58" ry="36" fill="white" opacity="0.96"/>
-              <ellipse cx="180" cy="104" rx="34" ry="25" fill="white" opacity="0.96"/>
-              <ellipse cx="252" cy="103" rx="36" ry="23" fill="white" opacity="0.96"/>
-              <ellipse cx="215" cy="112" rx="58" ry="20" fill="white"/>
-              <text x="215" y="98" fill="#0277BD" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">☁ Clouds</text>
-              <text x="215" y="113" fill="#29B6F6" font-family="Nunito" font-size="10" text-anchor="middle">Atmosphere</text>
-            </g>
+          <!-- Live health meters grid -->
+          <div class="health-meters-grid">
+            <div class="health-card hc-atmo">
+              <div class="hc-title-row">
+                <span>🌤️ Atmosphere Health</span>
+                <span class="hc-val" id="atmo-val-label">90%</span>
+              </div>
+              <div class="hc-bar-track">
+                <div class="hc-bar-fill" id="atmo-bar-fill" style="background-color: var(--atmo-c);"></div>
+              </div>
+            </div>
 
-            <!-- Cloud 2 smaller -->
-            <g class="wc-part" id="wcp-clouds2" style="animation:float 6s ease-in-out infinite 1s">
-              <ellipse cx="490" cy="80" rx="46" ry="28" fill="white" opacity="0.85"/>
-              <ellipse cx="460" cy="88" rx="28" ry="20" fill="white" opacity="0.85"/>
-              <ellipse cx="520" cy="87" rx="30" ry="18" fill="white" opacity="0.85"/>
-            </g>
+            <div class="health-card hc-hydro">
+              <div class="hc-title-row">
+                <span>💧 Hydrosphere Health</span>
+                <span class="hc-val" id="hydro-val-label">85%</span>
+              </div>
+              <div class="hc-bar-track">
+                <div class="hc-bar-fill" id="hydro-bar-fill" style="background-color: var(--hydro-c);"></div>
+              </div>
+            </div>
 
-            <!-- ── PROCESS ARROWS & LABELS ── -->
+            <div class="health-card hc-geo">
+              <div class="hc-title-row">
+                <span>🏔️ Geosphere Health</span>
+                <span class="hc-val" id="geo-val-label">95%</span>
+              </div>
+              <div class="hc-bar-track">
+                <div class="hc-bar-fill" id="geo-bar-fill" style="background-color: var(--geo-c);"></div>
+              </div>
+            </div>
 
-            <!-- EVAPORATION ocean → cloud -->
-            <g tabindex="0" class="svg-interactive wc-part" id="wcp-evap" role="button" aria-label="Evaporation (Ocean to Clouds)" onclick="svgItemClicked('hydro')">
-              <path d="M670,335 Q640,210 530,110"
-                stroke="#29B6F6" stroke-width="3" fill="none" stroke-dasharray="10 6"
-                marker-end="url(#marr)"
-                style="animation:arrowDash 2.5s linear infinite"/>
-              <rect x="555" y="185" width="120" height="28" rx="11" fill="#E1F5FE" opacity="0.93"/>
-              <text x="615" y="203" fill="#0277BD" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">⬆ Evaporation</text>
-            </g>
-
-            <!-- CONDENSATION label near clouds -->
-            <g tabindex="0" class="svg-interactive wc-part" id="wcp-condens" role="button" aria-label="Condensation (Vapor to Clouds)" onclick="svgItemClicked('atmo')">
-              <rect x="265" y="65" width="130" height="26" rx="11" fill="#E3F2FD" opacity="0.92"/>
-              <text x="330" y="82" fill="#1565C0" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">☁ Condensation</text>
-            </g>
-
-            <!-- PRECIPITATION clouds → ground -->
-            <g tabindex="0" class="svg-interactive wc-part" id="wcp-precip" role="button" aria-label="Precipitation (Clouds to Ground)" onclick="svgItemClicked('atmo')">
-              <path d="M215,132 Q225,225 270,320"
-                stroke="#1565C0" stroke-width="3" fill="none" stroke-dasharray="10 6"
-                marker-end="url(#marr)"
-                style="animation:arrowDash 2s linear infinite 0.5s"/>
-              <rect x="100" y="160" width="124" height="27" rx="11" fill="#E8EAF6" opacity="0.92"/>
-              <text x="162" y="178" fill="#283593" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">⬇ Precipitation</text>
-            </g>
-
-            <!-- TRANSPIRATION trees → cloud2 -->
-            <g tabindex="0" class="svg-interactive wc-part" id="wcp-transp" role="button" aria-label="Transpiration (Plants to Clouds)" onclick="svgItemClicked('bio')">
-              <path d="M390,276 Q420,190 460,108"
-                stroke="#4CAF50" stroke-width="3" fill="none" stroke-dasharray="10 6"
-                marker-end="url(#marr)"
-                style="animation:arrowDash 3s linear infinite 1s"/>
-              <rect x="398" y="186" width="118" height="27" rx="11" fill="#E8F5E9" opacity="0.93"/>
-              <text x="457" y="204" fill="#1B5E20" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">🌱 Transpiration</text>
-            </g>
-
-            <!-- COLLECTION river → ocean -->
-            <g tabindex="0" class="svg-interactive wc-part" id="wcp-collect" role="button" aria-label="Collection (Flow to Ocean)" onclick="svgItemClicked('hydro')">
-              <path d="M500,344 Q548,352 598,344"
-                stroke="#0277BD" stroke-width="3" fill="none"
-                marker-end="url(#marr)"
-                style="animation:arrowDash 2s linear infinite 0.2s"/>
-              <rect x="482" y="356" width="110" height="26" rx="11" fill="#E0F7FA" opacity="0.93"/>
-              <text x="537" y="373" fill="#006064" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">🌊 Collection</text>
-            </g>
-
-            <!-- SUN energy arrow -->
-            <path d="M740,100 Q700,190 660,320" stroke="#FFB300" stroke-width="2.5" fill="none"
-              stroke-dasharray="8 5" marker-end="url(#marr)" opacity="0.55"/>
-            <text x="712" y="215" fill="#E65100" font-family="Nunito" font-size="11" font-weight="700" text-anchor="middle" transform="rotate(-60,712,215)">Energy</text>
-          </svg>
-
-          <!-- Canvas overlays particles dynamically -->
-          <canvas id="sim-canvas" width="860" height="480"></canvas>
-
-          <!-- Floating Info Tooltip -->
-          <div id="sim-tooltip" class="sim-tooltip" role="tooltip" aria-hidden="true">
-            <button class="tooltip-close" onclick="closeTooltip()" aria-label="Close tooltip">✕</button>
-            <div class="tooltip-title" id="tt-title">Atmosphere</div>
-            <div class="tooltip-body" id="tt-body">
-              <p>Description goes here.</p>
+            <div class="health-card hc-bio">
+              <div class="hc-title-row">
+                <span>🌱 Biosphere Health</span>
+                <span class="hc-val" id="bio-val-label">92%</span>
+              </div>
+              <div class="hc-bar-track">
+                <div class="hc-bar-fill" id="bio-bar-fill" style="background-color: var(--bio-c);"></div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- 4 Sphere highlights cards (exploration row) -->
-        <div class="dashboard-spheres-grid">
-          <button class="dash-sphere-card sc-atmo" id="card-atmo" onclick="selectSphere('atmo')" aria-label="Explore Atmosphere">
-            <span class="ds-emoji">🌤</span>
-            <span class="ds-title">Atmosphere</span>
-          </button>
-          <button class="dash-sphere-card sc-hydro" id="card-hydro" onclick="selectSphere('hydro')" aria-label="Explore Hydrosphere">
-            <span class="ds-emoji">💧</span>
-            <span class="ds-title">Hydrosphere</span>
-          </button>
-          <button class="dash-sphere-card sc-geo" id="card-geo" onclick="selectSphere('geo')" aria-label="Explore Geosphere">
-            <span class="ds-emoji">🏔</span>
-            <span class="ds-title">Geosphere</span>
-          </button>
-          <button class="dash-sphere-card sc-bio" id="card-bio" onclick="selectSphere('bio')" aria-label="Explore Biosphere">
-            <span class="ds-emoji">🌱</span>
-            <span class="ds-title">Biosphere</span>
-          </button>
+        <!-- Superpower Actions -->
+        <div class="superpowers-container">
+          <h3 class="sp-title">⚡ Superpower Action Center</h3>
+          <div class="sp-grid">
+            <button class="sp-action-btn danger" onclick="triggerSuperpower('remove-water')" aria-label="Remove all liquid water">
+              <span>🚫 Water</span>
+              <span>Dry Oceans</span>
+            </button>
+            <button class="sp-action-btn danger" onclick="triggerSuperpower('remove-plants')" aria-label="Clear all plant life">
+              <span>🚫 Plants</span>
+              <span>Clear Forests</span>
+            </button>
+            <button class="sp-action-btn danger" onclick="triggerSuperpower('remove-atmo')" aria-label="Destroy the atmosphere">
+              <span>🚫 Atmo</span>
+              <span>Strip Air</span>
+            </button>
+            <button class="sp-action-btn danger" onclick="triggerSuperpower('remove-mountains')" aria-label="Flatten mountains and peaks">
+              <span>🚫 Peaks</span>
+              <span>Flatten Land</span>
+            </button>
+            <button class="sp-action-btn success" onclick="triggerSuperpower('heavy-rain')" aria-label="Create heavy storm clouds and rain">
+              <span>🌧️ Storm</span>
+              <span>Heavy Rain</span>
+            </button>
+            <button class="sp-action-btn success" onclick="triggerSuperpower('grow-forest')" aria-label="Grow global forests instantly">
+              <span>🌳 Forest</span>
+              <span>Lush Grow</span>
+            </button>
+            <button class="sp-action-btn success" onclick="triggerSuperpower('heat-wave')" aria-label="Trigger an extreme hot heatwave">
+              <span>🔥 Heatwave</span>
+              <span>Scorch Earth</span>
+            </button>
+            <button class="sp-action-btn success" onclick="triggerSuperpower('ice-age')" aria-label="Freeze the planet into an ice age">
+              <span>❄️ Glaciation</span>
+              <span>Freeze Globe</span>
+            </button>
+          </div>
         </div>
+
       </div>
 
-      <!-- Controls & Gauges Sidebar -->
+      <!-- Right Column (Missions, Sliders, Logs, Quiz) -->
       <div class="sim-side-col">
         
-        <!-- Mission Control / Challenge Quest Card -->
-        <div class="side-card quest-card" id="quest-widget">
-          <div class="qc-header">
-            <span class="qc-badge">🏆 Active Mission</span>
-            <span class="qc-stars" id="quest-stars" aria-label="Current Stars">⭐ 0/5</span>
+        <!-- Mission Control Card -->
+        <div class="side-card mission-card">
+          <div class="mc-header">
+            <span class="mc-badge">🏆 Mission Control</span>
+            <span class="mc-stars" id="mission-stars">⭐ 0/4</span>
           </div>
-          <h3 class="qc-title" id="quest-title">Mission 1: The Rainmaker</h3>
-          <p class="qc-desc" id="quest-desc">Increase the sun's heat to create heavy rain.</p>
-          <div class="qc-hint" id="qc-hint-box">💡 <strong>Goal:</strong> <span id="quest-hint">Move the heat slider to 80% or higher.</span></div>
-          <div class="qc-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="quest-prog-bar" aria-valuenow="0">
-            <div class="qc-progress-fill" id="quest-progress-fill" style="width: 0%;"></div>
+          <div class="mc-title-row">
+            <label for="mission-selector" style="font-weight: 800; font-size: 13px;">Target Mission:</label>
+            <select id="mission-selector" class="mc-select" onchange="switchMission(this.value)">
+              <option value="0">Mission 1: End the Drought 🌧️</option>
+              <option value="1">Mission 2: Restore the Forest 🌳</option>
+              <option value="2">Mission 3: Balance All 4 Spheres 🌍</option>
+              <option value="3">Mission 4: Recover from Heat 🌡️</option>
+            </select>
           </div>
-          <div class="qc-progress-text" id="quest-progress-text">Challenge 1 of 5</div>
+          <p class="mc-desc" id="mission-desc">A severe drought has dried up Earth's water. Lower the heat and add water to revive the biosphere!</p>
+          
+          <div class="mc-goals-box">
+            <div style="font-size: 11px; text-transform: uppercase; font-weight: 900; opacity: 0.7; margin-bottom: 6px;">Mission Requirements:</div>
+            <div class="mc-goal-item">
+              <span class="mc-goal-chk" id="goal-1-chk">❌</span>
+              <span id="goal-1-text">Hydrosphere Health >= 70%</span>
+            </div>
+            <div class="mc-goal-item">
+              <span class="mc-goal-chk" id="goal-2-chk">❌</span>
+              <span id="goal-2-text">Biosphere Health >= 60%</span>
+            </div>
+          </div>
+          <div style="font-size: 11px; opacity: 0.75; text-align: center; font-weight: bold;">Adjust sliders below to solve the mission!</div>
         </div>
 
-        <!-- Live Meters -->
-        <div class="side-card meters-card">
-          <h3 class="sc-title">📊 Live Measurement Tools</h3>
-          
-          <div class="meter-item">
-            <div class="meter-header">
-              <span>🌡️ Temperature</span>
-              <span class="meter-value" id="temp-value">25°C (77°F)</span>
-            </div>
-            <div class="meter-bar">
-              <div class="meter-fill" id="temp-meter-fill" style="width: 50%;"></div>
-            </div>
-          </div>
-
-          <div class="meter-item">
-            <div class="meter-header">
-              <span>☁️ Cloud Density</span>
-              <span class="meter-value" id="cloud-value">50%</span>
-            </div>
-            <div class="meter-bar">
-              <div class="meter-fill" id="cloud-meter-fill" style="width: 50%;"></div>
-            </div>
-          </div>
-
-          <div class="meter-item">
-            <div class="meter-header">
-              <span>🌧️ Rainfall Rate</span>
-              <span class="meter-value" id="rain-value">0%</span>
-            </div>
-            <div class="meter-bar">
-              <div class="meter-fill" id="rain-meter-fill" style="width: 0%;"></div>
-            </div>
+        <!-- Event Log -->
+        <div class="side-card">
+          <h3 class="sc-title" style="margin-bottom: 10px;">📰 Environmental Status Log</h3>
+          <div class="log-box" id="log-box">
+            💚 Earth is currently in stable equilibrium. Keep it balanced!
           </div>
         </div>
 
-        <!-- Simulation controls -->
-        <div class="side-card controls-card">
-          <h3 class="sc-title">🎮 Simulation Control Station</h3>
+        <!-- Slider controls -->
+        <div class="side-card">
+          <h3 class="sc-title">🎛️ Environmental Sliders</h3>
           
+          <!-- Slider 1 -->
           <div class="slider-container">
             <div class="slider-label-row">
-              <span>☀️ Sun Heat Slider</span>
-              <span class="slider-val" id="heat-value-text">50%</span>
+              <span>☀️ Sun Heat</span>
+              <span class="slider-val" id="sun-heat-val">50%</span>
             </div>
             <div class="slider-wrapper">
-              <span class="slider-side-label">❄️ Low</span>
-              <input type="range" id="heat-slider" min="0" max="100" value="50" oninput="updateHeat(this.value)" aria-label="Adjust Heat Level">
-              <span class="slider-side-label">🔥 High</span>
+              <span class="slider-side-label">❄️ Ice</span>
+              <input type="range" id="slider-heat" min="0" max="100" value="50" oninput="controlSliderChanged()" aria-label="Sun Heat Level">
+              <span class="slider-side-label">🔥 Scorch</span>
             </div>
           </div>
 
-          <div class="superpowers-row">
-            <button class="sp-btn" id="btn-pause" onclick="togglePause()" aria-label="Pause simulation">⏸️ Pause</button>
-            <button class="sp-btn" id="btn-ff" onclick="cycleSpeed()" aria-label="Fast forward speed">⏩ 1x Speed</button>
-            <button class="sp-btn" id="btn-restart" onclick="restartCycle()" aria-label="Restart cycle">🔄 Reset</button>
+          <!-- Slider 2 -->
+          <div class="slider-container">
+            <div class="slider-label-row">
+              <span>💧 Water Level</span>
+              <span class="slider-val" id="water-val">55%</span>
+            </div>
+            <div class="slider-wrapper">
+              <span class="slider-side-label">🏜️ Dry</span>
+              <input type="range" id="slider-water" min="0" max="100" value="55" oninput="controlSliderChanged()" aria-label="Water Levels">
+              <span class="slider-side-label">🌊 Flood</span>
+            </div>
           </div>
+
+          <!-- Slider 3 -->
+          <div class="slider-container">
+            <div class="slider-label-row">
+              <span>🌱 Plant Population</span>
+              <span class="slider-val" id="plants-val">60%</span>
+            </div>
+            <div class="slider-wrapper">
+              <span class="slider-side-label">🏜️ None</span>
+              <input type="range" id="slider-plants" min="0" max="100" value="60" oninput="controlSliderChanged()" aria-label="Plant Populations">
+              <span class="slider-side-label">🌳 Jungle</span>
+            </div>
+          </div>
+
+          <!-- Slider 4 -->
+          <div class="slider-container">
+            <div class="slider-label-row">
+              <span>🏔️ Land Quality</span>
+              <span class="slider-val" id="land-val">70%</span>
+            </div>
+            <div class="slider-wrapper">
+              <span class="slider-side-label">🏭 Poor</span>
+              <input type="range" id="slider-land" min="0" max="100" value="70" oninput="controlSliderChanged()" aria-label="Land Quality">
+              <span class="slider-side-label">⛰️ Fertile</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quiz promo card -->
+        <div class="quiz-promo-card">
+          <p style="font-weight: 800; font-size: 14px; margin-bottom: 12px;">🎓 Think you are an Earth Systems expert?</p>
+          <button class="qp-btn" onclick="openQuizModal()" aria-label="Take the Science Quiz">📝 Take Science Quiz</button>
         </div>
 
       </div>
@@ -725,78 +840,118 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 <!-- ══════════ ACHIEVEMENTS ══════════ -->
 <div class="section" id="quiz">
   <div class="achieve-inner">
-    <h2 class="achieve-title" tabindex="0">🏆 Your Achievements</h2>
-    <p class="achieve-sub" tabindex="0">Complete challenges in the Simulation Lab to earn stars and badges!</p>
+    <h2 class="achieve-title" tabindex="0">🏆 Caretaker Achievements</h2>
+    <p class="achieve-sub" tabindex="0">Fulfill simulation missions and score 100% on the Quiz to unlock all badges!</p>
 
     <!-- Stats row -->
     <div class="stats-box">
       <div>
-        <div class="stat-val" id="stat-stars">0 / 5</div>
-        <div class="stat-lbl">⭐ Stars Earned</div>
+        <div class="stat-val" id="stat-stars">0 / 6</div>
+        <div class="stat-lbl">⭐ Badges Unlocked</div>
       </div>
       <div>
-        <div class="stat-val" id="stat-quests">0 / 5</div>
-        <div class="stat-lbl">✅ Missions Done</div>
+        <div class="stat-val" id="stat-quests">0 / 4</div>
+        <div class="stat-lbl">✅ Missions Solved</div>
       </div>
       <div>
-        <div class="stat-val" id="stat-spheres">0 / 4</div>
-        <div class="stat-lbl">🔍 Spheres Explored</div>
+        <div class="stat-val" id="stat-quiz">Locked</div>
+        <div class="stat-lbl">📝 Quiz Score</div>
       </div>
     </div>
 
     <!-- Badge grid -->
-    <h3 class="badges-title" tabindex="0">🏅 Unlockable Badges</h3>
+    <h3 class="badges-title" tabindex="0">🏅 Global Badges</h3>
     <div class="badge-grid">
       
-      <!-- Explorer Badge -->
-      <div class="badge-card locked" id="badge-explorer">
+      <!-- Water Guardian -->
+      <div class="badge-card locked" id="badge-water-guardian">
         <div class="badge-icon">💧</div>
         <div class="badge-info">
-          <div class="badge-name">Water Cycle Explorer <span class="lock-status-icon">🔒</span></div>
-          <div class="badge-desc">Unlock this badge by completing 2 missions. Understands evaporation, condensation, and rain relationships!</div>
+          <div class="badge-name">Water Guardian <span class="lock-status-icon">🔒</span></div>
+          <div class="badge-desc">Rescued the Hydrosphere and Biosphere from a severe drought in Mission 1!</div>
         </div>
-        <span class="badge-status" id="badge-explorer-status">Locked</span>
+        <span class="badge-status" id="badge-wg-status">Locked</span>
       </div>
 
-      <!-- Detective Badge -->
-      <div class="badge-card locked" id="badge-detective">
-        <div class="badge-icon">🕵️‍♂️</div>
+      <!-- Forest Hero -->
+      <div class="badge-card locked" id="badge-forest-hero">
+        <div class="badge-icon">🌳</div>
         <div class="badge-info">
-          <div class="badge-name">Sphere Detective <span class="lock-status-icon">🔒</span></div>
-          <div class="badge-desc">Unlock this badge by exploring all 4 Sphere Cards in the Simulation Lab!</div>
+          <div class="badge-name">Forest Hero <span class="lock-status-icon">🔒</span></div>
+          <div class="badge-desc">Restored vegetation and saved soil from severe erosion in Mission 2!</div>
         </div>
-        <span class="badge-status" id="badge-detective-status">Locked</span>
+        <span class="badge-status" id="badge-fh-status">Locked</span>
       </div>
 
-      <!-- Expert Badge -->
-      <div class="badge-card locked" id="badge-expert">
+      <!-- Earth Protector -->
+      <div class="badge-card locked" id="badge-earth-protector">
+        <div class="badge-icon">🛡️</div>
+        <div class="badge-info">
+          <div class="badge-name">Earth Protector <span class="lock-status-icon">🔒</span></div>
+          <div class="badge-desc">Balanced all 4 Spheres simultaneously at 85% or higher in Mission 3!</div>
+        </div>
+        <span class="badge-status" id="badge-ep-status">Locked</span>
+      </div>
+
+      <!-- Climate Rescuer -->
+      <div class="badge-card locked" id="badge-climate-rescuer">
+        <div class="badge-icon">🔥</div>
+        <div class="badge-info">
+          <div class="badge-name">Climate Rescuer <span class="lock-status-icon">🔒</span></div>
+          <div class="badge-desc">Cooled the planet and saved ecosystems from a severe Heatwave in Mission 4!</div>
+        </div>
+        <span class="badge-status" id="badge-cr-status">Locked</span>
+      </div>
+
+      <!-- Sphere Master -->
+      <div class="badge-card locked" id="badge-sphere-master">
+        <div class="badge-icon">🎓</div>
+        <div class="badge-info">
+          <div class="badge-name">Sphere Master <span class="lock-status-icon">🔒</span></div>
+          <div class="badge-desc">Scored a perfect 6/6 (100%) on the Earth Science Quiz!</div>
+        </div>
+        <span class="badge-status" id="badge-sm-status">Locked</span>
+      </div>
+
+      <!-- Planet Saver -->
+      <div class="badge-card locked" id="badge-planet-saver">
         <div class="badge-icon">👑</div>
         <div class="badge-info">
-          <div class="badge-name">Earth Expert <span class="lock-status-icon">🔒</span></div>
-          <div class="badge-desc">Unlock this badge by completing all 5 simulation missions successfully!</div>
+          <div class="badge-name">Planet Saver <span class="lock-status-icon">🔒</span></div>
+          <div class="badge-desc">Unlocked for completing all 4 environmental missions! Caretaker of Cosmos!</div>
         </div>
-        <span class="badge-status" id="badge-expert-status">Locked</span>
+        <span class="badge-status" id="badge-ps-status">Locked</span>
       </div>
 
     </div>
 
-    <button class="reset-game-btn" onclick="resetGameProgress()">🔄 Reset All Progress & Play Again</button>
+    <button class="reset-game-btn" onclick="resetSimulatorGame()">🔄 Reset Simulator & Achievements</button>
   </div>
 </div>
 
-<!-- ══ SUCCESS MODAL OVERLAY ══ -->
+<!-- ══ POPUP / OVERLAY DIALOG MODAL ══ -->
 <div class="game-overlay" id="game-modal" role="dialog" aria-modal="true" aria-live="assertive">
   <div class="game-modal-box">
     <div class="gm-emoji" id="gm-emoji">🎉</div>
-    <h2 class="gm-title" id="gm-title">Quest Complete!</h2>
+    <h2 class="gm-title" id="gm-title">Mission Accomplished!</h2>
     <p class="gm-message" id="gm-message">Success details here...</p>
     <button class="gm-btn" id="gm-btn" onclick="closeGameModal()">Continue 🚀</button>
   </div>
 </div>
 
-<!-- ══ SCRIPT ══ -->
+<!-- ══ SCIENCE QUIZ MODAL ══ -->
+<div class="game-overlay" id="quiz-modal" role="dialog" aria-modal="true" aria-live="polite">
+  <div class="game-modal-box" style="border-top: 8px solid #9C27B0; text-align: left;">
+    <button class="modal-close" onclick="closeQuizModal()" aria-label="Close Quiz">✕</button>
+    <div id="quiz-container">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCRIPTS ══ -->
 <script>
-// ── TABS NAV ──
+// ── SECTION TAB SWITCHER ──
 function showSection(id, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -806,673 +961,731 @@ function showSection(id, btn) {
 
 function homeCardClicked(sphereId) {
   showSection('how', document.getElementById('nav-how'));
-  selectSphere(sphereId);
+  
+  // Set slider conditions based on clicked card to guide user
+  if (sphereId === 'atmo') {
+    // Highlight sun heat
+    updateSliders(65, 55, 60, 70);
+    document.getElementById('slider-heat').focus();
+    triggerStatusLog("🌤️ Focus: Atmosphere health reacts heavily to Sun Heat. Cooler or hot extremes harm the air.");
+  } else if (sphereId === 'hydro') {
+    // Focus water level
+    updateSliders(50, 75, 60, 75);
+    document.getElementById('slider-water').focus();
+    triggerStatusLog("💧 Focus: Hydrosphere health is tied to Water Levels. Avoid dry droughts or torrential floods.");
+  } else if (sphereId === 'geo') {
+    // Focus land quality
+    updateSliders(50, 55, 40, 85);
+    document.getElementById('slider-land').focus();
+    triggerStatusLog("🏔️ Focus: Geosphere health is sustained by high Land Quality and plant root structures.");
+  } else if (sphereId === 'bio') {
+    // Focus plants
+    updateSliders(50, 60, 85, 75);
+    document.getElementById('slider-plants').focus();
+    triggerStatusLog("🌱 Focus: Biosphere health thrives on rich Plant Populations, normal heat, and stable water.");
+  }
 }
 
-// ── SIMULATION & PARTICLE LOGIC ──
-const canvas = document.getElementById('sim-canvas');
-const ctx = canvas.getContext('2d');
+// ── SIMULATION ENGINE ──
+let sunHeat = 50;
+let waterLevel = 55;
+let plants = 60;
+let land = 70;
 
-let isPaused = false;
-let speedMultiplier = 1;
-let heatLevel = 0.5; // default 50%
-let heatSliderValue = 50;
-let activeSphere = null;
+// Override flags
+let isAtmosphereRemoved = false;
+let isMountainsRemoved = false;
+let isWaterRemoved = false;
+let isPlantsRemoved = false;
 
-// Tooltip positioning and text details
-const tooltipData = {
-  atmo: {
-    icon: '🌤️', title: 'Atmosphere', color: 'var(--atmo-c)',
-    desc: 'The layer of gases wrapping around Earth. Evaporated water rises here, cools and condenses to form <strong>Clouds</strong>, then falls as <strong>Rain (Precipitation)</strong>.',
-    examples: ['☁️ Clouds', '🌧️ Precipitation', '💨 Winds', '❄️ Snow'],
-    fact: 'The atmosphere blocks harmful solar radiation and keeps Earth cozy warm.'
-  },
-  hydro: {
-    icon: '💧', title: 'Hydrosphere', color: 'var(--hydro-c)',
-    desc: 'All the liquid, solid, and gas water on Earth. Heat drives <strong>Evaporation</strong> from the ocean, and rain runoff flows back to the ocean via <strong>Collection</strong>.',
-    examples: ['🌊 Ocean', '🏞️ Rivers & Lakes', '🧊 Glaciers', '🌧️ Raindrops'],
-    fact: 'Over 97% of Earth\'s liquid water is held in the oceans!'
-  },
-  geo: {
-    icon: '🏔️', title: 'Geosphere', color: 'var(--geo-c)',
-    desc: 'The solid crust, soil, rocks, and earth. Water falls here, filtering through soil (infiltration) to accumulate underground as **Groundwater Storage**.',
-    examples: ['🏔️ Mountains', '🪨 Rocks', '🌱 Soil', '💧 Groundwater'],
-    fact: 'Water can stay trapped inside underground rock channels for thousands of years!'
-  },
-  bio: {
-    icon: '🌱', title: 'Biosphere', color: 'var(--bio-c)',
-    desc: 'All life on Earth. Trees and plants absorb groundwater and release moisture back into the atmosphere through the process of <strong>Transpiration</strong>.',
-    examples: ['🌳 Trees & Plants', '🐘 Animals', '👤 Humans', '🐟 Fish'],
-    fact: 'A single mature oak tree can transpire over 150,000 liters of water in a single year!'
+// Health state variables
+let atmoHealth = 90;
+let hydroHealth = 85;
+let geoHealth = 95;
+let bioHealth = 92;
+
+// Quest state
+let activeMission = 0;
+let completedMissions = [false, false, false, false];
+let starsCount = 0;
+
+// Badges unlocked
+let badgesUnlocked = {
+  waterGuardian: false,
+  forestHero: false,
+  earthProtector: false,
+  climateRescuer: false,
+  sphereMaster: false,
+  planetSaver: false
+};
+
+// ── MATH HEALTH ENGINE ──
+function calculateSphereHealths() {
+  // 1. Atmosphere Health
+  // Ideal Sun Heat is 50. Deficits grow if too cold or too hot.
+  // Plants population adds oxygen (improves health). Poor land quality generates pollution/dust (reduces health).
+  let atmo = 100 - Math.abs(sunHeat - 50) * 0.8 - Math.max(0, 60 - plants) * 0.3 - Math.max(0, 70 - land) * 0.3;
+  if (isAtmosphereRemoved) atmo = 0;
+  atmoHealth = Math.max(0, Math.min(100, Math.round(atmo)));
+
+  // 2. Hydrosphere Health
+  // Ideal water level is 60%. Scorch heat evaporates water (deficits).
+  let hydro = 100 - Math.abs(waterLevel - 60) * 1.3;
+  if (sunHeat > 55) {
+    hydro -= (sunHeat - 55) * 0.6;
   }
-};
+  if (isWaterRemoved) hydro = 0;
+  hydroHealth = Math.max(0, Math.min(100, Math.round(hydro)));
 
-const tooltipPositions = {
-  atmo: { left: '22%', top: '15%' },
-  hydro: { left: '55%', top: '42%' },
-  geo: { left: '12%', top: '56%' },
-  bio: { left: '38%', top: '56%' }
-};
+  // 3. Geosphere Health
+  // Scales with Land Quality. Deficit if plants are very low (root erosion). Deficits if flooding or dry cracked sand.
+  let geo = 100 - Math.max(0, 80 - land) * 0.5 - Math.max(0, 40 - plants) * 0.6;
+  if (waterLevel < 20) geo -= 15;
+  if (waterLevel > 85) geo -= 20; // flooding washing away topsoil
+  if (isMountainsRemoved) geo -= 45;
+  geoHealth = Math.max(0, Math.min(100, Math.round(geo)));
 
-// SVG items matching spheres
-const sphereSVGMapping = {
-  atmo: ['wcp-clouds', 'wcp-clouds2', 'wcp-condens', 'wcp-precip'],
-  hydro: ['wcp-ocean', 'wcp-river', 'wcp-evap', 'wcp-collect'],
-  geo: ['wcp-mountain', 'wcp-groundwater', 'wcp-soil', 'wcp-soil-label'],
-  bio: ['wcp-trees', 'wcp-transp']
-};
-const allWcParts = ['wcp-ocean','wcp-river','wcp-mountain','wcp-soil','wcp-soil-label','wcp-groundwater','wcp-trees','wcp-sun','wcp-clouds','wcp-clouds2','wcp-evap','wcp-precip','wcp-transp','wcp-collect','wcp-condens'];
-
-// ── Particle Class ──
-class Particle {
-  constructor(type) {
-    this.type = type;
-    this.reset();
+  // 4. Biosphere Health
+  // Sits on top of plants. Requires moderate temperatures (30-65) and water (35-75). Collapses without atmosphere or plants.
+  let bio = 100 - Math.max(0, 70 - plants) * 0.8;
+  if (waterLevel < 35) {
+    bio -= (35 - waterLevel) * 1.6;
+  } else if (waterLevel > 80) {
+    bio -= (waterLevel - 80) * 1.2;
   }
 
-  reset() {
-    this.life = 0;
-    this.maxLife = 90 + Math.random() * 80;
-    this.size = 2 + Math.random() * 3;
-    
-    if (this.type === 'evap') {
-      // Ocean surface: x between 600 and 840, y near 338
-      this.x = 600 + Math.random() * 240;
-      this.y = 338;
-      this.vx = -0.4 - Math.random() * 0.9;
-      this.vy = -0.5 - Math.random() * 1.0;
-      this.color = 'rgba(79, 195, 247, '; // Cyan/Light Blue
-    } else if (this.type === 'transp') {
-      // Tree canopy: x between 340 and 420, y between 270 and 290
-      this.x = 340 + Math.random() * 80;
-      this.y = 270 + Math.random() * 20;
-      this.vx = -0.2 + Math.random() * 0.4;
-      this.vy = -0.4 - Math.random() * 0.8;
-      this.color = 'rgba(129, 199, 132, '; // Soft green
-    } else if (this.type === 'precip') {
-      // Under Cloud 1 (150-280, y=125) or Cloud 2 (460-520, y=105)
-      if (Math.random() < 0.7) {
-        this.x = 150 + Math.random() * 130;
-        this.y = 125;
+  if (sunHeat < 30) {
+    bio -= (30 - sunHeat) * 1.6;
+  } else if (sunHeat > 65) {
+    bio -= (sunHeat - 65) * 1.6;
+  }
+
+  if (land < 35) {
+    bio -= (35 - land) * 0.6;
+  }
+
+  if (isAtmosphereRemoved || isPlantsRemoved || isWaterRemoved) bio = 0;
+  bioHealth = Math.max(0, Math.min(100, Math.round(bio)));
+}
+
+// ── SLIDERS LOGIC ──
+function controlSliderChanged() {
+  sunHeat = parseInt(document.getElementById('slider-heat').value);
+  waterLevel = parseInt(document.getElementById('slider-water').value);
+  plants = parseInt(document.getElementById('slider-plants').value);
+  land = parseInt(document.getElementById('slider-land').value);
+
+  // If user adjusts slider, turn off corresponding superpower override flags
+  if (waterLevel > 0) isWaterRemoved = false;
+  if (plants > 0) isPlantsRemoved = false;
+
+  updateUI();
+}
+
+function updateSliders(h, w, p, l) {
+  sunHeat = h;
+  waterLevel = w;
+  plants = p;
+  land = l;
+  
+  document.getElementById('slider-heat').value = h;
+  document.getElementById('slider-water').value = w;
+  document.getElementById('slider-plants').value = p;
+  document.getElementById('slider-land').value = l;
+
+  if (w > 0) isWaterRemoved = false;
+  if (p > 0) isPlantsRemoved = false;
+}
+
+// ── GLOBE & UI REACTION ENGINE ──
+function updateUI() {
+  calculateSphereHealths();
+
+  // 1. Text Slider Labels
+  document.getElementById('sun-heat-val').textContent = sunHeat + '%';
+  document.getElementById('water-val').textContent = waterLevel + '%';
+  document.getElementById('plants-val').textContent = plants + '%';
+  document.getElementById('land-val').textContent = land + '%';
+
+  // 2. Health Progress Bars
+  updateHealthBar('atmo', atmoHealth);
+  updateHealthBar('hydro', hydroHealth);
+  updateHealthBar('geo', geoHealth);
+  updateHealthBar('bio', bioHealth);
+
+  // 3. Central Earth visual modifications
+  const atmosphereRing = document.getElementById('earth-atmosphere');
+  const oceanCircle = document.getElementById('earth-ocean');
+  const landGroup = document.getElementById('earth-landmasses');
+  const forestGrp = document.querySelector('.forest-grp');
+  const mountGrp = document.querySelector('.mount-grp');
+
+  // Atmosphere glow color & visibility
+  if (isAtmosphereRemoved || atmoHealth === 0) {
+    atmosphereRing.style.opacity = '0';
+  } else {
+    atmosphereRing.style.opacity = (atmoHealth / 100);
+    if (atmoHealth > 75) {
+      atmosphereRing.setAttribute('stroke', '#80DEEA');
+      atmosphereRing.style.filter = 'drop-shadow(0 0 15px rgba(128,222,234,0.65))';
+    } else {
+      atmosphereRing.setAttribute('stroke', '#B0BEC5'); // gray polluted
+      atmosphereRing.style.filter = 'drop-shadow(0 0 10px rgba(176,190,197,0.4))';
+    }
+  }
+
+  // Ocean color
+  if (isWaterRemoved || waterLevel === 0) {
+    oceanCircle.setAttribute('fill', '#E0C097'); // Desert Sand beige
+  } else if (sunHeat <= 15) {
+    oceanCircle.setAttribute('fill', '#E0F7FA'); // Glacial ice sheets
+  } else if (waterLevel <= 25) {
+    oceanCircle.setAttribute('fill', '#8D6E63'); // Muddy brown-green shallow puddle
+  } else if (waterLevel >= 85) {
+    oceanCircle.setAttribute('fill', '#1565C0'); // Deep dark stormy ocean
+  } else {
+    oceanCircle.setAttribute('fill', '#29B6F6'); // Vibrant cyan blue
+  }
+
+  // Land color base
+  document.querySelectorAll('.earth-land').forEach(l => {
+    if (geoHealth < 40) {
+      l.setAttribute('fill', '#A1887F'); // Dusty clay brown
+    } else {
+      l.setAttribute('fill', '#81C784'); // Fertile light green-brown
+    }
+  });
+
+  // Forests (Plants)
+  if (isPlantsRemoved || plants === 0) {
+    forestGrp.style.opacity = '0';
+  } else {
+    forestGrp.style.opacity = '1';
+    document.querySelectorAll('.earth-forest').forEach(f => {
+      if (bioHealth <= 30) {
+        f.setAttribute('fill', '#D84315'); // Orange-brown dried up forests
       } else {
-        this.x = 460 + Math.random() * 60;
-        this.y = 105;
+        f.setAttribute('fill', '#2E7D32'); // Lush healthy pine green
       }
-      this.vx = 0.2 + Math.random() * 0.4;
-      this.vy = 4.0 + Math.random() * 2.5; // falling speed
-      this.size = 1 + Math.random() * 1.5;
-      this.color = 'rgba(30, 136, 229, '; // Darker rain blue
-      this.maxLife = 90;
-    }
+    });
   }
 
-  update() {
-    if (isPaused) return;
-
-    const speed = speedMultiplier;
-    const heatFactor = (this.type === 'evap' || this.type === 'transp') ? (0.6 + heatLevel * 1.6) : 1.0;
-
-    this.x += this.vx * speed * heatFactor;
-    this.y += this.vy * speed * heatFactor;
-    this.life += speed;
-
-    if (this.type === 'evap') {
-      this.x += Math.sin(this.life * 0.05) * 0.2 * speed;
-    } else if (this.type === 'transp') {
-      this.x += Math.sin(this.life * 0.05) * 0.1 * speed;
-    } else if (this.type === 'precip') {
-      // Rain collision detection
-      let groundY = 336;
-      if (this.x >= 100 && this.x <= 205) {
-        groundY = 340 - (this.x - 100) * 1.62;
-      } else if (this.x > 205 && this.x <= 315) {
-        groundY = 170 + (this.x - 205) * 1.54;
-      }
-      
-      if (this.y >= groundY) {
-        createSplashes(this.x, groundY);
-        this.reset();
-      }
-    }
-
-    if (this.life >= this.maxLife || this.y < 30 || this.x < 10 || this.x > 850) {
-      this.reset();
-    }
+  // Mountains (Peaks)
+  if (isMountainsRemoved) {
+    mountGrp.style.opacity = '0';
+  } else {
+    mountGrp.style.opacity = '1';
+    document.querySelectorAll('.earth-mountain').forEach(m => {
+      m.setAttribute('fill', geoHealth < 40 ? '#8D6E63' : '#78909C');
+    });
   }
 
-  draw() {
-    let alpha = 1.0;
-    if (this.type === 'evap' || this.type === 'transp') {
-      alpha = 1.0 - (this.life / this.maxLife);
-    } else if (this.type === 'precip') {
-      alpha = Math.min(1.0, this.life / 10);
-    }
+  // 4. Update Event Log Text dynamically based on parameters
+  updateStatusLogger();
+
+  // 5. Evaluate active mission goals
+  evaluateMissionGoals();
+}
+
+function updateHealthBar(id, val) {
+  const bar = document.getElementById(id + '-bar-fill');
+  const label = document.getElementById(id + '-val-label');
+  if (bar) {
+    bar.style.width = val + '%';
     
-    if (this.type === 'precip') {
-      ctx.strokeStyle = this.color + (alpha * 0.75) + ')';
-      ctx.lineWidth = this.size;
-      ctx.beginPath();
-      ctx.moveTo(this.x, this.y);
-      ctx.lineTo(this.x - this.vx * 1.5, this.y - this.vy * 1.5);
-      ctx.stroke();
-    } else {
-      ctx.fillStyle = this.color + (alpha * 0.8) + ')';
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fill();
-    }
+    // Color thresholds
+    let color = '#4CAF50'; // Green healthy
+    if (val < 40) color = '#E53935'; // Red critical
+    else if (val < 70) color = '#FFB300'; // Amber warning
+    bar.style.backgroundColor = color;
   }
+  if (label) label.textContent = val + '%';
 }
 
-// Splash particles
-let splashes = [];
-class Splash {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.vx = -1.0 + Math.random() * 2.0;
-    this.vy = -0.5 - Math.random() * 1.2;
-    this.life = 0;
-    this.maxLife = 8 + Math.random() * 8;
-    this.size = 0.8 + Math.random() * 0.8;
-  }
-  update() {
-    if (isPaused) return;
-    const speed = speedMultiplier;
-    this.x += this.vx * speed;
-    this.y += this.vy * speed;
-    this.vy += 0.12 * speed;
-    this.life += speed;
-  }
-  draw() {
-    let alpha = 1.0 - (this.life / this.maxLife);
-    ctx.fillStyle = 'rgba(79, 195, 247, ' + alpha + ')';
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fill();
-  }
-}
-
-function createSplashes(x, y) {
-  if (isPaused || splashes.length > 80) return;
-  const count = Math.floor(Math.random() * 2) + 1;
-  for (let i = 0; i < count; i++) {
-    splashes.push(new Splash(x, y));
-  }
-}
-
-// Particle manager arrays
-let particlesList = [];
-
-function updateSimulation() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Set particle counts depending on Heat Level
-  const targetEvap = Math.floor(heatLevel * 60);
-  const targetTransp = Math.floor(heatLevel * 20);
-  const targetPrecip = heatLevel > 0.3 ? Math.floor((heatLevel - 0.3) / 0.7 * 80) : 0;
-
-  // Filter current lists
-  let evaps = particlesList.filter(p => p.type === 'evap');
-  let transps = particlesList.filter(p => p.type === 'transp');
-  let precips = particlesList.filter(p => p.type === 'precip');
-
-  // Align evaporation
-  if (evaps.length < targetEvap) {
-    for (let i = evaps.length; i < targetEvap; i++) particlesList.push(new Particle('evap'));
-  } else if (evaps.length > targetEvap) {
-    let diff = evaps.length - targetEvap;
-    for (let i = 0; i < diff; i++) {
-      let idx = particlesList.findIndex(p => p.type === 'evap');
-      if (idx !== -1) particlesList.splice(idx, 1);
-    }
-  }
-
-  // Align transpiration
-  if (transps.length < targetTransp) {
-    for (let i = transps.length; i < targetTransp; i++) particlesList.push(new Particle('transp'));
-  } else if (transps.length > targetTransp) {
-    let diff = transps.length - targetTransp;
-    for (let i = 0; i < diff; i++) {
-      let idx = particlesList.findIndex(p => p.type === 'transp');
-      if (idx !== -1) particlesList.splice(idx, 1);
-    }
-  }
-
-  // Align precipitation
-  if (precips.length < targetPrecip) {
-    for (let i = precips.length; i < targetPrecip; i++) particlesList.push(new Particle('precip'));
-  } else if (precips.length > targetPrecip) {
-    let diff = precips.length - targetPrecip;
-    for (let i = 0; i < diff; i++) {
-      let idx = particlesList.findIndex(p => p.type === 'precip');
-      if (idx !== -1) particlesList.splice(idx, 1);
-    }
-  }
-
-  // Update & Draw
-  particlesList.forEach(p => {
-    p.update();
-    p.draw();
-  });
-
-  // Splashes update
-  splashes = splashes.filter(s => s.life < s.maxLife);
-  splashes.forEach(s => {
-    s.update();
-    s.draw();
-  });
-
-  requestAnimationFrame(updateSimulation);
-}
-
-// ── CONTROL HANDLERS ──
-function updateHeat(val) {
-  heatSliderValue = parseInt(val);
-  heatLevel = heatSliderValue / 100;
+// ── SUPERPOWER EVENTS ──
+function triggerSuperpower(action) {
+  let logText = "";
   
-  document.getElementById('heat-value-text').textContent = val + '%';
-  document.getElementById('heat-slider').value = val;
-  
-  updateMeters();
-  updateSVGClouds();
-  checkActiveQuest();
+  if (action === 'remove-water') {
+    isWaterRemoved = true;
+    updateSliders(sunHeat, 0, plants, land);
+    logText = "🚫 Oceans evaporated! Hydrosphere health dropped to 0%, causing plants to dehydrate and the Biosphere to collapse.";
+    triggerConfettiColors(['#D84315', '#A1887F']);
+  } 
+  else if (action === 'remove-plants') {
+    isPlantsRemoved = true;
+    updateSliders(sunHeat, waterLevel, 0, land);
+    logText = "🚫 Deforestation triggered! Clearing plant populations removes photosynthesis, reducing Atmosphere quality and causing Geosphere erosion.";
+    triggerConfettiColors(['#FFB74D', '#8D6E63']);
+  } 
+  else if (action === 'remove-atmo') {
+    isAtmosphereRemoved = true;
+    updateSliders(90, waterLevel, plants, 30);
+    logText = "🚫 Atmosphere stripped! Without ozone, solar radiation scorches the Earth. Biosphere collapses instantly to 0%.";
+    triggerConfettiColors(['#546E7A', '#37474F']);
+  } 
+  else if (action === 'remove-mountains') {
+    isMountainsRemoved = true;
+    logText = "🏔️ Mountains flattened! Flattening the terrain destabilizes the Geosphere structure and disrupts river collections.";
+  } 
+  else if (action === 'heavy-rain') {
+    isWaterRemoved = false;
+    updateSliders(35, 90, Math.min(100, plants + 15), land);
+    logText = "🌧️ Storm systems activated! Torrential rain fills the oceans, but causes light mudslides and erosion (reducing Geosphere health).";
+    triggerConfettiColors(['#0288D1', '#90CAF9']);
+  } 
+  else if (action === 'grow-forest') {
+    isPlantsRemoved = false;
+    updateSliders(50, 65, 100, 90);
+    logText = "🌳 Global reforestation! Planting a massive jungle purifies the air and raises Biosphere and Geosphere stability.";
+    triggerConfettiColors(['#4CAF50', '#2E7D32']);
+  } 
+  else if (action === 'heat-wave') {
+    updateSliders(100, 10, 10, 30);
+    logText = "🔥 Scorching solar heatwave hits! Rapid evaporation dried up rivers, causing plants to dry up and wildfires to start.";
+    triggerConfettiColors(['#E53935', '#FF8A65']);
+  } 
+  else if (action === 'ice-age') {
+    updateSliders(0, 30, 15, 40);
+    logText = "❄️ Ice age glaciation! Earth plunged into deep freeze, oceans locked in sheets of glaciers, and life went dormant.";
+    triggerConfettiColors(['#E0F7FA', '#FFFFFF']);
+  }
+
+  triggerStatusLog(logText);
+  updateUI();
 }
 
-function updateSVGClouds() {
-  const cloud1 = document.getElementById('wcp-clouds');
-  const cloud2 = document.getElementById('wcp-clouds2');
-  
-  const opacity = 0.15 + heatLevel * 0.85;
-  if (cloud1) cloud1.style.opacity = opacity;
-  if (cloud2) cloud2.style.opacity = opacity * 0.85;
-
-  // Clouds turn dark gray as heat level (clouds density) goes high
-  let r = 255, g = 255, b = 255;
-  if (heatLevel > 0.4) {
-    const factor = (heatLevel - 0.4) / 0.6;
-    r = Math.round(255 - (255 - 75) * factor);
-    g = Math.round(255 - (255 - 95) * factor);
-    b = Math.round(255 - (255 - 110) * factor);
-  }
-  const colorStr = `rgb(${r}, ${g}, ${b})`;
-  
-  if (cloud1) {
-    cloud1.querySelectorAll('ellipse').forEach(el => el.setAttribute('fill', colorStr));
-  }
-  if (cloud2) {
-    cloud2.querySelectorAll('ellipse').forEach(el => el.setAttribute('fill', colorStr));
-  }
-}
-
-function updateMeters() {
-  // Temp meter
-  const tempC = Math.round(15 + heatLevel * 35);
-  const tempF = Math.round(tempC * 1.8 + 32);
-  const tempMeter = document.getElementById('temp-meter-fill');
-  const tempVal = document.getElementById('temp-value');
-  if (tempMeter) {
-    tempMeter.style.width = (heatLevel * 100) + '%';
-    let color = '#29B6F6'; // Blue
-    if (heatLevel > 0.75) color = '#D84315'; // Dark Red
-    else if (heatLevel > 0.3) color = '#FFA726'; // Orange
-    tempMeter.style.backgroundColor = color;
-  }
-  if (tempVal) tempVal.textContent = `${tempC}°C (${tempF}°F)`;
-
-  // Cloud Density meter
-  const cloudPct = Math.round(heatLevel * 100);
-  const cloudMeter = document.getElementById('cloud-meter-fill');
-  const cloudVal = document.getElementById('cloud-value');
-  if (cloudMeter) {
-    cloudMeter.style.width = cloudPct + '%';
-    let color = '#CFD8DC';
-    if (heatLevel > 0.75) color = '#455A64';
-    else if (heatLevel > 0.3) color = '#90A4AE';
-    cloudMeter.style.backgroundColor = color;
-  }
-  if (cloudVal) {
-    let desc = "Thin & Wispy";
-    if (heatLevel > 0.8) desc = "Stormy Clouds";
-    else if (heatLevel > 0.5) desc = "Thick Cumulus";
-    else if (heatLevel > 0.25) desc = "Partly Cloudy";
-    cloudVal.textContent = `${cloudPct}% (${desc})`;
-  }
-
-  // Rain rate meter
-  let rainPct = 0;
-  if (heatLevel > 0.3) {
-    rainPct = Math.round((heatLevel - 0.3) / 0.7 * 100);
-  }
-  const rainMeter = document.getElementById('rain-meter-fill');
-  const rainVal = document.getElementById('rain-value');
-  if (rainMeter) {
-    rainMeter.style.width = rainPct + '%';
-    let color = '#90CAF9';
-    if (heatLevel > 0.8) color = '#0288D1';
-    else if (heatLevel > 0.5) color = '#1E88E5';
-    rainMeter.style.backgroundColor = color;
-  }
-  if (rainVal) {
-    let desc = "No Rain / Clear";
-    if (heatLevel > 0.8) desc = "Torrential Rain 🌧️";
-    else if (heatLevel > 0.5) desc = "Moderate Rain 🌧️";
-    else if (heatLevel > 0.3) desc = "Light Drizzle 🌦️";
-    rainVal.textContent = `${rainPct}% (${desc})`;
+function triggerStatusLog(txt) {
+  const box = document.getElementById('log-box');
+  if (box) {
+    box.innerHTML = txt;
+    // Glow effect
+    box.style.transform = 'scale(1.02)';
+    setTimeout(() => box.style.transform = 'scale(1)', 300);
   }
 }
 
-// Superpower controls
-function togglePause() {
-  isPaused = !isPaused;
-  const btn = document.getElementById('btn-pause');
-  if (isPaused) {
-    btn.textContent = '▶️ Resume';
-    btn.classList.add('active');
-  } else {
-    btn.textContent = '⏸️ Pause';
-    btn.classList.remove('active');
+function updateStatusLogger() {
+  if (isAtmosphereRemoved) {
+    triggerStatusLog("🚫 <strong>Atmosphere Stripped!</strong> Solar rays scorch the surface. Air quality is dead.");
+  } else if (isWaterRemoved) {
+    triggerStatusLog("🚫 <strong>Water Depleted!</strong> Rivers dried up. Biosphere and Hydrosphere are collapsing.");
+  } else if (isPlantsRemoved) {
+    triggerStatusLog("🚫 <strong>No Vegetation!</strong> Lack of oxygen and heavy soil erosion detected.");
+  } else if (sunHeat >= 90) {
+    triggerStatusLog("🔥 <strong>Heatwave!</strong> Oceans evaporating rapidly. Plants are drying out and dying.");
+  } else if (sunHeat <= 15) {
+    triggerStatusLog("❄️ <strong>Glaciation!</strong> Earth is frozen. Oceans locked in sheets of white ice.");
+  } else if (waterLevel >= 85) {
+    triggerStatusLog("🌧️ <strong>Flooding!</strong> River basins overflow. Soil erosion is occurring.");
+  } else if (atmoHealth >= 85 && hydroHealth >= 85 && geoHealth >= 85 && bioHealth >= 85) {
+    triggerStatusLog("🌟 <strong>Perfect Balance!</strong> All four spheres are in ecological equilibrium. Fantastic job!");
   }
 }
 
-function cycleSpeed() {
-  if (speedMultiplier === 1) {
-    speedMultiplier = 2;
-  } else if (speedMultiplier === 2) {
-    speedMultiplier = 3;
-  } else {
-    speedMultiplier = 1;
-  }
-  document.getElementById('btn-ff').textContent = `⏩ ${speedMultiplier}x Speed`;
-  if (speedMultiplier > 1) {
-    document.getElementById('btn-ff').classList.add('active');
-  } else {
-    document.getElementById('btn-ff').classList.remove('active');
-  }
-}
-
-function restartCycle() {
-  isPaused = false;
-  speedMultiplier = 1;
-  heatLevel = 0.5;
-  heatSliderValue = 50;
-
-  document.getElementById('btn-pause').textContent = '⏸️ Pause';
-  document.getElementById('btn-pause').classList.remove('active');
-  document.getElementById('btn-ff').textContent = '⏩ 1x Speed';
-  document.getElementById('btn-ff').classList.remove('active');
-  document.getElementById('heat-slider').value = 50;
-  
-  updateHeat(50);
-  
-  // reset highlights
-  resetHighlights();
-  closeTooltip();
-}
-
-// ── SPHERE CARD INTERACTION & HIGHLIGHTS ──
-function selectSphere(id) {
-  if (activeSphere === id) {
-    resetHighlights();
-    closeTooltip();
-    return;
-  }
-  
-  activeSphere = id;
-  exploredSpheres[id] = true;
-  
-  // Update dashboard cards active state
-  document.querySelectorAll('.dash-sphere-card').forEach(card => card.classList.remove('active'));
-  document.getElementById('card-' + id).classList.add('active');
-
-  // Highlight corresponding parts on the SVG
-  const data = sphereSVGMapping[id];
-  allWcParts.forEach(partId => {
-    const el = document.getElementById(partId);
-    if (!el) return;
-    if (data.includes(partId)) {
-      el.classList.remove('wc-dimmed');
-      el.classList.add('wc-lit');
-    } else {
-      el.classList.remove('wc-lit');
-      el.classList.add('wc-dimmed');
-    }
-  });
-
-  // Display floating tooltip inside diagram
-  showTooltipFor(id);
-  
-  // Update Detective badge check
-  checkDetectiveBadge();
-  
-  // Check active quest conditions
-  checkActiveQuest();
-}
-
-function resetHighlights() {
-  activeSphere = null;
-  document.querySelectorAll('.dash-sphere-card').forEach(card => card.classList.remove('active'));
-  allWcParts.forEach(partId => {
-    const el = document.getElementById(partId);
-    if (el) el.classList.remove('wc-dimmed', 'wc-lit');
-  });
-}
-
-function showTooltipFor(id) {
-  const tooltip = document.getElementById('sim-tooltip');
-  const ttTitle = document.getElementById('tt-title');
-  const ttBody = document.getElementById('tt-body');
-  
-  if (!tooltip || !ttTitle || !ttBody) return;
-  
-  const data = tooltipData[id];
-  ttTitle.innerHTML = `${data.icon} ${data.title}`;
-  ttBody.innerHTML = `
-    <p>${data.desc}</p>
-    <div class="tt-examples">
-      <strong>Examples:</strong>
-      ${data.examples.map(ex => `<span class="tt-pill">${ex}</span>`).join('')}
-    </div>
-    <div class="tt-fact">
-      <strong>⭐ Fun Fact:</strong> ${data.fact}
-    </div>
-  `;
-  
-  const pos = tooltipPositions[id];
-  tooltip.style.left = pos.left;
-  tooltip.style.top = pos.top;
-  tooltip.style.borderTop = `6px solid ${data.color}`;
-  
-  tooltip.setAttribute('aria-hidden', 'false');
-  tooltip.classList.add('visible');
-}
-
-function closeTooltip() {
-  const tooltip = document.getElementById('sim-tooltip');
-  if (tooltip) {
-    tooltip.classList.remove('visible');
-    tooltip.setAttribute('aria-hidden', 'true');
-  }
-}
-
-// Click callback inside the SVG element directly
-function svgItemClicked(sphereId) {
-  selectSphere(sphereId);
-}
-
-// ── GAMIFIED QUEST SYSTEM ──
-const quests = [
+// ── MISSION CONTROLLER ──
+const missions = [
   {
-    title: "Mission 1: The Rainmaker 🌧️",
-    desc: "Move the Sun Heat slider to maximum to trigger a heavy downpour! Discover cause-and-effect: More heat = more evaporation = more clouds = more rain.",
-    hint: "Drag the Sun Heat slider to 80% or higher.",
-    check: () => heatSliderValue >= 80,
-    successMsg: "Superb! Heating up the Sun caused ocean water (Hydrosphere) to evaporate rapidly, forming dark clouds (Atmosphere) and releasing heavy precipitation! You earned a star! ⭐"
+    desc: "A severe drought has dried up Earth's oceans and rivers. Lower the heat and add water to revive the biosphere!",
+    setup: () => {
+      isWaterRemoved = true;
+      updateSliders(90, 10, 10, 45);
+    },
+    goals: [
+      { text: "Hydrosphere Health >= 70%", check: () => hydroHealth >= 70 },
+      { text: "Biosphere Health >= 60%", check: () => bioHealth >= 60 }
+    ],
+    successMsg: "Drought solved! You cooled down the planet and restored water levels. Life has returned to the biosphere! Badge unlocked: 💧 Water Guardian!"
   },
   {
-    title: "Mission 2: Cloud Watcher ☁️",
-    desc: "Find and explore the sphere responsible for air, clouds, and condensation.",
-    hint: "Click the 'Atmosphere' card in the bottom row.",
-    check: () => activeSphere === 'atmo',
-    successMsg: "Spectacular! The Atmosphere is the air sphere where water vapor cools and condenses to create clouds and release rain! You earned a star! ⭐"
+    desc: "Deforestation and soil pollution have depleted the trees. Improve Land Quality and click Grow Forest (or slide Plants) to restore life!",
+    setup: () => {
+      isPlantsRemoved = true;
+      updateSliders(55, 45, 0, 20);
+    },
+    goals: [
+      { text: "Plant Population >= 80%", check: () => plants >= 80 },
+      { text: "Land Quality >= 70%", check: () => land >= 70 },
+      { text: "Biosphere Health >= 75%", check: () => bioHealth >= 75 }
+    ],
+    successMsg: "Forest restored! By purifying the land quality and planting trees, you anchored the soil and stabilized ecosystems! Badge unlocked: 🌳 Forest Hero!"
   },
   {
-    title: "Mission 3: Plant Power 🍃",
-    desc: "Locate the biosphere where plants absorb groundwater and release vapor back into the air through Transpiration.",
-    hint: "Click the 'Biosphere' card in the bottom row.",
-    check: () => activeSphere === 'bio',
-    successMsg: "Incredible! In the Biosphere, trees and plants draw groundwater and release it into the air as vapor—this is Transpiration! You earned a star! ⭐"
+    desc: "Maintain absolute equilibrium. Balance all sliders so that the Atmosphere, Hydrosphere, Geosphere, and Biosphere are all healthy (85% or higher)!",
+    setup: () => {
+      updateSliders(60, 40, 50, 60);
+    },
+    goals: [
+      { text: "Atmosphere Health >= 85%", check: () => atmoHealth >= 85 },
+      { text: "Hydrosphere Health >= 85%", check: () => hydroHealth >= 85 },
+      { text: "Geosphere Health >= 85%", check: () => geoHealth >= 85 },
+      { text: "Biosphere Health >= 85%", check: () => bioHealth >= 85 }
+    ],
+    successMsg: "Synergy achieved! You successfully balanced the climate, resources, plants, and soils. Badge unlocked: 🛡️ Earth Protector!"
   },
   {
-    title: "Mission 4: The Ice Age Freeze ❄️",
-    desc: "Lower the temperature completely to stop all evaporation and freeze the water cycle.",
-    hint: "Move the Sun Heat slider to 10% or lower.",
-    check: () => heatSliderValue <= 10,
-    successMsg: "Wonderful! Lowering the Sun Heat stopped evaporation completely, clearing the clouds and stopping rainfall. The temperature plummeted! You earned a star! ⭐"
-  },
-  {
-    title: "Mission 5: Water Collector 🏔️",
-    desc: "Find the sphere containing soil, mountains, and groundwater where rainfall collects.",
-    hint: "Click the 'Geosphere' card in the bottom row.",
-    check: () => activeSphere === 'geo',
-    successMsg: "Sensational! The Geosphere consists of rocks, soil, and mountains that direct rain runoff into rivers and groundwater storage! You earned a star! ⭐"
+    desc: "A devastating heat storm has scorched Earth. Cool down the planet, restore water, and plant trees to recover all spheres!",
+    setup: () => {
+      updateSliders(100, 15, 10, 30);
+    },
+    goals: [
+      { text: "Atmosphere Health >= 70%", check: () => atmoHealth >= 70 },
+      { text: "Hydrosphere Health >= 70%", check: () => hydroHealth >= 70 },
+      { text: "Geosphere Health >= 70%", check: () => geoHealth >= 70 },
+      { text: "Biosphere Health >= 70%", check: () => bioHealth >= 70 }
+    ],
+    successMsg: "Climate stabilized! You managed to rescue the Earth from a scorching heatwave and returned the spheres to safety! Badge unlocked: 🔥 Climate Rescuer!"
   }
 ];
 
-let currentQuestIndex = 0;
-let completedQuests = [false, false, false, false, false];
-let starsEarned = 0;
-let exploredSpheres = { atmo: false, hydro: false, geo: false, bio: false };
+function switchMission(index) {
+  activeMission = parseInt(index);
+  const select = document.getElementById('mission-selector');
+  if (select) select.value = index;
+  
+  // Reset overrides
+  isAtmosphereRemoved = false;
+  isMountainsRemoved = false;
+  isWaterRemoved = false;
+  isPlantsRemoved = false;
 
-let badgeExplorerUnlocked = false;
-let badgeDetectiveUnlocked = false;
-let badgeExpertUnlocked = false;
-
-function checkActiveQuest() {
-  if (currentQuestIndex >= quests.length) return;
-  const quest = quests[currentQuestIndex];
-  if (quest.check()) {
-    completeQuest(currentQuestIndex);
-  }
+  // Run initial setups
+  missions[activeMission].setup();
+  document.getElementById('mission-desc').textContent = missions[activeMission].desc;
+  
+  updateUI();
 }
 
-function completeQuest(index) {
-  if (completedQuests[index]) return;
-  completedQuests[index] = true;
-  starsEarned++;
+function evaluateMissionGoals() {
+  const m = missions[activeMission];
+  const select = document.getElementById('mission-selector');
   
-  // Show congratulatory overlay modal
-  showGameModal("🏆 Mission Accomplished!", quests[index].successMsg, "⭐");
-  
-  // Launch confetti
-  launchConfetti();
-  
-  // Advance quest
-  currentQuestIndex++;
-  
-  // Update progress widgets
-  updateQuestWidget();
-  updateAchievements();
-}
+  // Set goal checkmarks in UI
+  let allDone = true;
+  m.goals.forEach((g, i) => {
+    const isOk = g.check();
+    const chk = document.getElementById(`goal-${i+1}-chk`);
+    const label = document.getElementById(`goal-${i+1}-text`);
+    if (chk) chk.textContent = isOk ? "✅" : "❌";
+    if (label) {
+      label.textContent = g.text;
+      label.style.textDecoration = isOk ? "line-through" : "none";
+    }
+    if (!isOk) allDone = false;
+  });
 
-function updateQuestWidget() {
-  const title = document.getElementById('quest-title');
-  const desc = document.getElementById('quest-desc');
-  const hint = document.getElementById('quest-hint');
-  const fill = document.getElementById('quest-progress-fill');
-  const text = document.getElementById('quest-progress-text');
-  const starCount = document.getElementById('quest-stars');
-  const hintBox = document.getElementById('qc-hint-box');
-  const progBar = document.getElementById('quest-prog-bar');
-
-  starCount.textContent = `⭐ ${starsEarned}/5`;
-
-  if (currentQuestIndex < quests.length) {
-    const q = quests[currentQuestIndex];
-    title.textContent = q.title;
-    desc.textContent = q.desc;
-    hint.textContent = q.hint;
-    hintBox.style.display = 'block';
-    
-    const progressPct = (currentQuestIndex / quests.length) * 100;
-    fill.style.width = progressPct + '%';
-    progBar.setAttribute('aria-valuenow', progressPct);
-    text.textContent = `Mission ${currentQuestIndex + 1} of ${quests.length}`;
+  // Handle remaining checkboxes hide
+  if (m.goals.length === 2) {
+    // Mission 1 & 4 have 2 goals. Hide goal 3
+    const g3 = document.getElementById('goal-3-chk');
+    if (g3) {
+      g3.parentElement.style.display = 'none';
+    }
+  } else if (m.goals.length === 3) {
+    // Mission 2 has 3 goals.
+    const g3 = document.getElementById('goal-3-chk');
+    if (g3) {
+      g3.parentElement.style.display = 'flex';
+      const isOk = m.goals[2].check();
+      g3.textContent = isOk ? "✅" : "❌";
+      const lbl = document.getElementById('goal-3-text');
+      lbl.textContent = m.goals[2].text;
+      lbl.style.textDecoration = isOk ? "line-through" : "none";
+    }
   } else {
-    // All completed
-    title.textContent = "👑 Earth Sciences Champion!";
-    desc.textContent = "Incredible work! You have successfully completed all 5 simulation missions and mastered the spheres & water cycle!";
-    hintBox.style.display = 'none';
-    fill.style.width = '100%';
-    progBar.setAttribute('aria-valuenow', 100);
-    text.textContent = "All Quests Completed!";
+    // Mission 3 has 4 goals.
+    // Let's add goal 3 & 4 dynamically if not present, or just reuse elements.
+    // Wait, let's look at the HTML:
+    // It only has goal 1 and goal 2. We can show goal 3 and goal 4!
+    // Let's make sure the goals box is built dynamically in JS instead of hardcoded! That's much safer!
+    buildGoalsBox();
+    return; // building goals will retrigger evaluate, so stop here
+  }
+
+  // If all completed, trigger reward!
+  if (allDone && !completedMissions[activeMission]) {
+    completedMissions[activeMission] = true;
+    starsCount++;
+    document.getElementById('mission-stars').textContent = `⭐ ${starsCount}/4`;
     
-    // Check for expert badge
-    checkExpertBadge();
+    // Unlock badge
+    unlockMissionBadge(activeMission);
+    
+    // Show success dialog
+    showGameModal("🎉 Mission Success!", m.successMsg, "🏆");
+    launchConfetti();
+
+    // Check if all missions complete
+    checkPlanetSaverBadge();
+    
+    updateAchievementsDashboard();
   }
 }
 
-// Explore All 4 Spheres Badge Check
-function checkDetectiveBadge() {
-  if (badgeDetectiveUnlocked) return;
+function buildGoalsBox() {
+  const box = document.querySelector('.mc-goals-box');
+  if (!box) return;
+  box.innerHTML = `<div style="font-size: 11px; text-transform: uppercase; font-weight: 900; opacity: 0.7; margin-bottom: 6px;">Mission Requirements:</div>`;
   
-  const count = Object.values(exploredSpheres).filter(v => v).length;
-  document.getElementById('stat-spheres').textContent = `${count} / 4`;
+  const m = missions[activeMission];
+  m.goals.forEach((g, i) => {
+    const isOk = g.check();
+    const div = document.createElement('div');
+    div.className = "mc-goal-item";
+    div.innerHTML = `
+      <span class="mc-goal-chk" id="goal-${i+1}-chk">${isOk ? "✅" : "❌"}</span>
+      <span id="goal-${i+1}-text" style="text-decoration: ${isOk ? "line-through" : "none"};">${g.text}</span>
+    `;
+    box.appendChild(div);
+  });
+}
 
-  if (count === 4) {
-    badgeDetectiveUnlocked = true;
-    unlockBadge('badge-detective', '🕵️‍♂️ Sphere Detective');
+function unlockMissionBadge(idx) {
+  if (idx === 0) {
+    badgesUnlocked.waterGuardian = true;
+    unlockBadgeCard('badge-water-guardian', 'Water Guardian');
+  } else if (idx === 1) {
+    badgesUnlocked.forestHero = true;
+    unlockBadgeCard('badge-forest-hero', 'Forest Hero');
+  } else if (idx === 2) {
+    badgesUnlocked.earthProtector = true;
+    unlockBadgeCard('badge-earth-protector', 'Earth Protector');
+  } else if (idx === 3) {
+    badgesUnlocked.climateRescuer = true;
+    unlockBadgeCard('badge-climate-rescuer', 'Climate Rescuer');
   }
 }
 
-// 2 Quests Completed Badge Check
-function checkExplorerBadge() {
-  if (badgeExplorerUnlocked) return;
-  if (starsEarned >= 2) {
-    badgeExplorerUnlocked = true;
-    unlockBadge('badge-explorer', '💧 Water Cycle Explorer');
+function checkPlanetSaverBadge() {
+  const completedCount = completedMissions.filter(m => m).length;
+  if (completedCount === 4 && !badgesUnlocked.planetSaver) {
+    badgesUnlocked.planetSaver = true;
+    unlockBadgeCard('badge-planet-saver', 'Planet Saver');
+    showGameModal("👑 Planet Saver Unlocked!", "Incredible! You have saved Earth from every crisis and completed all 4 missions! You are a supreme cosmic caretaker!", "🌍");
+    launchConfetti();
   }
 }
 
-// 5 Quests Completed Badge Check
-function checkExpertBadge() {
-  if (badgeExpertUnlocked) return;
-  if (starsEarned === 5) {
-    badgeExpertUnlocked = true;
-    unlockBadge('badge-expert', '👑 Earth Expert');
+function unlockBadgeCard(id, name) {
+  const card = document.getElementById(id);
+  if (card) {
+    card.classList.remove('locked');
+    card.classList.add('unlocked');
+    card.querySelector('.lock-status-icon').textContent = "✨";
+    card.querySelector('.badge-status').textContent = "Unlocked!";
+    card.querySelector('.badge-status').style.backgroundColor = "#E8F5E9";
+    card.querySelector('.badge-status').style.color = "#2E7D32";
   }
 }
 
-function unlockBadge(elementId, badgeName) {
-  const el = document.getElementById(elementId);
-  if (el) {
-    el.classList.remove('locked');
-    el.classList.add('unlocked');
-    const nameEl = el.querySelector('.badge-name');
-    nameEl.innerHTML = `${badgeName} <span class="lock-status-icon">✨</span>`;
-    const statusEl = el.querySelector('.badge-status');
-    statusEl.textContent = "Unlocked!";
-  }
+function updateAchievementsDashboard() {
+  const count = Object.values(badgesUnlocked).filter(b => b).length;
+  document.getElementById('stat-stars').textContent = `${count} / 6`;
   
-  // Show notification popup
-  showGameModal("🏅 Badge Unlocked!", `Wonderful job! You have earned the <strong>${badgeName}</strong> badge for your research!`, "🎉");
-  launchConfetti();
-}
-
-function updateAchievements() {
-  document.getElementById('stat-stars').textContent = `${starsEarned} / 5`;
-  document.getElementById('stat-quests').textContent = `${starsEarned} / 5`;
+  const mCount = completedMissions.filter(m => m).length;
+  document.getElementById('stat-quests').textContent = `${mCount} / 4`;
   
-  const exploreCount = Object.values(exploredSpheres).filter(v => v).length;
-  document.getElementById('stat-spheres').textContent = `${exploreCount} / 4`;
-
-  // Run checks
-  checkExplorerBadge();
-  checkDetectiveBadge();
-  checkExpertBadge();
+  if (quizTaken) {
+    document.getElementById('stat-quiz').textContent = `${quizScore} / 6`;
+  } else {
+    document.getElementById('stat-quiz').textContent = "Locked";
+  }
 }
 
-// ── DIALOG OVERLAY HANDLERS ──
+// ── SCIENCE QUIZ LOGIC ──
+const quizQuestions = [
+  {
+    q: "What is the primary role of Earth's Atmosphere in the Earth Balance simulation?",
+    opts: [
+      "To anchor soil and prevent mudslides",
+      "To trap solar warmth, provide gases for breathing, and shield the surface",
+      "To act as a collection basin for rivers",
+      "To generate bedrock structures"
+    ],
+    correct: 1,
+    exp: "The Atmosphere is the blanket of air and gases surrounding Earth. It maintains warmth, provides oxygen and CO2, and shields the surface from cosmic solar rays."
+  },
+  {
+    q: "If the Sun Heat slider is set to maximum, what chain reaction occurs in the Hydrosphere?",
+    opts: [
+      "Glaciers expand and freeze the continents",
+      "Water evaporates rapidly, leading to droughts and depleted reservoirs",
+      "Water levels rise, flooding all forests",
+      "Liquid water turns into solid rock"
+    ],
+    correct: 1,
+    exp: "Extreme heat accelerates evaporation from oceans and rivers. This depletes Hydrosphere health and robs plants of water, leading to drought crises."
+  },
+  {
+    q: "How do plants (Biosphere) help protect the land and soils (Geosphere)?",
+    opts: [
+      "Root networks anchor the soil, preventing severe erosion from rain and winds",
+      "They absorb soil to grow larger",
+      "They compress flat land into tall mountains",
+      "They reflect sunshine to freeze the terrain"
+    ],
+    correct: 0,
+    exp: "Root systems act as stabilizers that bind the soil together. When vegetation is removed, wind and rain wash away topsoil, causing Geosphere erosion."
+  },
+  {
+    q: "Which other spheres must be healthy for the Biosphere (living things) to survive?",
+    opts: [
+      "Only the Geosphere (soil/crust)",
+      "Only the Atmosphere (air/protection)",
+      "All of them: Atmosphere (air), Hydrosphere (water), and Geosphere (soil)",
+      "None, the Biosphere lives independently"
+    ],
+    correct: 2,
+    exp: "Living organisms depend on water to drink (Hydrosphere), air to breathe (Atmosphere), and soil to provide nutrients and habitats (Geosphere)."
+  },
+  {
+    q: "What is the core lesson taught by the Earth Balance Simulator?",
+    opts: [
+      "Oceans can exist without solar energy",
+      "Earth's systems are deeply interconnected; altering one sphere impacts all others",
+      "Deforestation has no impact on air quality",
+      "The spheres operate in isolation"
+    ],
+    correct: 1,
+    exp: "Earth is a single balanced machine. Modifying parameters like water availability or plant cover triggers cascade feedback loops across all spheres."
+  },
+  {
+    q: "If you cause an Ice Age by setting Sun Heat to 0, what is the impact on the Hydrosphere?",
+    opts: [
+      "Water evaporates into space",
+      "Liquid water freezes into solid ice/glaciers, locking up resources",
+      "Heavy downpours flood the geosphere",
+      "Oceans turn into hot steam"
+    ],
+    correct: 1,
+    exp: "Zero heat plunges Earth into a freeze. Oceans and rivers turn to ice sheets, locking water in solid glaciers and slowing biological transpiration."
+  }
+];
+
+let currentQuizIndex = 0;
+let quizAnswers = [];
+
+function openQuizModal() {
+  currentQuizIndex = 0;
+  quizAnswers = [];
+  document.getElementById('quiz-modal').classList.add('open');
+  renderQuizQuestion();
+}
+
+function closeQuizModal() {
+  document.getElementById('quiz-modal').classList.remove('open');
+}
+
+function renderQuizQuestion() {
+  const container = document.getElementById('quiz-container');
+  if (currentQuizIndex < quizQuestions.length) {
+    const q = quizQuestions[currentQuizIndex];
+    const pct = Math.round((currentQuizIndex / quizQuestions.length) * 100);
+    
+    container.innerHTML = `
+      <div class="quiz-header">
+        <span>🎓 Science Challenge</span>
+        <span>Question ${currentQuizIndex + 1} of ${quizQuestions.length}</span>
+      </div>
+      <div class="quiz-prog-track">
+        <div class="quiz-prog-fill" style="width: ${pct}%;"></div>
+      </div>
+      <h3 class="quiz-q-text">${q.q}</h3>
+      <div class="quiz-opts-stack">
+        ${q.opts.map((opt, idx) => `
+          <button class="quiz-opt-btn" onclick="submitQuizAnswer(${idx})" id="q-opt-${idx}">${opt}</button>
+        `).join('')}
+      </div>
+      <div class="quiz-exp-box" id="quiz-exp-box"></div>
+      <button class="quiz-next-btn" id="quiz-next-btn" onclick="nextQuizQuestion()">Next Question ➡️</button>
+    `;
+  } else {
+    // Show results
+    renderQuizResults();
+  }
+}
+
+function submitQuizAnswer(idx) {
+  // Lock option clicks
+  document.querySelectorAll('.quiz-opt-btn').forEach(btn => btn.disabled = true);
+  
+  const q = quizQuestions[currentQuizIndex];
+  quizAnswers.push(idx);
+  
+  const correctIdx = q.correct;
+  const isCorrect = idx === correctIdx;
+  
+  // Color code selections
+  document.getElementById(`q-opt-${correctIdx}`).classList.add('correct');
+  if (!isCorrect) {
+    document.getElementById(`q-opt-${idx}`).classList.add('incorrect');
+  }
+
+  // Show explanation
+  const expBox = document.getElementById('quiz-exp-box');
+  expBox.innerHTML = `
+    <strong>${isCorrect ? "✅ Correct!" : "❌ Incorrect."}</strong>
+    <p style="margin-top: 4px;">${q.exp}</p>
+  `;
+  expBox.style.display = 'block';
+  
+  // Show next button
+  document.getElementById('quiz-next-btn').style.display = 'block';
+}
+
+function nextQuizQuestion() {
+  currentQuizIndex++;
+  renderQuizQuestion();
+}
+
+function renderQuizResults() {
+  const container = document.getElementById('quiz-container');
+  let score = 0;
+  
+  quizQuestions.forEach((q, idx) => {
+    if (quizAnswers[idx] === q.correct) score++;
+  });
+  
+  quizScore = score;
+  quizTaken = true;
+  const pct = Math.round((score / quizQuestions.length) * 100);
+  
+  let resultMsg = "";
+  let resultEmoji = "";
+  if (score === 6) {
+    resultMsg = "Outstanding! Perfect score! You have unlocked the **Sphere Master** badge! 🏆";
+    resultEmoji = "👑";
+    if (!badgesUnlocked.sphereMaster) {
+      badgesUnlocked.sphereMaster = true;
+      unlockBadgeCard('badge-sphere-master', 'Sphere Master');
+      launchConfetti();
+    }
+  } else if (score >= 4) {
+    resultMsg = "Great job! You have a solid grasp of Earth Sciences. Try again for a perfect score!";
+    resultEmoji = "🌟";
+  } else {
+    resultMsg = "Keep studying the feedback logs and slider reactions. You can do it!";
+    resultEmoji = "📚";
+  }
+
+  container.innerHTML = `
+    <div style="text-align: center; padding: 10px 0;">
+      <div style="font-size: 64px; line-height: 1; margin-bottom: 12px;">${resultEmoji}</div>
+      <h3 class="gm-title" style="margin-bottom: 6px;">Quiz Results</h3>
+      <div style="font-size: 36px; font-weight: 900; color: #9C27B0; margin: 10px 0;">${score} / ${quizQuestions.length}</div>
+      <div style="font-size: 16px; font-weight: 800; color: #555; margin-bottom: 16px;">Score: ${pct}%</div>
+      <p style="font-size: 14px; line-height: 1.5; color: #666; margin-bottom: 24px;">${resultMsg}</p>
+      <div style="display: flex; gap: 8px;">
+        <button class="gm-btn" style="flex: 1; background: #9C27B0;" onclick="openQuizModal()">🔄 Retry Quiz</button>
+        <button class="gm-btn" style="flex: 1; background: #607D8B;" onclick="closeQuizModal()">✕ Close</button>
+      </div>
+    </div>
+  `;
+
+  updateAchievementsDashboard();
+}
+
+// ── UTILS, OVERLAYS, CONFETTI ──
 function showGameModal(title, message, emoji) {
   document.getElementById('gm-emoji').textContent = emoji;
   document.getElementById('gm-title').textContent = title;
@@ -1482,67 +1695,77 @@ function showGameModal(title, message, emoji) {
 
 function closeGameModal() {
   document.getElementById('game-modal').classList.remove('open');
-  // If all quests completed, lead user to achievements tab
-  if (currentQuestIndex >= quests.length && starsEarned === 5) {
-    showSection('quiz', document.getElementById('nav-quiz'));
-  }
 }
 
-function resetGameProgress() {
-  currentQuestIndex = 0;
-  completedQuests = [false, false, false, false, false];
-  starsEarned = 0;
-  exploredSpheres = { atmo: false, hydro: false, geo: false, bio: false };
+function resetSimulatorGame() {
+  completedMissions = [false, false, false, false];
+  starsCount = 0;
+  quizScore = 0;
+  quizTaken = false;
+  document.getElementById('mission-stars').textContent = "⭐ 0/4";
 
-  badgeExplorerUnlocked = false;
-  badgeDetectiveUnlocked = false;
-  badgeExpertUnlocked = false;
+  badgesUnlocked = {
+    waterGuardian: false,
+    forestHero: false,
+    earthProtector: false,
+    climateRescuer: false,
+    sphereMaster: false,
+    planetSaver: false
+  };
 
-  // Re-lock UI cards
-  const badgeIds = ['badge-explorer', 'badge-detective', 'badge-expert'];
-  const badgeNames = ['Water Cycle Explorer', 'Sphere Detective', 'Earth Expert'];
-  const emojis = ['💧', '🕵️‍♂️', '👑'];
+  const ids = ['badge-water-guardian', 'badge-forest-hero', 'badge-earth-protector', 'badge-climate-rescuer', 'badge-sphere-master', 'badge-planet-saver'];
+  const names = ['Water Guardian', 'Forest Hero', 'Earth Protector', 'Climate Rescuer', 'Sphere Master', 'Planet Saver'];
+  const emojis = ['💧', '🌳', '🛡️', '🔥', '🎓', '👑'];
   
-  badgeIds.forEach((id, idx) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.classList.remove('unlocked');
-      el.classList.add('locked');
-      el.querySelector('.badge-name').innerHTML = `${badgeNames[idx]} <span class="lock-status-icon">🔒</span>`;
-      el.querySelector('.badge-status').textContent = "Locked";
+  ids.forEach((id, idx) => {
+    const card = document.getElementById(id);
+    if (card) {
+      card.classList.remove('unlocked');
+      card.classList.add('locked');
+      card.querySelector('.lock-status-icon').textContent = "🔒";
+      card.querySelector('.badge-status').textContent = "Locked";
+      card.querySelector('.badge-status').style.backgroundColor = "#EEEEEE";
+      card.querySelector('.badge-status').style.color = "#757575";
     }
   });
 
-  restartCycle();
-  updateQuestWidget();
-  updateAchievements();
+  // reset variables
+  isAtmosphereRemoved = false;
+  isMountainsRemoved = false;
+  isWaterRemoved = false;
+  isPlantsRemoved = false;
+
+  updateSliders(50, 55, 60, 70);
+  switchMission(0);
+  updateAchievementsDashboard();
   
-  showGameModal("🔄 Game Reset!", "The simulation challenges have been reset. Good luck on your learning quest!", "🗺️");
+  showGameModal("🔄 Game Reset!", "All environmental missions and quiz stats have been reset. Earth needs your balancing skills again!", "🗺️");
 }
 
-// ── CONFETTI ANIMATION ──
-function launchConfetti() {
-  const colors = ['#0277BD', '#2E7D32', '#D84315', '#FFD54F', '#4FC3F7', '#A5D6A7', '#FFAB91', '#CE93D8'];
+function triggerConfettiColors(colorsList) {
   const container = document.createElement('div');
   container.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999';
   document.body.appendChild(container);
   
-  for(let i=0; i<80; i++) {
+  for(let i=0; i<40; i++) {
     const piece = document.createElement('div');
     piece.className = 'confetti-piece';
     piece.style.left = Math.random()*100 + '%';
-    piece.style.background = colors[Math.floor(Math.random()*colors.length)];
-    piece.style.animationDuration = (Math.random()*1.8 + 1.2) + 's';
-    piece.style.animationDelay = Math.random()*0.5 + 's';
+    piece.style.background = colorsList[Math.floor(Math.random()*colorsList.length)];
+    piece.style.animationDuration = (Math.random()*1.5 + 1.0) + 's';
+    piece.style.animationDelay = Math.random()*0.3 + 's';
     piece.style.transform = `rotate(${Math.random()*360}deg)`;
     container.appendChild(piece);
   }
-  setTimeout(() => container.remove(), 4000);
+  setTimeout(() => container.remove(), 2500);
 }
 
-// Keyboard events listener
+function launchConfetti() {
+  triggerConfettiColors(['#0288D1', '#2E7D32', '#D84315', '#FFD54F', '#4FC3F7', '#A5D6A7', '#FFAB91', '#CE93D8']);
+}
+
+// Keyboard accessible buttons support
 document.addEventListener('DOMContentLoaded', () => {
-  // Add keydown listener to elements styled as role=button or tab-navgable
   const makeAccessible = (selector) => {
     document.querySelectorAll(selector).forEach(item => {
       item.addEventListener('keydown', e => {
@@ -1555,20 +1778,12 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   
   makeAccessible('.sphere-card');
-  makeAccessible('.dash-sphere-card');
-  makeAccessible('.svg-interactive');
-  
-  // Set up meters & start simulation particles loop
-  updateHeat(50);
-  initParticles();
-});
+  makeAccessible('.sp-action-btn');
+  makeAccessible('.nav-btn');
 
-// Start loop
-function initParticles() {
-  particlesList = [];
-  splashes = [];
-  updateSimulation();
-}
+  // Initialize
+  switchMission(0);
+});
 
 </script>
 </body>
