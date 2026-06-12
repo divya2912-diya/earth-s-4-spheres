@@ -3,50 +3,60 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🌍 Earth's 4 Spheres</title>
+<title>🌍 Earth's 4 Spheres & Water Cycle Lab</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root {
-  --atmo-c: #1565C0; --atmo-l: #E3F2FD; --atmo-m: #64B5F6;
-  --hydro-c: #006064; --hydro-l: #E0F7FA; --hydro-m: #4DD0E1;
-  --geo-c: #33691E; --geo-l: #F1F8E9; --geo-m: #AED581;
-  --bio-c: #E65100; --bio-l: #FFF3E0; --bio-m: #FFCC80;
-  --nav-h: 68px;
+  --atmo-c: #0277BD; --atmo-l: #E3F2FD; --atmo-m: #4FC3F7;
+  --hydro-c: #006064; --hydro-l: #E0F7FA; --hydro-m: #26C6DA;
+  --geo-c: #2E7D32; --geo-l: #F1F8E9; --geo-m: #81C784;
+  --bio-c: #D84315; --bio-l: #FBE9E7; --bio-m: #FF8A65;
+  --nav-h: 70px;
+  --card-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  --focus-ring: 4px dashed #FF8F00;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: 'Nunito', sans-serif;
-  background: #F0F9FF;
+  background: #F0F4F8;
   overflow: hidden;
   height: 100vh;
+  color: #333333;
 }
 
 /* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 500;
   height: var(--nav-h);
-  background: rgba(255,255,255,0.96);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 2px 24px rgba(0,0,0,0.10);
-  display: flex; align-items: center; padding: 0 24px; gap: 6px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.06);
+  display: flex; align-items: center; padding: 0 24px; gap: 8px;
 }
 .nav-logo {
-  font-size: 20px; font-weight: 900; margin-right: auto;
-  background: linear-gradient(135deg, #1565C0, #2E7D32);
+  font-size: 22px; font-weight: 900; margin-right: auto;
+  background: linear-gradient(135deg, #1565C0, #2E7D32, #D84315);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   white-space: nowrap;
 }
 .nav-btn {
   display: flex; align-items: center; gap: 6px;
-  padding: 9px 18px; border-radius: 50px; border: none;
-  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800;
-  cursor: pointer; transition: all 0.22s; background: transparent; color: #555;
+  padding: 10px 20px; border-radius: 50px; border: none;
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800;
+  cursor: pointer; transition: all 0.2s; background: transparent; color: #555;
+  min-height: 44px;
 }
-.nav-btn:hover { background: #E3F2FD; color: #1565C0; transform: translateY(-1px); }
-.nav-btn.active { background: linear-gradient(135deg, #1565C0, #2E7D32); color: #fff; }
+.nav-btn:hover { background: #E1F5FE; color: #0277BD; transform: translateY(-1px); }
+.nav-btn.active { background: linear-gradient(135deg, #0277BD, #2E7D32); color: #fff; }
+
+/* Keyboard Accessibility Outline */
+*:focus-visible {
+  outline: var(--focus-ring) !important;
+  outline-offset: 3px;
+}
 
 /* ── SECTIONS ── */
 .section {
@@ -54,8 +64,8 @@ nav {
   top: var(--nav-h);
   overflow-y: auto;
   opacity: 0; pointer-events: none;
-  transform: translateY(24px);
-  transition: opacity 0.38s ease, transform 0.38s ease;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 .section.active {
   opacity: 1; pointer-events: auto; transform: translateY(0);
@@ -63,251 +73,320 @@ nav {
 
 /* ══════════════ HOME ══════════════ */
 #home {
-  background: linear-gradient(160deg, #E3F2FD 0%, #E8F5E9 50%, #FFF3E0 100%);
+  background: linear-gradient(160deg, #E3F2FD 0%, #E8F5E9 50%, #FBE9E7 100%);
   min-height: calc(100vh - var(--nav-h));
 }
 .home-inner {
-  max-width: 1000px; margin: 0 auto; padding: 48px 20px 48px;
+  max-width: 1100px; margin: 0 auto; padding: 48px 20px;
   text-align: center;
 }
 .home-title {
-  font-size: clamp(32px,7vw,58px); font-weight: 900; line-height: 1.1;
-  background: linear-gradient(135deg,#1565C0,#2E7D32,#E65100);
+  font-size: clamp(36px, 6vw, 56px); font-weight: 900; line-height: 1.1;
+  background: linear-gradient(135deg, #0277BD, #2E7D32, #D84315);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 .home-sub {
-  font-size: clamp(15px,2.5vw,19px); color: #555; margin-bottom: 10px;
+  font-size: clamp(16px, 2.2vw, 20px); color: #4A5568; margin-bottom: 8px;
 }
 .home-badge {
   display: inline-block; background: white; border-radius: 50px;
-  padding: 6px 20px; font-size: 14px; font-weight: 700; color: #888;
-  margin-bottom: 36px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 8px 24px; font-size: 15px; font-weight: 700; color: #718096;
+  margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 .spheres-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-  gap: 20px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 24px;
 }
 .sphere-card {
-  border-radius: 24px; padding: 32px 20px; cursor: pointer;
-  transition: all 0.32s cubic-bezier(0.34,1.56,0.64,1);
+  border-radius: 28px; padding: 36px 24px; cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   text-align: center; border: 3px solid transparent;
   position: relative; overflow: hidden;
-}
-.sphere-card:hover { transform: translateY(-10px) scale(1.03); }
-.sphere-card .s-emoji { font-size: 60px; display: block; margin-bottom: 12px; line-height: 1; }
-.sphere-card h3 { font-size: 20px; font-weight: 900; margin-bottom: 6px; }
-.sphere-card p { font-size: 13px; opacity: 0.8; }
-.sc-atmo { background: var(--atmo-l); color: var(--atmo-c); box-shadow: 0 6px 28px rgba(100,181,246,0.35); }
-.sc-hydro{ background: var(--hydro-l); color: var(--hydro-c); box-shadow: 0 6px 28px rgba(77,208,225,0.35); }
-.sc-geo  { background: var(--geo-l);   color: var(--geo-c);   box-shadow: 0 6px 28px rgba(174,213,129,0.35); }
-.sc-bio  { background: var(--bio-l);   color: var(--bio-c);   box-shadow: 0 6px 28px rgba(255,204,128,0.35); }
-
-/* ── SPHERE MODAL ── */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-  z-index: 900; display: flex; align-items: center; justify-content: center;
-  padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.25s;
-}
-.modal-overlay.open { opacity: 1; pointer-events: auto; }
-.modal-box {
-  background: white; border-radius: 28px; padding: 36px 32px;
-  max-width: 480px; width: 100%;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.25);
-  transform: scale(0.85) translateY(30px);
-  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
-  max-height: 90vh; overflow-y: auto;
-}
-.modal-overlay.open .modal-box { transform: scale(1) translateY(0); }
-.modal-top { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
-.modal-icon { font-size: 56px; line-height: 1; }
-.modal-title { font-size: 26px; font-weight: 900; }
-.modal-subtitle { font-size: 13px; font-weight: 700; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.5px; }
-.modal-section { margin-bottom: 20px; }
-.modal-section-title { font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; margin-bottom: 10px; }
-.modal-desc { font-size: 16px; line-height: 1.6; margin-bottom: 16px; }
-.modal-examples { display: flex; flex-wrap: wrap; gap: 8px; }
-.modal-ex-pill {
-  padding: 7px 14px; border-radius: 50px; font-size: 13px; font-weight: 700;
-  background: rgba(0,0,0,0.06);
-}
-.modal-fact {
-  border-radius: 16px; padding: 16px 20px; font-size: 14px; line-height: 1.6;
-  border-left: 4px solid currentColor;
-}
-.modal-fact strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 4px; }
-.modal-close {
-  position: absolute; top: 20px; right: 20px;
-  background: #F5F5F5; border: none; width: 36px; height: 36px;
-  border-radius: 50%; font-size: 18px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.2s; z-index: 2;
-}
-.modal-close:hover { background: #E0E0E0; }
-.modal-box { position: relative; }
-
-/* ══════════════ HOW THEY WORK ══════════════ */
-#how {
   background: white;
+}
+.sphere-card:hover { transform: translateY(-8px) scale(1.02); }
+.sphere-card .s-emoji { font-size: 64px; display: block; margin-bottom: 16px; line-height: 1; transition: transform 0.3s; }
+.sphere-card:hover .s-emoji { transform: scale(1.15) rotate(5deg); }
+.sphere-card h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
+.sphere-card p { font-size: 14px; opacity: 0.85; line-height: 1.4; }
+.sc-atmo { background: var(--atmo-l); color: var(--atmo-c); box-shadow: 0 10px 30px rgba(2,119,189,0.15); }
+.sc-hydro{ background: var(--hydro-l); color: var(--hydro-c); box-shadow: 0 10px 30px rgba(0,96,100,0.15); }
+.sc-geo  { background: var(--geo-l);   color: var(--geo-c);   box-shadow: 0 10px 30px rgba(46,125,50,0.15); }
+.sc-bio  { background: var(--bio-l);   color: var(--bio-c);   box-shadow: 0 10px 30px rgba(216,67,21,0.15); }
+
+/* ══════════════ SIMULATION LAB ══════════════ */
+#how {
+  background: #ECEFF1;
   min-height: calc(100vh - var(--nav-h));
 }
-.how-inner {
-  max-width: 1080px; margin: 0 auto;
-  padding: 32px 20px 40px;
+.sim-inner {
+  max-width: 1300px; margin: 0 auto;
+  padding: 24px 20px;
 }
-.how-title { text-align: center; font-size: clamp(22px,4vw,34px); font-weight: 900; margin-bottom: 4px; }
-.how-sub { text-align: center; color: #777; font-size: 14px; margin-bottom: 24px; }
 
-/* Water Cycle SVG wrapper */
+.sim-dashboard {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .sim-dashboard {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sim-main-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Water Cycle SVG & Canvas Container */
 .wc-wrap {
-  border-radius: 20px;
+  position: relative;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.12);
-  margin-bottom: 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
   background: #B3E5FC;
 }
 .wc-wrap svg { display: block; width: 100%; height: auto; }
-
-/* SVG highlight transitions */
-.wc-part { transition: opacity 0.4s, filter 0.4s; }
-.wc-dimmed { opacity: 0.15 !important; filter: grayscale(0.8) !important; }
-.wc-lit { filter: drop-shadow(0 0 10px rgba(255,255,100,0.9)) brightness(1.15) !important; opacity: 1 !important; }
-
-/* Sphere highlight cards */
-.hl-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap: 14px;
-  margin-bottom: 16px;
+#sim-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 10;
 }
-.hl-card {
-  border-radius: 16px; padding: 14px 16px; cursor: pointer; border: 3px solid transparent;
-  transition: all 0.28s cubic-bezier(0.34,1.56,0.64,1);
-  display: flex; align-items: center; gap: 12px;
-  font-family: 'Nunito', sans-serif;
-}
-.hl-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
-.hl-card.active { border-color: currentColor; transform: scale(1.03); }
-.hl-card .hc-emoji { font-size: 30px; }
-.hl-card h4 { font-size: 15px; font-weight: 900; }
-.hl-card p  { font-size: 11px; opacity: 0.75; }
-.hc-atmo { background: var(--atmo-l); color: var(--atmo-c); }
-.hc-hydro{ background: var(--hydro-l); color: var(--hydro-c); }
-.hc-geo  { background: var(--geo-l);   color: var(--geo-c); }
-.hc-bio  { background: var(--bio-l);   color: var(--bio-c); }
 
-.hl-msg {
-  border-radius: 16px; padding: 16px 20px; font-size: 15px; font-weight: 700;
-  line-height: 1.5; display: none; animation: fadeUp 0.3s ease;
-}
-.hl-msg.visible { display: block; }
+/* SVG Highlight animations */
+.wc-part { transition: opacity 0.3s, filter 0.3s; }
+.wc-dimmed { opacity: 0.12 !important; filter: grayscale(0.9) !important; }
+.wc-lit { filter: drop-shadow(0 0 12px rgba(255,235,59,0.9)) brightness(1.2) !important; opacity: 1 !important; }
 
-/* ══════════════ QUIZ ══════════════ */
+/* SVG Keyboard Focus Rings */
+.svg-interactive { cursor: pointer; outline: none; }
+.svg-interactive:focus-visible {
+  filter: drop-shadow(0 0 8px #FFD54F) brightness(1.2) !important;
+}
+
+/* Tooltip (Floating, Glassmorphism) */
+.sim-tooltip {
+  position: absolute;
+  z-index: 200;
+  width: 280px;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.9) translateY(10px);
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.sim-tooltip.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1) translateY(0);
+}
+.tooltip-close {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(0,0,0,0.05); border: none; width: 24px; height: 24px;
+  border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: bold; transition: background 0.2s;
+}
+.tooltip-close:hover { background: rgba(0,0,0,0.15); }
+.tooltip-title { font-size: 16px; font-weight: 800; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.tooltip-body { font-size: 13px; line-height: 1.4; color: #444; }
+.tooltip-body p { margin-bottom: 8px; }
+.tt-examples { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; margin-bottom: 8px; }
+.tt-pill { font-size: 11px; padding: 3px 8px; background: rgba(0,0,0,0.06); border-radius: 50px; font-weight: 700; }
+.tt-fact { background: rgba(255,213,79,0.15); border-left: 3px solid #FFD54F; padding: 6px 10px; border-radius: 4px; font-size: 11px; font-style: italic; }
+
+/* ── Sphere Exploration Dashboard Cards ── */
+.dashboard-spheres-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+}
+@media (max-width: 640px) {
+  .dashboard-spheres-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.dash-sphere-card {
+  border-radius: 20px; padding: 14px 10px; cursor: pointer; border: 3px solid transparent;
+  transition: all 0.25s; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  font-family: 'Nunito', sans-serif; background: white; box-shadow: var(--card-shadow);
+  min-height: 44px;
+}
+.dash-sphere-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+.dash-sphere-card.active { border-color: currentColor; transform: scale(1.03); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+.dash-sphere-card .ds-emoji { font-size: 30px; }
+.dash-sphere-card .ds-title { font-size: 14px; font-weight: 900; }
+.dash-sphere-card.sc-atmo { color: var(--atmo-c); background: var(--atmo-l); }
+.dash-sphere-card.sc-hydro { color: var(--hydro-c); background: var(--hydro-l); }
+.dash-sphere-card.sc-geo { color: var(--geo-c); background: var(--geo-l); }
+.dash-sphere-card.sc-bio { color: var(--bio-c); background: var(--bio-l); }
+
+/* ── SIDE COLUMN (CONTROLS & GAUGES) ── */
+.sim-side-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.side-card {
+  background: white; border-radius: 24px; padding: 20px;
+  box-shadow: var(--card-shadow);
+}
+.side-card .sc-title { font-size: 17px; font-weight: 900; margin-bottom: 16px; border-bottom: 2px solid #ECEFF1; padding-bottom: 8px; }
+
+/* Quest Card (Active Mission) */
+.quest-card {
+  background: linear-gradient(135deg, #1565C0, #0D47A1);
+  color: white; border-radius: 24px;
+}
+.qc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.qc-badge { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+.qc-stars { font-size: 15px; font-weight: 900; background: #FFD54F; color: #5D4037; padding: 4px 10px; border-radius: 50px; }
+.qc-title { font-size: 19px; font-weight: 900; margin-bottom: 6px; }
+.qc-desc { font-size: 14px; opacity: 0.9; margin-bottom: 12px; line-height: 1.4; }
+.qc-hint { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 8px 12px; font-size: 12px; margin-bottom: 16px; border-left: 3px solid #FFD54F; }
+.qc-progress-bar { height: 10px; background: rgba(255,255,255,0.25); border-radius: 5px; overflow: hidden; margin-bottom: 6px; }
+.qc-progress-fill { height: 100%; background: #4CAF50; transition: width 0.3s; }
+.qc-progress-text { font-size: 11px; text-align: right; opacity: 0.8; font-weight: 700; }
+
+/* Measurement Tools / Gauges */
+.meter-item { margin-bottom: 14px; }
+.meter-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 800; margin-bottom: 6px; color: #555; }
+.meter-value { font-weight: 900; color: #111; }
+.meter-bar { height: 12px; background: #ECEFF1; border-radius: 50px; overflow: hidden; }
+.meter-fill { height: 100%; transition: width 0.2s, background-color 0.2s; }
+
+/* Control panel / slider */
+.slider-container { margin-bottom: 20px; }
+.slider-label-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 14px; margin-bottom: 8px; color: #444; }
+.slider-val { font-size: 15px; color: #D84315; font-weight: 900; }
+.slider-wrapper { display: flex; align-items: center; gap: 8px; }
+.slider-side-label { font-size: 12px; font-weight: bold; color: #777; }
+input[type="range"] {
+  flex: 1; -webkit-appearance: none; appearance: none; height: 8px; border-radius: 4px; background: #CFD8DC; outline: none; cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #D84315; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: transform 0.1s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+
+/* Superpower Controls */
+.superpowers-row { display: flex; gap: 8px; }
+.sp-btn {
+  flex: 1; padding: 12px 6px; border-radius: 12px; border: none; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800;
+  cursor: pointer; background: #ECEFF1; color: #37474F; transition: all 0.2s; min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 4px;
+}
+.sp-btn:hover { background: #CFD8DC; transform: translateY(-1px); }
+.sp-btn:active { transform: translateY(1px); }
+.sp-btn.active { background: #E0F2F1; border: 1.5px solid #009688; color: #00796B; }
+
+/* ══════════════ ACHIEVEMENTS ══════════════ */
 #quiz {
-  background: linear-gradient(160deg, #F3E5F5 0%, #E8EAF6 100%);
+  background: linear-gradient(135deg, #F3E5F5 0%, #EDE7F6 100%);
   min-height: calc(100vh - var(--nav-h));
 }
-.quiz-inner { max-width: 780px; margin: 0 auto; padding: 36px 20px 48px; }
-.quiz-title { text-align: center; font-size: clamp(24px,5vw,38px); font-weight: 900; margin-bottom: 6px; }
-.quiz-sub { text-align: center; color: #777; margin-bottom: 28px; font-size: 14px; }
+.achieve-inner { max-width: 800px; margin: 0 auto; padding: 36px 20px; }
+.achieve-title { text-align: center; font-size: 32px; font-weight: 900; margin-bottom: 6px; color: #4A148C; }
+.achieve-sub { text-align: center; color: #666; margin-bottom: 30px; font-size: 15px; }
 
-.q-card {
-  background: white; border-radius: 20px; padding: 26px;
-  margin-bottom: 18px; box-shadow: 0 4px 18px rgba(0,0,0,0.07);
-  border: 2px solid transparent; transition: border-color 0.3s;
+/* Stats box */
+.stats-box {
+  background: white; border-radius: 24px; padding: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  box-shadow: var(--card-shadow); margin-bottom: 30px; text-align: center;
 }
-.q-card.q-correct { border-color: #4CAF50; background: #F1F8E9; }
-.q-card.q-wrong   { border-color: #F44336; background: #FFF3F3; }
-.q-text { font-size: 16px; font-weight: 800; margin-bottom: 16px; line-height: 1.5; }
-.q-opts { display: flex; flex-direction: column; gap: 10px; }
-.q-opt {
-  padding: 13px 18px; border-radius: 12px; border: 2px solid #E0E0E0;
-  background: #FAFAFA; cursor: pointer;
-  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700;
-  text-align: left; transition: all 0.2s; color: #333;
+@media (max-width: 500px) {
+  .stats-box { grid-template-columns: 1fr; }
 }
-.q-opt:hover { background: #EDE7F6; border-color: #9575CD; transform: translateX(4px); }
-.q-opt.sel { background: #EDE7F6; border-color: #7E57C2; }
-.q-opt.opt-correct { background: #E8F5E9; border-color: #4CAF50; color: #1B5E20; }
-.q-opt.opt-wrong   { background: #FFEBEE; border-color: #F44336; color: #B71C1C; }
+.stat-val { font-size: 32px; font-weight: 900; color: #5E35B1; line-height: 1; margin-bottom: 6px; }
+.stat-lbl { font-size: 13px; font-weight: 800; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
 
-.q-tf { display: flex; gap: 12px; }
-.q-tf-btn {
-  flex: 1; padding: 14px; border-radius: 12px; border: 2px solid #E0E0E0;
-  background: #FAFAFA; font-family: 'Nunito', sans-serif;
-  font-size: 16px; font-weight: 900; cursor: pointer; transition: all 0.2s; color: #333;
+/* Badge showroom */
+.badges-title { font-size: 20px; font-weight: 900; margin-bottom: 16px; color: #333; }
+.badge-grid { display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; }
+.badge-card {
+  background: white; border-radius: 20px; padding: 18px; box-shadow: var(--card-shadow);
+  display: flex; align-items: center; gap: 18px; border: 2.5px solid transparent; transition: all 0.3s;
 }
-.q-tf-btn:hover { transform: scale(1.04); }
-.q-tf-btn.sel { background: #EDE7F6; border-color: #7E57C2; }
-.q-tf-btn.opt-correct { background: #E8F5E9; border-color: #4CAF50; color: #1B5E20; }
-.q-tf-btn.opt-wrong   { background: #FFEBEE; border-color: #F44336; color: #B71C1C; }
+.badge-card.unlocked { border-color: #81C784; background: #F1F8E9; }
+.badge-card.locked { opacity: 0.7; background: #FAFAFA; border-color: #E0E0E0; }
+.badge-icon {
+  font-size: 48px; min-width: 60px; height: 60px; border-radius: 50%; background: #ECEFF1; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.badge-card.unlocked .badge-icon { background: #FFD54F; animation: badgePulse 2s infinite; }
+.badge-card.locked .badge-icon { filter: grayscale(1.0); }
+.badge-info { flex: 1; }
+.badge-name { font-size: 17px; font-weight: 900; display: flex; align-items: center; gap: 6px; }
+.badge-card.locked .badge-name { color: #888; }
+.badge-desc { font-size: 13px; color: #666; margin-top: 4px; line-height: 1.4; }
+.badge-status {
+  padding: 4px 12px; border-radius: 50px; font-size: 11px; font-weight: 900; text-transform: uppercase;
+}
+.badge-card.unlocked .badge-status { background: #E8F5E9; color: #2E7D32; }
+.badge-card.locked .badge-status { background: #EEEEEE; color: #757575; }
 
-.q-submit {
-  display: block; width: 100%; padding: 18px;
-  background: linear-gradient(135deg,#7E57C2,#5C6BC0);
+.reset-game-btn {
+  display: block; width: 100%; padding: 16px; text-align: center;
+  background: linear-gradient(135deg,#7E57C2,#5E35B1);
   color: white; border: none; border-radius: 16px;
-  font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900;
-  cursor: pointer; transition: all 0.3s; margin-top: 8px;
-}
-.q-submit:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(126,87,194,0.45); }
-
-/* Results */
-.quiz-results { display: none; margin-top: 32px; animation: fadeUp 0.5s ease; }
-.quiz-results.vis { display: block; }
-.res-card {
-  background: white; border-radius: 24px; padding: 32px; text-align: center;
-  box-shadow: 0 8px 36px rgba(0,0,0,0.1); margin-bottom: 24px;
-}
-.res-emoji { font-size: 64px; margin-bottom: 8px; }
-.res-msg { font-size: 26px; font-weight: 900; margin-bottom: 6px; }
-.res-score { font-size: 52px; font-weight: 900; margin: 14px 0; }
-.res-pct { font-size: 18px; color: #888; margin-bottom: 12px; }
-.res-badges { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-.res-badge {
-  padding: 10px 22px; border-radius: 50px; font-size: 15px; font-weight: 800;
-}
-.rb-ok { background: #E8F5E9; color: #2E7D32; }
-.rb-no { background: #FFEBEE; color: #C62828; }
-
-.rev-item {
-  background: white; border-radius: 18px; padding: 22px;
-  margin-bottom: 14px; text-align: left; box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-}
-.rev-q { font-size: 15px; font-weight: 800; margin-bottom: 8px; }
-.rev-user { font-size: 13px; margin-bottom: 4px; }
-.rev-correct { color: #2E7D32; font-weight: 700; }
-.rev-wrong   { color: #C62828; font-weight: 700; }
-.rev-exp { font-size: 13px; color: #666; background: #F5F5F5; padding: 10px 14px; border-radius: 10px; margin-top: 8px; line-height: 1.5; }
-
-.retry-btn {
-  display: block; width: 100%; padding: 16px;
-  background: linear-gradient(135deg,#7E57C2,#5C6BC0);
-  color: white; border: none; border-radius: 14px;
   font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 900;
-  cursor: pointer; transition: all 0.3s;
+  cursor: pointer; transition: all 0.25s;
 }
-.retry-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(126,87,194,0.4); }
+.reset-game-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(126,87,194,0.4); }
 
-/* ── Animations ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* ── MODALS (SUCCESS / BADGES) ── */
+.game-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  z-index: 1000; display: flex; align-items: center; justify-content: center;
+  padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s;
 }
-@keyframes float { 0%,100%{transform:translateX(0)} 50%{transform:translateX(8px)} }
-@keyframes sunpulse { 0%,100%{opacity:1} 50%{opacity:.75} }
-@keyframes raindrop { 0%{transform:translateY(0);opacity:1} 100%{transform:translateY(28px);opacity:0} }
-@keyframes arrowDash { from{stroke-dashoffset:120} to{stroke-dashoffset:0} }
-@keyframes confettiFall { to{transform:translateY(110vh) rotate(720deg);opacity:0} }
-@media (prefers-reduced-motion:reduce) { *{animation:none!important;transition:none!important} }
+.game-overlay.open { opacity: 1; pointer-events: auto; }
+.game-modal-box {
+  background: white; border-radius: 28px; padding: 36px 24px;
+  max-width: 460px; width: 100%; text-align: center;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+  transform: scale(0.8) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.25);
+  border-top: 8px solid #FFD54F;
+  position: relative;
+}
+.game-overlay.open .game-modal-box { transform: scale(1) translateY(0); }
+.gm-emoji { font-size: 64px; margin-bottom: 12px; line-height: 1; }
+.gm-title { font-size: 24px; font-weight: 900; color: #333; margin-bottom: 10px; }
+.gm-message { font-size: 15px; line-height: 1.5; color: #555; margin-bottom: 24px; }
+.gm-btn {
+  padding: 12px 28px; border-radius: 50px; border: none;
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800;
+  cursor: pointer; background: linear-gradient(135deg, #0277BD, #2E7D32);
+  color: white; transition: all 0.2s; min-height: 44px;
+}
+.gm-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(2,119,189,0.3); }
 
-/* ── Confetti ── */
+/* Confetti Piece */
 .confetti-piece {
-  position: fixed; width: 10px; height: 10px; top: -10px;
+  position: fixed; width: 9px; height: 9px; top: -10px;
   border-radius: 2px; animation: confettiFall linear forwards;
   pointer-events: none; z-index: 9999;
 }
 
+/* ── ANIMATIONS ── */
+@keyframes float { 0%,100%{transform:translateX(0)} 50%{transform:translateX(8px)} }
+@keyframes sunpulse { 0%,100%{opacity:1; transform:scale(1)} 50%{opacity:.8; transform:scale(1.03)} }
+@keyframes arrowDash { from{stroke-dashoffset:120} to{stroke-dashoffset:0} }
+@keyframes confettiFall { to{transform:translateY(110vh) rotate(720deg);opacity:0} }
+@keyframes badgePulse { 0%,100%{transform:scale(1);box-shadow:0 4px 10px rgba(0,0,0,0.05)} 50%{transform:scale(1.05);box-shadow:0 8px 20px rgba(255,213,79,0.4)} }
+
 @media (max-width: 600px) {
-  .nav-btn span.nav-label { display: none; }
-  .how-inner, .quiz-inner, .home-inner { padding: 20px 12px 32px; }
+  .nav-btn span { display: none; }
+  .sim-inner, .achieve-inner, .home-inner { padding: 16px 10px; }
+  .side-card { padding: 16px; }
 }
 </style>
 </head>
@@ -315,270 +394,409 @@ nav {
 
 <!-- ══ NAV ══ -->
 <nav>
-  <div class="nav-logo">🌍 Earth's 4 Spheres</div>
-  <button class="nav-btn active" onclick="showSection('home',this)">🏠 <span class="nav-label">Home</span></button>
-  <button class="nav-btn" onclick="showSection('how',this)">🔄 <span class="nav-label">How They Work</span></button>
-  <button class="nav-btn" onclick="showSection('quiz',this)">📝 <span class="nav-label">Quiz</span></button>
+  <div class="nav-logo" id="logo" tabindex="0">🌍 Water Cycle Lab</div>
+  <button class="nav-btn active" id="nav-home" onclick="showSection('home',this)" aria-label="Home page">🏠 <span>Home</span></button>
+  <button class="nav-btn" id="nav-how" onclick="showSection('how',this)" aria-label="Simulation Lab">🔬 <span>Simulation Lab</span></button>
+  <button class="nav-btn" id="nav-quiz" onclick="showSection('quiz',this)" aria-label="Achievements Center">🏆 <span>Achievements</span></button>
 </nav>
 
 <!-- ══════════ HOME ══════════ -->
 <div class="section active" id="home">
   <div class="home-inner">
-    <h1 class="home-title">🌍 Earth's 4 Spheres</h1>
-    <p class="home-sub">Discover how Earth's spheres work together to support life.</p>
-    <div class="home-badge">👇 Click any sphere to explore!</div>
+    <h1 class="home-title" tabindex="0">🌍 Earth's 4 Spheres & The Water Cycle</h1>
+    <p class="home-sub" tabindex="0">How do the Atmosphere, Hydrosphere, Geosphere, and Biosphere work together?</p>
+    <div class="home-badge" tabindex="0">👇 Click any sphere card below to launch the Simulation!</div>
     <div class="spheres-grid">
-      <div class="sphere-card sc-atmo" onclick="openModal('atmo')">
+      <div class="sphere-card sc-atmo" tabindex="0" onclick="homeCardClicked('atmo')" role="button" aria-label="Explore Atmosphere in simulation">
         <span class="s-emoji">🌤</span>
         <h3>Atmosphere</h3>
-        <p>The air around Earth</p>
+        <p>The air and gases wrapping around Earth. Contains clouds, condensation, and rain!</p>
       </div>
-      <div class="sphere-card sc-hydro" onclick="openModal('hydro')">
+      <div class="sphere-card sc-hydro" tabindex="0" onclick="homeCardClicked('hydro')" role="button" aria-label="Explore Hydrosphere in simulation">
         <span class="s-emoji">💧</span>
         <h3>Hydrosphere</h3>
-        <p>All water on Earth</p>
+        <p>All liquid and solid water. Includes oceans, rivers, rain, collection, and evaporation!</p>
       </div>
-      <div class="sphere-card sc-geo" onclick="openModal('geo')">
+      <div class="sphere-card sc-geo" tabindex="0" onclick="homeCardClicked('geo')" role="button" aria-label="Explore Geosphere in simulation">
         <span class="s-emoji">🏔</span>
         <h3>Geosphere</h3>
-        <p>Land, rocks & soil</p>
+        <p>The solid land, soil, mountains, and groundwater storage beneath our feet!</p>
       </div>
-      <div class="sphere-card sc-bio" onclick="openModal('bio')">
+      <div class="sphere-card sc-bio" tabindex="0" onclick="homeCardClicked('bio')" role="button" aria-label="Explore Biosphere in simulation">
         <span class="s-emoji">🌱</span>
         <h3>Biosphere</h3>
-        <p>All living things</p>
+        <p>Every living organism. Plants absorb groundwater and drive transpiration back into the air!</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════ HOW THEY WORK ══════════ -->
+<!-- ══════════ SIMULATION LAB ══════════ -->
 <div class="section" id="how">
-  <div class="how-inner">
-    <h2 class="how-title">🔄 How They Work Together</h2>
-    <p class="how-sub">Click a sphere below to see its role in the Water Cycle!</p>
+  <div class="sim-inner">
+    <div class="sim-dashboard">
+      
+      <!-- Main Columns -->
+      <div class="sim-main-col">
+        <!-- SVG diagram & Canvas -->
+        <div class="wc-wrap" id="wc-container">
+          <svg id="wc-svg" viewBox="0 0 860 480" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="marr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+              <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#81D4FA"/>
+                <stop offset="100%" stop-color="#E1F5FE"/>
+              </linearGradient>
+              <linearGradient id="gndG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#8BC34A"/>
+                <stop offset="30%" stop-color="#795548"/>
+                <stop offset="100%" stop-color="#5D4037"/>
+              </linearGradient>
+              <linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#29B6F6"/>
+                <stop offset="100%" stop-color="#0277BD"/>
+              </linearGradient>
+              <radialGradient id="sunG" cx="50%" cy="50%" r="50%">
+                <stop offset="55%" stop-color="#FFD54F"/>
+                <stop offset="100%" stop-color="#FFD54F" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
 
-    <!-- WATER CYCLE SVG DIAGRAM -->
-    <div class="wc-wrap">
-      <svg id="wc-svg" viewBox="0 0 860 480" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <marker id="marr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </marker>
-          <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#81D4FA"/>
-            <stop offset="100%" stop-color="#E1F5FE"/>
-          </linearGradient>
-          <linearGradient id="gndG" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#8BC34A"/>
-            <stop offset="30%" stop-color="#795548"/>
-            <stop offset="100%" stop-color="#5D4037"/>
-          </linearGradient>
-          <linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#29B6F6"/>
-            <stop offset="100%" stop-color="#0277BD"/>
-          </linearGradient>
-          <radialGradient id="sunG" cx="50%" cy="50%" r="50%">
-            <stop offset="55%" stop-color="#FFD54F"/>
-            <stop offset="100%" stop-color="#FFD54F" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
+            <!-- SKY -->
+            <rect x="0" y="0" width="860" height="340" fill="url(#skyG)"/>
+            <!-- GROUND -->
+            <rect x="0" y="340" width="860" height="140" fill="url(#gndG)"/>
+            <rect x="0" y="336" width="860" height="14" fill="#66BB6A" id="wcp-soil"/>
 
-        <!-- SKY -->
-        <rect x="0" y="0" width="860" height="340" fill="url(#skyG)"/>
-        <!-- GROUND -->
-        <rect x="0" y="340" width="860" height="140" fill="url(#gndG)"/>
-        <rect x="0" y="336" width="860" height="14" fill="#66BB6A"/>
+            <!-- OCEAN -->
+            <g tabindex="0" class="svg-interactive wc-part" id="wcp-ocean" role="button" aria-label="Ocean (Hydrosphere)" onclick="svgItemClicked('hydro')">
+              <rect x="600" y="338" width="260" height="142" fill="url(#seaG)"/>
+              <text x="730" y="396" fill="white" font-family="Nunito" font-size="16" font-weight="800" text-anchor="middle">🌊 Ocean</text>
+              <text x="730" y="414" fill="rgba(255,255,255,0.75)" font-family="Nunito" font-size="11" text-anchor="middle">Hydrosphere</text>
+            </g>
 
-        <!-- OCEAN -->
-        <rect class="wc-part" id="wcp-ocean" x="600" y="338" width="260" height="142" fill="url(#seaG)"/>
-        <text x="730" y="396" fill="white" font-family="Nunito" font-size="16" font-weight="800" text-anchor="middle">🌊 Ocean</text>
-        <text x="730" y="414" fill="rgba(255,255,255,0.75)" font-family="Nunito" font-size="11" text-anchor="middle">Hydrosphere</text>
+            <!-- RIVER -->
+            <g tabindex="0" class="svg-interactive wc-part" id="wcp-river" role="button" aria-label="River (Hydrosphere)" onclick="svgItemClicked('hydro')">
+              <path d="M310,340 Q390,346 480,340 Q540,334 598,340" stroke="#29B6F6" stroke-width="16" fill="none" stroke-linecap="round"/>
+              <text x="450" y="333" fill="#0277BD" font-family="Nunito" font-size="12" font-weight="700" text-anchor="middle">🏞 River</text>
+            </g>
 
-        <!-- RIVER -->
-        <path class="wc-part" id="wcp-river" d="M310,340 Q390,346 480,340 Q540,334 598,340" stroke="#29B6F6" stroke-width="16" fill="none" stroke-linecap="round"/>
-        <text x="450" y="333" fill="#0277BD" font-family="Nunito" font-size="12" font-weight="700" text-anchor="middle">🏞 River</text>
+            <!-- MOUNTAIN -->
+            <g tabindex="0" class="svg-interactive wc-part" id="wcp-mountain" role="button" aria-label="Mountain (Geosphere)" onclick="svgItemClicked('geo')">
+              <polygon points="100,340 205,170 315,340" fill="#78909C"/>
+              <polygon points="155,340 205,225 260,340" fill="#90A4AE"/>
+              <polygon points="190,202 205,168 221,202 213,210 198,210" fill="white"/>
+              <text x="205" y="362" fill="#37474F" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">🏔 Mountain</text>
+              <text x="205" y="376" fill="#546E7A" font-family="Nunito" font-size="10" text-anchor="middle">Geosphere</text>
+            </g>
 
-        <!-- MOUNTAIN -->
-        <polygon class="wc-part" id="wcp-mountain" points="100,340 205,170 315,340" fill="#78909C"/>
-        <polygon points="155,340 205,225 260,340" fill="#90A4AE"/>
-        <polygon points="190,202 205,168 221,202 213,210 198,210" fill="white"/>
-        <text x="205" y="362" fill="#37474F" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">🏔 Mountain</text>
-        <text x="205" y="376" fill="#546E7A" font-family="Nunito" font-size="10" text-anchor="middle">Geosphere</text>
+            <!-- GROUNDWATER (Geosphere) -->
+            <g tabindex="0" class="svg-interactive wc-part" id="wcp-groundwater" role="button" aria-label="Groundwater (Geosphere)" onclick="svgItemClicked('geo')">
+              <path d="M50,430 Q250,440 450,420 T750,430" stroke="#80DEEA" stroke-width="6" stroke-dasharray="10 8" fill="none" opacity="0.8"/>
+              <text x="350" y="460" fill="#006064" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">💧 Groundwater Storage</text>
+            </g>
 
-        <!-- SOIL/GROUND LABEL -->
-        <text x="60" y="396" fill="#4E342E" font-family="Nunito" font-size="12" font-weight="700">🌱 Soil</text>
-        <text x="60" y="412" fill="#795548" font-family="Nunito" font-size="10">(Geosphere)</text>
+            <!-- SOIL/GROUND LABEL -->
+            <g tabindex="0" class="svg-interactive wc-part" id="wcp-soil-label" role="button" aria-label="Soil (Geosphere)" onclick="svgItemClicked('geo')">
+              <text x="60" y="396" fill="#4E342E" font-family="Nunito" font-size="12" font-weight="700">🌱 Soil</text>
+              <text x="60" y="412" fill="#795548" font-family="Nunito" font-size="10">(Geosphere)</text>
+            </g>
 
-        <!-- TREES -->
-        <g class="wc-part" id="wcp-trees">
-          <rect x="334" y="296" width="9" height="44" fill="#5D4037"/>
-          <ellipse cx="338" cy="280" rx="22" ry="26" fill="#2E7D32"/>
-          <ellipse cx="348" cy="288" rx="16" ry="20" fill="#388E3C"/>
-          <rect x="372" y="300" width="8" height="40" fill="#5D4037"/>
-          <ellipse cx="376" cy="284" rx="19" ry="23" fill="#2E7D32"/>
-          <ellipse cx="385" cy="291" rx="14" ry="18" fill="#388E3C"/>
-          <rect x="406" y="298" width="9" height="42" fill="#5D4037"/>
-          <ellipse cx="410" cy="281" rx="21" ry="25" fill="#338733"/>
-          <text x="375" y="374" fill="#1B5E20" font-family="Nunito" font-size="12" font-weight="800" text-anchor="middle">🌳 Trees &amp; Plants</text>
-          <text x="375" y="387" fill="#2E7D32" font-family="Nunito" font-size="10" text-anchor="middle">Biosphere</text>
-        </g>
+            <!-- TREES -->
+            <g tabindex="0" class="svg-interactive wc-part" id="wcp-trees" role="button" aria-label="Trees and Plants (Biosphere)" onclick="svgItemClicked('bio')">
+              <rect x="334" y="296" width="9" height="44" fill="#5D4037"/>
+              <ellipse cx="338" cy="280" rx="22" ry="26" fill="#2E7D32"/>
+              <ellipse cx="348" cy="288" rx="16" ry="20" fill="#388E3C"/>
+              <rect x="372" y="300" width="8" height="40" fill="#5D4037"/>
+              <ellipse cx="376" cy="284" rx="19" ry="23" fill="#2E7D32"/>
+              <ellipse cx="385" cy="291" rx="14" ry="18" fill="#388E3C"/>
+              <rect x="406" y="298" width="9" height="42" fill="#5D4037"/>
+              <ellipse cx="410" cy="281" rx="21" ry="25" fill="#338733"/>
+              <text x="375" y="374" fill="#1B5E20" font-family="Nunito" font-size="12" font-weight="800" text-anchor="middle">🌳 Trees &amp; Plants</text>
+              <text x="375" y="387" fill="#2E7D32" font-family="Nunito" font-size="10" text-anchor="middle">Biosphere</text>
+            </g>
 
-        <!-- SUN -->
-        <g class="wc-part" id="wcp-sun">
-          <circle cx="760" cy="62" r="44" fill="url(#sunG)" style="animation:sunpulse 3s ease-in-out infinite"/>
-          <circle cx="760" cy="62" r="32" fill="#FFD54F" style="animation:sunpulse 2s ease-in-out infinite"/>
-          <g stroke="#FFB300" stroke-width="2.5" stroke-linecap="round">
-            <line x1="760" y1="16" x2="760" y2="7"/>
-            <line x1="760" y1="108" x2="760" y2="117"/>
-            <line x1="714" y1="62" x2="705" y2="62"/>
-            <line x1="806" y1="62" x2="815" y2="62"/>
-            <line x1="727" y1="29" x2="721" y2="23"/>
-            <line x1="793" y1="95" x2="799" y2="101"/>
-            <line x1="793" y1="29" x2="799" y2="23"/>
-            <line x1="727" y1="95" x2="721" y2="101"/>
-          </g>
-          <text x="760" y="66" fill="#E65100" font-family="Nunito" font-size="14" font-weight="900" text-anchor="middle">☀ Sun</text>
-        </g>
+            <!-- SUN -->
+            <g class="wc-part" id="wcp-sun">
+              <circle cx="760" cy="62" r="44" fill="url(#sunG)" style="animation:sunpulse 3s ease-in-out infinite"/>
+              <circle cx="760" cy="62" r="32" fill="#FFD54F" style="animation:sunpulse 2s ease-in-out infinite"/>
+              <g stroke="#FFB300" stroke-width="2.5" stroke-linecap="round">
+                <line x1="760" y1="16" x2="760" y2="7"/>
+                <line x1="760" y1="108" x2="760" y2="117"/>
+                <line x1="714" y1="62" x2="705" y2="62"/>
+                <line x1="806" y1="62" x2="815" y2="62"/>
+                <line x1="727" y1="29" x2="721" y2="23"/>
+                <line x1="793" y1="95" x2="799" y2="101"/>
+                <line x1="793" y1="29" x2="799" y2="23"/>
+                <line x1="727" y1="95" x2="721" y2="101"/>
+              </g>
+              <text x="760" y="66" fill="#E65100" font-family="Nunito" font-size="14" font-weight="900" text-anchor="middle">☀ Sun</text>
+            </g>
 
-        <!-- CLOUDS -->
-        <g class="wc-part" id="wcp-clouds" style="animation:float 4.5s ease-in-out infinite">
-          <ellipse cx="215" cy="95" rx="58" ry="36" fill="white" opacity="0.96"/>
-          <ellipse cx="180" cy="104" rx="34" ry="25" fill="white" opacity="0.96"/>
-          <ellipse cx="252" cy="103" rx="36" ry="23" fill="white" opacity="0.96"/>
-          <ellipse cx="215" cy="112" rx="58" ry="20" fill="white"/>
-          <text x="215" y="98" fill="#0277BD" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">☁ Clouds</text>
-          <text x="215" y="113" fill="#29B6F6" font-family="Nunito" font-size="10" text-anchor="middle">Atmosphere</text>
-        </g>
+            <!-- CLOUDS -->
+            <g tabindex="0" class="svg-interactive wc-part" id="wcp-clouds" role="button" aria-label="Clouds (Atmosphere)" style="animation:float 4.5s ease-in-out infinite" onclick="svgItemClicked('atmo')">
+              <ellipse cx="215" cy="95" rx="58" ry="36" fill="white" opacity="0.96"/>
+              <ellipse cx="180" cy="104" rx="34" ry="25" fill="white" opacity="0.96"/>
+              <ellipse cx="252" cy="103" rx="36" ry="23" fill="white" opacity="0.96"/>
+              <ellipse cx="215" cy="112" rx="58" ry="20" fill="white"/>
+              <text x="215" y="98" fill="#0277BD" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">☁ Clouds</text>
+              <text x="215" y="113" fill="#29B6F6" font-family="Nunito" font-size="10" text-anchor="middle">Atmosphere</text>
+            </g>
 
-        <!-- Cloud 2 smaller -->
-        <g class="wc-part" id="wcp-clouds2" style="animation:float 6s ease-in-out infinite 1s">
-          <ellipse cx="490" cy="80" rx="46" ry="28" fill="white" opacity="0.85"/>
-          <ellipse cx="460" cy="88" rx="28" ry="20" fill="white" opacity="0.85"/>
-          <ellipse cx="520" cy="87" rx="30" ry="18" fill="white" opacity="0.85"/>
-        </g>
+            <!-- Cloud 2 smaller -->
+            <g class="wc-part" id="wcp-clouds2" style="animation:float 6s ease-in-out infinite 1s">
+              <ellipse cx="490" cy="80" rx="46" ry="28" fill="white" opacity="0.85"/>
+              <ellipse cx="460" cy="88" rx="28" ry="20" fill="white" opacity="0.85"/>
+              <ellipse cx="520" cy="87" rx="30" ry="18" fill="white" opacity="0.85"/>
+            </g>
 
-        <!-- ── PROCESS ARROWS & LABELS ── -->
+            <!-- ── PROCESS ARROWS & LABELS ── -->
 
-        <!-- EVAPORATION ocean → cloud -->
-        <path class="wc-part" id="wcp-evap" d="M670,335 Q640,210 530,110"
-          stroke="#29B6F6" stroke-width="3" fill="none" stroke-dasharray="10 6"
-          marker-end="url(#marr)"
-          style="animation:arrowDash 2.5s linear infinite"/>
-        <rect x="555" y="185" width="120" height="28" rx="11" fill="#E1F5FE" opacity="0.93"/>
-        <text x="615" y="203" fill="#0277BD" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">⬆ Evaporation</text>
+            <!-- EVAPORATION ocean → cloud -->
+            <g tabindex="0" class="svg-interactive wc-part" id="wcp-evap" role="button" aria-label="Evaporation (Ocean to Clouds)" onclick="svgItemClicked('hydro')">
+              <path d="M670,335 Q640,210 530,110"
+                stroke="#29B6F6" stroke-width="3" fill="none" stroke-dasharray="10 6"
+                marker-end="url(#marr)"
+                style="animation:arrowDash 2.5s linear infinite"/>
+              <rect x="555" y="185" width="120" height="28" rx="11" fill="#E1F5FE" opacity="0.93"/>
+              <text x="615" y="203" fill="#0277BD" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">⬆ Evaporation</text>
+            </g>
 
-        <!-- CONDENSATION label near clouds -->
-        <rect x="265" y="65" width="130" height="26" rx="11" fill="#E3F2FD" opacity="0.92"/>
-        <text x="330" y="82" fill="#1565C0" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">☁ Condensation</text>
+            <!-- CONDENSATION label near clouds -->
+            <g tabindex="0" class="svg-interactive wc-part" id="wcp-condens" role="button" aria-label="Condensation (Vapor to Clouds)" onclick="svgItemClicked('atmo')">
+              <rect x="265" y="65" width="130" height="26" rx="11" fill="#E3F2FD" opacity="0.92"/>
+              <text x="330" y="82" fill="#1565C0" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">☁ Condensation</text>
+            </g>
 
-        <!-- PRECIPITATION clouds → ground -->
-        <path class="wc-part" id="wcp-precip" d="M215,132 Q225,225 270,320"
-          stroke="#1565C0" stroke-width="3" fill="none" stroke-dasharray="10 6"
-          marker-end="url(#marr)"
-          style="animation:arrowDash 2s linear infinite 0.5s"/>
-        <!-- rain drops -->
-        <g id="wcp-rain" style="animation:raindrop 1.6s ease-in infinite">
-          <text x="190" y="165" font-size="13">💧</text>
-          <text x="206" y="180" font-size="13">💧</text>
-          <text x="222" y="165" font-size="13">💧</text>
-          <text x="237" y="180" font-size="13">💧</text>
-        </g>
-        <rect x="100" y="160" width="124" height="27" rx="11" fill="#E8EAF6" opacity="0.92"/>
-        <text x="162" y="178" fill="#283593" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">⬇ Precipitation</text>
+            <!-- PRECIPITATION clouds → ground -->
+            <g tabindex="0" class="svg-interactive wc-part" id="wcp-precip" role="button" aria-label="Precipitation (Clouds to Ground)" onclick="svgItemClicked('atmo')">
+              <path d="M215,132 Q225,225 270,320"
+                stroke="#1565C0" stroke-width="3" fill="none" stroke-dasharray="10 6"
+                marker-end="url(#marr)"
+                style="animation:arrowDash 2s linear infinite 0.5s"/>
+              <rect x="100" y="160" width="124" height="27" rx="11" fill="#E8EAF6" opacity="0.92"/>
+              <text x="162" y="178" fill="#283593" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">⬇ Precipitation</text>
+            </g>
 
-        <!-- TRANSPIRATION trees → cloud2 -->
-        <path class="wc-part" id="wcp-transp" d="M390,276 Q420,190 460,108"
-          stroke="#4CAF50" stroke-width="3" fill="none" stroke-dasharray="10 6"
-          marker-end="url(#marr)"
-          style="animation:arrowDash 3s linear infinite 1s"/>
-        <rect x="398" y="186" width="118" height="27" rx="11" fill="#E8F5E9" opacity="0.93"/>
-        <text x="457" y="204" fill="#1B5E20" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">🌱 Transpiration</text>
+            <!-- TRANSPIRATION trees → cloud2 -->
+            <g tabindex="0" class="svg-interactive wc-part" id="wcp-transp" role="button" aria-label="Transpiration (Plants to Clouds)" onclick="svgItemClicked('bio')">
+              <path d="M390,276 Q420,190 460,108"
+                stroke="#4CAF50" stroke-width="3" fill="none" stroke-dasharray="10 6"
+                marker-end="url(#marr)"
+                style="animation:arrowDash 3s linear infinite 1s"/>
+              <rect x="398" y="186" width="118" height="27" rx="11" fill="#E8F5E9" opacity="0.93"/>
+              <text x="457" y="204" fill="#1B5E20" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">🌱 Transpiration</text>
+            </g>
 
-        <!-- COLLECTION river → ocean -->
-        <path class="wc-part" id="wcp-collect" d="M500,344 Q548,352 598,344"
-          stroke="#0277BD" stroke-width="3" fill="none"
-          marker-end="url(#marr)"
-          style="animation:arrowDash 2s linear infinite 0.2s"/>
-        <rect x="482" y="356" width="110" height="26" rx="11" fill="#E0F7FA" opacity="0.93"/>
-        <text x="537" y="373" fill="#006064" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">🌊 Collection</text>
+            <!-- COLLECTION river → ocean -->
+            <g tabindex="0" class="svg-interactive wc-part" id="wcp-collect" role="button" aria-label="Collection (Flow to Ocean)" onclick="svgItemClicked('hydro')">
+              <path d="M500,344 Q548,352 598,344"
+                stroke="#0277BD" stroke-width="3" fill="none"
+                marker-end="url(#marr)"
+                style="animation:arrowDash 2s linear infinite 0.2s"/>
+              <rect x="482" y="356" width="110" height="26" rx="11" fill="#E0F7FA" opacity="0.93"/>
+              <text x="537" y="373" fill="#006064" font-family="Nunito" font-size="13" font-weight="800" text-anchor="middle">🌊 Collection</text>
+            </g>
 
-        <!-- SUN energy arrow -->
-        <path d="M740,100 Q700,190 660,320" stroke="#FFB300" stroke-width="2.5" fill="none"
-          stroke-dasharray="8 5" marker-end="url(#marr)" opacity="0.55"/>
-        <text x="712" y="215" fill="#E65100" font-family="Nunito" font-size="11" font-weight="700" text-anchor="middle" transform="rotate(-60,712,215)">Energy</text>
+            <!-- SUN energy arrow -->
+            <path d="M740,100 Q700,190 660,320" stroke="#FFB300" stroke-width="2.5" fill="none"
+              stroke-dasharray="8 5" marker-end="url(#marr)" opacity="0.55"/>
+            <text x="712" y="215" fill="#E65100" font-family="Nunito" font-size="11" font-weight="700" text-anchor="middle" transform="rotate(-60,712,215)">Energy</text>
+          </svg>
 
-        <!-- Title tag -->
-        <rect x="8" y="8" width="228" height="40" rx="12" fill="rgba(255,255,255,0.88)"/>
-        <text x="122" y="33" fill="#1565C0" font-family="Nunito" font-size="16" font-weight="900" text-anchor="middle">💧 The Water Cycle</text>
-      </svg>
+          <!-- Canvas overlays particles dynamically -->
+          <canvas id="sim-canvas" width="860" height="480"></canvas>
+
+          <!-- Floating Info Tooltip -->
+          <div id="sim-tooltip" class="sim-tooltip" role="tooltip" aria-hidden="true">
+            <button class="tooltip-close" onclick="closeTooltip()" aria-label="Close tooltip">✕</button>
+            <div class="tooltip-title" id="tt-title">Atmosphere</div>
+            <div class="tooltip-body" id="tt-body">
+              <p>Description goes here.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Sphere highlights cards (exploration row) -->
+        <div class="dashboard-spheres-grid">
+          <button class="dash-sphere-card sc-atmo" id="card-atmo" onclick="selectSphere('atmo')" aria-label="Explore Atmosphere">
+            <span class="ds-emoji">🌤</span>
+            <span class="ds-title">Atmosphere</span>
+          </button>
+          <button class="dash-sphere-card sc-hydro" id="card-hydro" onclick="selectSphere('hydro')" aria-label="Explore Hydrosphere">
+            <span class="ds-emoji">💧</span>
+            <span class="ds-title">Hydrosphere</span>
+          </button>
+          <button class="dash-sphere-card sc-geo" id="card-geo" onclick="selectSphere('geo')" aria-label="Explore Geosphere">
+            <span class="ds-emoji">🏔</span>
+            <span class="ds-title">Geosphere</span>
+          </button>
+          <button class="dash-sphere-card sc-bio" id="card-bio" onclick="selectSphere('bio')" aria-label="Explore Biosphere">
+            <span class="ds-emoji">🌱</span>
+            <span class="ds-title">Biosphere</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Controls & Gauges Sidebar -->
+      <div class="sim-side-col">
+        
+        <!-- Mission Control / Challenge Quest Card -->
+        <div class="side-card quest-card" id="quest-widget">
+          <div class="qc-header">
+            <span class="qc-badge">🏆 Active Mission</span>
+            <span class="qc-stars" id="quest-stars" aria-label="Current Stars">⭐ 0/5</span>
+          </div>
+          <h3 class="qc-title" id="quest-title">Mission 1: The Rainmaker</h3>
+          <p class="qc-desc" id="quest-desc">Increase the sun's heat to create heavy rain.</p>
+          <div class="qc-hint" id="qc-hint-box">💡 <strong>Goal:</strong> <span id="quest-hint">Move the heat slider to 80% or higher.</span></div>
+          <div class="qc-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="quest-prog-bar" aria-valuenow="0">
+            <div class="qc-progress-fill" id="quest-progress-fill" style="width: 0%;"></div>
+          </div>
+          <div class="qc-progress-text" id="quest-progress-text">Challenge 1 of 5</div>
+        </div>
+
+        <!-- Live Meters -->
+        <div class="side-card meters-card">
+          <h3 class="sc-title">📊 Live Measurement Tools</h3>
+          
+          <div class="meter-item">
+            <div class="meter-header">
+              <span>🌡️ Temperature</span>
+              <span class="meter-value" id="temp-value">25°C (77°F)</span>
+            </div>
+            <div class="meter-bar">
+              <div class="meter-fill" id="temp-meter-fill" style="width: 50%;"></div>
+            </div>
+          </div>
+
+          <div class="meter-item">
+            <div class="meter-header">
+              <span>☁️ Cloud Density</span>
+              <span class="meter-value" id="cloud-value">50%</span>
+            </div>
+            <div class="meter-bar">
+              <div class="meter-fill" id="cloud-meter-fill" style="width: 50%;"></div>
+            </div>
+          </div>
+
+          <div class="meter-item">
+            <div class="meter-header">
+              <span>🌧️ Rainfall Rate</span>
+              <span class="meter-value" id="rain-value">0%</span>
+            </div>
+            <div class="meter-bar">
+              <div class="meter-fill" id="rain-meter-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulation controls -->
+        <div class="side-card controls-card">
+          <h3 class="sc-title">🎮 Simulation Control Station</h3>
+          
+          <div class="slider-container">
+            <div class="slider-label-row">
+              <span>☀️ Sun Heat Slider</span>
+              <span class="slider-val" id="heat-value-text">50%</span>
+            </div>
+            <div class="slider-wrapper">
+              <span class="slider-side-label">❄️ Low</span>
+              <input type="range" id="heat-slider" min="0" max="100" value="50" oninput="updateHeat(this.value)" aria-label="Adjust Heat Level">
+              <span class="slider-side-label">🔥 High</span>
+            </div>
+          </div>
+
+          <div class="superpowers-row">
+            <button class="sp-btn" id="btn-pause" onclick="togglePause()" aria-label="Pause simulation">⏸️ Pause</button>
+            <button class="sp-btn" id="btn-ff" onclick="cycleSpeed()" aria-label="Fast forward speed">⏩ 1x Speed</button>
+            <button class="sp-btn" id="btn-restart" onclick="restartCycle()" aria-label="Restart cycle">🔄 Reset</button>
+          </div>
+        </div>
+
+      </div>
+
     </div>
-
-    <!-- SPHERE HIGHLIGHT BUTTONS -->
-    <div class="hl-grid">
-      <div class="hl-card hc-atmo" onclick="hlSphere('atmo')">
-        <span class="hc-emoji">🌤</span>
-        <div><h4>Atmosphere</h4><p>Air & clouds</p></div>
-      </div>
-      <div class="hl-card hc-hydro" onclick="hlSphere('hydro')">
-        <span class="hc-emoji">💧</span>
-        <div><h4>Hydrosphere</h4><p>All water</p></div>
-      </div>
-      <div class="hl-card hc-geo" onclick="hlSphere('geo')">
-        <span class="hc-emoji">🏔</span>
-        <div><h4>Geosphere</h4><p>Land & rocks</p></div>
-      </div>
-      <div class="hl-card hc-bio" onclick="hlSphere('bio')">
-        <span class="hc-emoji">🌱</span>
-        <div><h4>Biosphere</h4><p>Living things</p></div>
-      </div>
-    </div>
-
-    <div id="hl-msg" class="hl-msg"></div>
   </div>
 </div>
 
-<!-- ══════════ QUIZ ══════════ -->
+<!-- ══════════ ACHIEVEMENTS ══════════ -->
 <div class="section" id="quiz">
-  <div class="quiz-inner">
-    <h2 class="quiz-title">📝 Quiz Time!</h2>
-    <p class="quiz-sub">Test your knowledge of Earth's 4 Spheres! 🧠</p>
-    <div id="q-form"></div>
-    <button class="q-submit" onclick="submitQuiz()">🚀 Submit My Answers!</button>
-    <div id="quiz-results" class="quiz-results"></div>
-  </div>
-</div>
+  <div class="achieve-inner">
+    <h2 class="achieve-title" tabindex="0">🏆 Your Achievements</h2>
+    <p class="achieve-sub" tabindex="0">Complete challenges in the Simulation Lab to earn stars and badges!</p>
 
-<!-- ══ SPHERE DETAIL MODAL ══ -->
-<div class="modal-overlay" id="sphere-modal" onclick="closeModalOutside(event)">
-  <div class="modal-box" id="modal-box">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-top">
-      <div class="modal-icon" id="m-icon"></div>
+    <!-- Stats row -->
+    <div class="stats-box">
       <div>
-        <div class="modal-title" id="m-title"></div>
-        <div class="modal-subtitle" id="m-subtitle"></div>
+        <div class="stat-val" id="stat-stars">0 / 5</div>
+        <div class="stat-lbl">⭐ Stars Earned</div>
+      </div>
+      <div>
+        <div class="stat-val" id="stat-quests">0 / 5</div>
+        <div class="stat-lbl">✅ Missions Done</div>
+      </div>
+      <div>
+        <div class="stat-val" id="stat-spheres">0 / 4</div>
+        <div class="stat-lbl">🔍 Spheres Explored</div>
       </div>
     </div>
-    <div class="modal-section">
-      <div class="modal-section-title">What is it?</div>
-      <p class="modal-desc" id="m-desc"></p>
-    </div>
-    <div class="modal-section">
-      <div class="modal-section-title">Real-life examples</div>
-      <div class="modal-examples" id="m-examples"></div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-fact" id="m-fact">
-        <strong>⭐ Fun Fact!</strong>
-        <span id="m-fact-text"></span>
+
+    <!-- Badge grid -->
+    <h3 class="badges-title" tabindex="0">🏅 Unlockable Badges</h3>
+    <div class="badge-grid">
+      
+      <!-- Explorer Badge -->
+      <div class="badge-card locked" id="badge-explorer">
+        <div class="badge-icon">💧</div>
+        <div class="badge-info">
+          <div class="badge-name">Water Cycle Explorer <span class="lock-status-icon">🔒</span></div>
+          <div class="badge-desc">Unlock this badge by completing 2 missions. Understands evaporation, condensation, and rain relationships!</div>
+        </div>
+        <span class="badge-status" id="badge-explorer-status">Locked</span>
       </div>
+
+      <!-- Detective Badge -->
+      <div class="badge-card locked" id="badge-detective">
+        <div class="badge-icon">🕵️‍♂️</div>
+        <div class="badge-info">
+          <div class="badge-name">Sphere Detective <span class="lock-status-icon">🔒</span></div>
+          <div class="badge-desc">Unlock this badge by exploring all 4 Sphere Cards in the Simulation Lab!</div>
+        </div>
+        <span class="badge-status" id="badge-detective-status">Locked</span>
+      </div>
+
+      <!-- Expert Badge -->
+      <div class="badge-card locked" id="badge-expert">
+        <div class="badge-icon">👑</div>
+        <div class="badge-info">
+          <div class="badge-name">Earth Expert <span class="lock-status-icon">🔒</span></div>
+          <div class="badge-desc">Unlock this badge by completing all 5 simulation missions successfully!</div>
+        </div>
+        <span class="badge-status" id="badge-expert-status">Locked</span>
+      </div>
+
     </div>
+
+    <button class="reset-game-btn" onclick="resetGameProgress()">🔄 Reset All Progress & Play Again</button>
   </div>
 </div>
 
+<!-- ══ SUCCESS MODAL OVERLAY ══ -->
+<div class="game-overlay" id="game-modal" role="dialog" aria-modal="true" aria-live="assertive">
+  <div class="game-modal-box">
+    <div class="gm-emoji" id="gm-emoji">🎉</div>
+    <h2 class="gm-title" id="gm-title">Quest Complete!</h2>
+    <p class="gm-message" id="gm-message">Success details here...</p>
+    <button class="gm-btn" id="gm-btn" onclick="closeGameModal()">Continue 🚀</button>
+  </div>
+</div>
+
+<!-- ══ SCRIPT ══ -->
 <script>
-// ── SECTION SWITCHER ──
+// ── TABS NAV ──
 function showSection(id, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -586,280 +804,772 @@ function showSection(id, btn) {
   btn.classList.add('active');
 }
 
-// ── SPHERE MODAL DATA ──
-const sphereData = {
+function homeCardClicked(sphereId) {
+  showSection('how', document.getElementById('nav-how'));
+  selectSphere(sphereId);
+}
+
+// ── SIMULATION & PARTICLE LOGIC ──
+const canvas = document.getElementById('sim-canvas');
+const ctx = canvas.getContext('2d');
+
+let isPaused = false;
+let speedMultiplier = 1;
+let heatLevel = 0.5; // default 50%
+let heatSliderValue = 50;
+let activeSphere = null;
+
+// Tooltip positioning and text details
+const tooltipData = {
   atmo: {
-    icon:'🌤', title:'Atmosphere', subtitle:'The Air Sphere',
-    desc:'The atmosphere is the layer of air and gases that wraps around Earth like a giant blanket. It gives us air to breathe and protects us from the sun!',
-    examples:['☁ Clouds','💨 Wind','🐦 Flying birds','🫁 Breathing','🌈 Rainbows','⛈ Storms'],
-    fact:'The atmosphere helps protect Earth from harmful rays of the Sun.',
-    factBg:'#E3F2FD', factColor:'#1565C0'
+    icon: '🌤️', title: 'Atmosphere', color: 'var(--atmo-c)',
+    desc: 'The layer of gases wrapping around Earth. Evaporated water rises here, cools and condenses to form <strong>Clouds</strong>, then falls as <strong>Rain (Precipitation)</strong>.',
+    examples: ['☁️ Clouds', '🌧️ Precipitation', '💨 Winds', '❄️ Snow'],
+    fact: 'The atmosphere blocks harmful solar radiation and keeps Earth cozy warm.'
   },
   hydro: {
-    icon:'💧', title:'Hydrosphere', subtitle:'The Water Sphere',
-    desc:'The hydrosphere includes ALL the water on Earth — in oceans, rivers, lakes, glaciers, and even underground. About 71% of Earth\'s surface is covered by water!',
-    examples:['🌊 Oceans','🏞 Rivers','🌧 Rain','🥤 Drinking water','🧊 Glaciers','🌊 Waves'],
-    fact:'About 71% of Earth is covered by water!',
-    factBg:'#E0F7FA', factColor:'#006064'
+    icon: '💧', title: 'Hydrosphere', color: 'var(--hydro-c)',
+    desc: 'All the liquid, solid, and gas water on Earth. Heat drives <strong>Evaporation</strong> from the ocean, and rain runoff flows back to the ocean via <strong>Collection</strong>.',
+    examples: ['🌊 Ocean', '🏞️ Rivers & Lakes', '🧊 Glaciers', '🌧️ Raindrops'],
+    fact: 'Over 97% of Earth\'s liquid water is held in the oceans!'
   },
   geo: {
-    icon:'🏔', title:'Geosphere', subtitle:'The Land Sphere',
-    desc:'The geosphere is the solid part of Earth — from the surface all the way down to the hot core! It includes land, rocks, mountains, and soil.',
-    examples:['🏔 Mountains','🪨 Rocks','🌱 Soil','🌋 Volcanoes','🏖 Beaches','🪨 Caves'],
-    fact:"The Earth's crust is part of the geosphere.",
-    factBg:'#F1F8E9', factColor:'#33691E'
+    icon: '🏔️', title: 'Geosphere', color: 'var(--geo-c)',
+    desc: 'The solid crust, soil, rocks, and earth. Water falls here, filtering through soil (infiltration) to accumulate underground as **Groundwater Storage**.',
+    examples: ['🏔️ Mountains', '🪨 Rocks', '🌱 Soil', '💧 Groundwater'],
+    fact: 'Water can stay trapped inside underground rock channels for thousands of years!'
   },
   bio: {
-    icon:'🌱', title:'Biosphere', subtitle:'The Life Sphere',
-    desc:'The biosphere includes every living thing on Earth! From tiny bacteria to giant whales, from mosses to tall trees — if it\'s alive, it\'s in the biosphere.',
-    examples:['🌳 Trees','🌸 Flowers','🐘 Animals','👤 Humans','🐟 Fish','🦋 Insects'],
-    fact:'Plants and animals are all part of the biosphere.',
-    factBg:'#FFF3E0', factColor:'#E65100'
+    icon: '🌱', title: 'Biosphere', color: 'var(--bio-c)',
+    desc: 'All life on Earth. Trees and plants absorb groundwater and release moisture back into the atmosphere through the process of <strong>Transpiration</strong>.',
+    examples: ['🌳 Trees & Plants', '🐘 Animals', '👤 Humans', '🐟 Fish'],
+    fact: 'A single mature oak tree can transpire over 150,000 liters of water in a single year!'
   }
 };
 
-function openModal(id) {
-  const d = sphereData[id];
-  document.getElementById('m-icon').textContent = d.icon;
-  document.getElementById('m-title').textContent = d.title;
-  document.getElementById('m-subtitle').textContent = d.subtitle;
-  document.getElementById('m-desc').textContent = d.desc;
-  document.getElementById('m-fact-text').textContent = d.fact;
-  const fact = document.getElementById('m-fact');
-  fact.style.background = d.factBg;
-  fact.style.color = d.factColor;
-  const ex = document.getElementById('m-examples');
-  ex.innerHTML = d.examples.map(e => `<span class="modal-ex-pill">${e}</span>`).join('');
-  // Color the box
-  const box = document.getElementById('modal-box');
-  box.style.borderTop = `6px solid ${d.factColor}`;
-  document.getElementById('sphere-modal').classList.add('open');
-}
-function closeModal() {
-  document.getElementById('sphere-modal').classList.remove('open');
-}
-function closeModalOutside(e) {
-  if (e.target === document.getElementById('sphere-modal')) closeModal();
-}
-
-// ── WATER CYCLE HIGHLIGHT ──
-const allWcParts = ['wcp-ocean','wcp-river','wcp-mountain','wcp-trees','wcp-sun','wcp-clouds','wcp-clouds2','wcp-evap','wcp-precip','wcp-transp','wcp-collect','wcp-rain'];
-const hlData = {
-  atmo:{
-    parts:['wcp-clouds','wcp-clouds2','wcp-precip','wcp-rain'],
-    msg:'🌤 <strong>Atmosphere:</strong> The atmosphere contains air and water vapor. Clouds form here and rain falls from here.',
-    bg:'#E3F2FD', color:'#1565C0'
-  },
-  hydro:{
-    parts:['wcp-ocean','wcp-river','wcp-evap','wcp-collect'],
-    msg:'💧 <strong>Hydrosphere:</strong> The hydrosphere contains all the water on Earth — oceans, rivers, rain, and more!',
-    bg:'#E0F7FA', color:'#006064'
-  },
-  geo:{
-    parts:['wcp-mountain'],
-    msg:'🏔 <strong>Geosphere:</strong> The geosphere includes land, rocks, and soil. Mountains and soil shape where water flows.',
-    bg:'#F1F8E9', color:'#33691E'
-  },
-  bio:{
-    parts:['wcp-trees','wcp-transp'],
-    msg:'🌱 <strong>Biosphere:</strong> The biosphere contains all living things. Plants absorb water from soil and release it into the air through transpiration!',
-    bg:'#FFF3E0', color:'#E65100'
-  }
+const tooltipPositions = {
+  atmo: { left: '22%', top: '15%' },
+  hydro: { left: '55%', top: '42%' },
+  geo: { left: '12%', top: '56%' },
+  bio: { left: '38%', top: '56%' }
 };
 
-let activeHl = null;
+// SVG items matching spheres
+const sphereSVGMapping = {
+  atmo: ['wcp-clouds', 'wcp-clouds2', 'wcp-condens', 'wcp-precip'],
+  hydro: ['wcp-ocean', 'wcp-river', 'wcp-evap', 'wcp-collect'],
+  geo: ['wcp-mountain', 'wcp-groundwater', 'wcp-soil', 'wcp-soil-label'],
+  bio: ['wcp-trees', 'wcp-transp']
+};
+const allWcParts = ['wcp-ocean','wcp-river','wcp-mountain','wcp-soil','wcp-soil-label','wcp-groundwater','wcp-trees','wcp-sun','wcp-clouds','wcp-clouds2','wcp-evap','wcp-precip','wcp-transp','wcp-collect','wcp-condens'];
 
-function hlSphere(id) {
-  if (activeHl === id) {
-    // reset
-    allWcParts.forEach(p => {
-      const el = document.getElementById(p);
-      if(el){ el.classList.remove('wc-dimmed','wc-lit'); }
-    });
-    document.querySelectorAll('.hl-card').forEach(c => c.classList.remove('active'));
-    const msg = document.getElementById('hl-msg');
-    msg.classList.remove('visible');
-    activeHl = null;
+// ── Particle Class ──
+class Particle {
+  constructor(type) {
+    this.type = type;
+    this.reset();
+  }
+
+  reset() {
+    this.life = 0;
+    this.maxLife = 90 + Math.random() * 80;
+    this.size = 2 + Math.random() * 3;
+    
+    if (this.type === 'evap') {
+      // Ocean surface: x between 600 and 840, y near 338
+      this.x = 600 + Math.random() * 240;
+      this.y = 338;
+      this.vx = -0.4 - Math.random() * 0.9;
+      this.vy = -0.5 - Math.random() * 1.0;
+      this.color = 'rgba(79, 195, 247, '; // Cyan/Light Blue
+    } else if (this.type === 'transp') {
+      // Tree canopy: x between 340 and 420, y between 270 and 290
+      this.x = 340 + Math.random() * 80;
+      this.y = 270 + Math.random() * 20;
+      this.vx = -0.2 + Math.random() * 0.4;
+      this.vy = -0.4 - Math.random() * 0.8;
+      this.color = 'rgba(129, 199, 132, '; // Soft green
+    } else if (this.type === 'precip') {
+      // Under Cloud 1 (150-280, y=125) or Cloud 2 (460-520, y=105)
+      if (Math.random() < 0.7) {
+        this.x = 150 + Math.random() * 130;
+        this.y = 125;
+      } else {
+        this.x = 460 + Math.random() * 60;
+        this.y = 105;
+      }
+      this.vx = 0.2 + Math.random() * 0.4;
+      this.vy = 4.0 + Math.random() * 2.5; // falling speed
+      this.size = 1 + Math.random() * 1.5;
+      this.color = 'rgba(30, 136, 229, '; // Darker rain blue
+      this.maxLife = 90;
+    }
+  }
+
+  update() {
+    if (isPaused) return;
+
+    const speed = speedMultiplier;
+    const heatFactor = (this.type === 'evap' || this.type === 'transp') ? (0.6 + heatLevel * 1.6) : 1.0;
+
+    this.x += this.vx * speed * heatFactor;
+    this.y += this.vy * speed * heatFactor;
+    this.life += speed;
+
+    if (this.type === 'evap') {
+      this.x += Math.sin(this.life * 0.05) * 0.2 * speed;
+    } else if (this.type === 'transp') {
+      this.x += Math.sin(this.life * 0.05) * 0.1 * speed;
+    } else if (this.type === 'precip') {
+      // Rain collision detection
+      let groundY = 336;
+      if (this.x >= 100 && this.x <= 205) {
+        groundY = 340 - (this.x - 100) * 1.62;
+      } else if (this.x > 205 && this.x <= 315) {
+        groundY = 170 + (this.x - 205) * 1.54;
+      }
+      
+      if (this.y >= groundY) {
+        createSplashes(this.x, groundY);
+        this.reset();
+      }
+    }
+
+    if (this.life >= this.maxLife || this.y < 30 || this.x < 10 || this.x > 850) {
+      this.reset();
+    }
+  }
+
+  draw() {
+    let alpha = 1.0;
+    if (this.type === 'evap' || this.type === 'transp') {
+      alpha = 1.0 - (this.life / this.maxLife);
+    } else if (this.type === 'precip') {
+      alpha = Math.min(1.0, this.life / 10);
+    }
+    
+    if (this.type === 'precip') {
+      ctx.strokeStyle = this.color + (alpha * 0.75) + ')';
+      ctx.lineWidth = this.size;
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y);
+      ctx.lineTo(this.x - this.vx * 1.5, this.y - this.vy * 1.5);
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = this.color + (alpha * 0.8) + ')';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+}
+
+// Splash particles
+let splashes = [];
+class Splash {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.vx = -1.0 + Math.random() * 2.0;
+    this.vy = -0.5 - Math.random() * 1.2;
+    this.life = 0;
+    this.maxLife = 8 + Math.random() * 8;
+    this.size = 0.8 + Math.random() * 0.8;
+  }
+  update() {
+    if (isPaused) return;
+    const speed = speedMultiplier;
+    this.x += this.vx * speed;
+    this.y += this.vy * speed;
+    this.vy += 0.12 * speed;
+    this.life += speed;
+  }
+  draw() {
+    let alpha = 1.0 - (this.life / this.maxLife);
+    ctx.fillStyle = 'rgba(79, 195, 247, ' + alpha + ')';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function createSplashes(x, y) {
+  if (isPaused || splashes.length > 80) return;
+  const count = Math.floor(Math.random() * 2) + 1;
+  for (let i = 0; i < count; i++) {
+    splashes.push(new Splash(x, y));
+  }
+}
+
+// Particle manager arrays
+let particlesList = [];
+
+function updateSimulation() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Set particle counts depending on Heat Level
+  const targetEvap = Math.floor(heatLevel * 60);
+  const targetTransp = Math.floor(heatLevel * 20);
+  const targetPrecip = heatLevel > 0.3 ? Math.floor((heatLevel - 0.3) / 0.7 * 80) : 0;
+
+  // Filter current lists
+  let evaps = particlesList.filter(p => p.type === 'evap');
+  let transps = particlesList.filter(p => p.type === 'transp');
+  let precips = particlesList.filter(p => p.type === 'precip');
+
+  // Align evaporation
+  if (evaps.length < targetEvap) {
+    for (let i = evaps.length; i < targetEvap; i++) particlesList.push(new Particle('evap'));
+  } else if (evaps.length > targetEvap) {
+    let diff = evaps.length - targetEvap;
+    for (let i = 0; i < diff; i++) {
+      let idx = particlesList.findIndex(p => p.type === 'evap');
+      if (idx !== -1) particlesList.splice(idx, 1);
+    }
+  }
+
+  // Align transpiration
+  if (transps.length < targetTransp) {
+    for (let i = transps.length; i < targetTransp; i++) particlesList.push(new Particle('transp'));
+  } else if (transps.length > targetTransp) {
+    let diff = transps.length - targetTransp;
+    for (let i = 0; i < diff; i++) {
+      let idx = particlesList.findIndex(p => p.type === 'transp');
+      if (idx !== -1) particlesList.splice(idx, 1);
+    }
+  }
+
+  // Align precipitation
+  if (precips.length < targetPrecip) {
+    for (let i = precips.length; i < targetPrecip; i++) particlesList.push(new Particle('precip'));
+  } else if (precips.length > targetPrecip) {
+    let diff = precips.length - targetPrecip;
+    for (let i = 0; i < diff; i++) {
+      let idx = particlesList.findIndex(p => p.type === 'precip');
+      if (idx !== -1) particlesList.splice(idx, 1);
+    }
+  }
+
+  // Update & Draw
+  particlesList.forEach(p => {
+    p.update();
+    p.draw();
+  });
+
+  // Splashes update
+  splashes = splashes.filter(s => s.life < s.maxLife);
+  splashes.forEach(s => {
+    s.update();
+    s.draw();
+  });
+
+  requestAnimationFrame(updateSimulation);
+}
+
+// ── CONTROL HANDLERS ──
+function updateHeat(val) {
+  heatSliderValue = parseInt(val);
+  heatLevel = heatSliderValue / 100;
+  
+  document.getElementById('heat-value-text').textContent = val + '%';
+  document.getElementById('heat-slider').value = val;
+  
+  updateMeters();
+  updateSVGClouds();
+  checkActiveQuest();
+}
+
+function updateSVGClouds() {
+  const cloud1 = document.getElementById('wcp-clouds');
+  const cloud2 = document.getElementById('wcp-clouds2');
+  
+  const opacity = 0.15 + heatLevel * 0.85;
+  if (cloud1) cloud1.style.opacity = opacity;
+  if (cloud2) cloud2.style.opacity = opacity * 0.85;
+
+  // Clouds turn dark gray as heat level (clouds density) goes high
+  let r = 255, g = 255, b = 255;
+  if (heatLevel > 0.4) {
+    const factor = (heatLevel - 0.4) / 0.6;
+    r = Math.round(255 - (255 - 75) * factor);
+    g = Math.round(255 - (255 - 95) * factor);
+    b = Math.round(255 - (255 - 110) * factor);
+  }
+  const colorStr = `rgb(${r}, ${g}, ${b})`;
+  
+  if (cloud1) {
+    cloud1.querySelectorAll('ellipse').forEach(el => el.setAttribute('fill', colorStr));
+  }
+  if (cloud2) {
+    cloud2.querySelectorAll('ellipse').forEach(el => el.setAttribute('fill', colorStr));
+  }
+}
+
+function updateMeters() {
+  // Temp meter
+  const tempC = Math.round(15 + heatLevel * 35);
+  const tempF = Math.round(tempC * 1.8 + 32);
+  const tempMeter = document.getElementById('temp-meter-fill');
+  const tempVal = document.getElementById('temp-value');
+  if (tempMeter) {
+    tempMeter.style.width = (heatLevel * 100) + '%';
+    let color = '#29B6F6'; // Blue
+    if (heatLevel > 0.75) color = '#D84315'; // Dark Red
+    else if (heatLevel > 0.3) color = '#FFA726'; // Orange
+    tempMeter.style.backgroundColor = color;
+  }
+  if (tempVal) tempVal.textContent = `${tempC}°C (${tempF}°F)`;
+
+  // Cloud Density meter
+  const cloudPct = Math.round(heatLevel * 100);
+  const cloudMeter = document.getElementById('cloud-meter-fill');
+  const cloudVal = document.getElementById('cloud-value');
+  if (cloudMeter) {
+    cloudMeter.style.width = cloudPct + '%';
+    let color = '#CFD8DC';
+    if (heatLevel > 0.75) color = '#455A64';
+    else if (heatLevel > 0.3) color = '#90A4AE';
+    cloudMeter.style.backgroundColor = color;
+  }
+  if (cloudVal) {
+    let desc = "Thin & Wispy";
+    if (heatLevel > 0.8) desc = "Stormy Clouds";
+    else if (heatLevel > 0.5) desc = "Thick Cumulus";
+    else if (heatLevel > 0.25) desc = "Partly Cloudy";
+    cloudVal.textContent = `${cloudPct}% (${desc})`;
+  }
+
+  // Rain rate meter
+  let rainPct = 0;
+  if (heatLevel > 0.3) {
+    rainPct = Math.round((heatLevel - 0.3) / 0.7 * 100);
+  }
+  const rainMeter = document.getElementById('rain-meter-fill');
+  const rainVal = document.getElementById('rain-value');
+  if (rainMeter) {
+    rainMeter.style.width = rainPct + '%';
+    let color = '#90CAF9';
+    if (heatLevel > 0.8) color = '#0288D1';
+    else if (heatLevel > 0.5) color = '#1E88E5';
+    rainMeter.style.backgroundColor = color;
+  }
+  if (rainVal) {
+    let desc = "No Rain / Clear";
+    if (heatLevel > 0.8) desc = "Torrential Rain 🌧️";
+    else if (heatLevel > 0.5) desc = "Moderate Rain 🌧️";
+    else if (heatLevel > 0.3) desc = "Light Drizzle 🌦️";
+    rainVal.textContent = `${rainPct}% (${desc})`;
+  }
+}
+
+// Superpower controls
+function togglePause() {
+  isPaused = !isPaused;
+  const btn = document.getElementById('btn-pause');
+  if (isPaused) {
+    btn.textContent = '▶️ Resume';
+    btn.classList.add('active');
+  } else {
+    btn.textContent = '⏸️ Pause';
+    btn.classList.remove('active');
+  }
+}
+
+function cycleSpeed() {
+  if (speedMultiplier === 1) {
+    speedMultiplier = 2;
+  } else if (speedMultiplier === 2) {
+    speedMultiplier = 3;
+  } else {
+    speedMultiplier = 1;
+  }
+  document.getElementById('btn-ff').textContent = `⏩ ${speedMultiplier}x Speed`;
+  if (speedMultiplier > 1) {
+    document.getElementById('btn-ff').classList.add('active');
+  } else {
+    document.getElementById('btn-ff').classList.remove('active');
+  }
+}
+
+function restartCycle() {
+  isPaused = false;
+  speedMultiplier = 1;
+  heatLevel = 0.5;
+  heatSliderValue = 50;
+
+  document.getElementById('btn-pause').textContent = '⏸️ Pause';
+  document.getElementById('btn-pause').classList.remove('active');
+  document.getElementById('btn-ff').textContent = '⏩ 1x Speed';
+  document.getElementById('btn-ff').classList.remove('active');
+  document.getElementById('heat-slider').value = 50;
+  
+  updateHeat(50);
+  
+  // reset highlights
+  resetHighlights();
+  closeTooltip();
+}
+
+// ── SPHERE CARD INTERACTION & HIGHLIGHTS ──
+function selectSphere(id) {
+  if (activeSphere === id) {
+    resetHighlights();
+    closeTooltip();
     return;
   }
-  activeHl = id;
-  const data = hlData[id];
-  allWcParts.forEach(p => {
-    const el = document.getElementById(p);
-    if(!el) return;
-    if(data.parts.includes(p)){
-      el.classList.remove('wc-dimmed'); el.classList.add('wc-lit');
+  
+  activeSphere = id;
+  exploredSpheres[id] = true;
+  
+  // Update dashboard cards active state
+  document.querySelectorAll('.dash-sphere-card').forEach(card => card.classList.remove('active'));
+  document.getElementById('card-' + id).classList.add('active');
+
+  // Highlight corresponding parts on the SVG
+  const data = sphereSVGMapping[id];
+  allWcParts.forEach(partId => {
+    const el = document.getElementById(partId);
+    if (!el) return;
+    if (data.includes(partId)) {
+      el.classList.remove('wc-dimmed');
+      el.classList.add('wc-lit');
     } else {
-      el.classList.remove('wc-lit'); el.classList.add('wc-dimmed');
+      el.classList.remove('wc-lit');
+      el.classList.add('wc-dimmed');
     }
   });
-  document.querySelectorAll('.hl-card').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.hl-card')[['atmo','hydro','geo','bio'].indexOf(id)].classList.add('active');
-  const msg = document.getElementById('hl-msg');
-  msg.style.background = data.bg;
-  msg.style.color = data.color;
-  msg.innerHTML = data.msg;
-  msg.classList.add('visible');
+
+  // Display floating tooltip inside diagram
+  showTooltipFor(id);
+  
+  // Update Detective badge check
+  checkDetectiveBadge();
+  
+  // Check active quest conditions
+  checkActiveQuest();
 }
 
-// ── QUIZ ──
-const questions = [
-  {type:'mc',q:'Which sphere contains ALL the water on Earth?',opts:['Atmosphere','Hydrosphere','Geosphere','Biosphere'],correct:1,exp:'The Hydrosphere includes rivers, lakes, oceans, rain, and all water found on Earth.'},
-  {type:'mc',q:'What is the name of the layer of air around Earth?',opts:['Geosphere','Biosphere','Hydrosphere','Atmosphere'],correct:3,exp:'The Atmosphere is the blanket of air and gases surrounding our planet.'},
-  {type:'mc',q:'In the water cycle, water rising from the ocean as vapor is called:',opts:['Precipitation','Condensation','Evaporation','Transpiration'],correct:2,exp:'Evaporation is when the sun heats water, turning it into vapor that rises into the atmosphere.'},
-  {type:'tf',q:'The Geosphere includes mountains, rocks, and soil.',correct:true,exp:"True! The Geosphere is the solid part of Earth — land, rocks, mountains, and soil all the way to the core."},
-  {type:'mc',q:'Which sphere do YOU belong to?',opts:['Hydrosphere','Geosphere','Biosphere','Atmosphere'],correct:2,exp:'All living things — including humans, animals, and plants — are part of the Biosphere!'},
-  {type:'tf',q:'Transpiration is when plants release water vapor through their leaves.',correct:true,exp:'True! Plants absorb water from soil and release it as water vapor — this is called transpiration.'},
-  {type:'mc',q:'When water vapor cools and forms clouds, it is called:',opts:['Evaporation','Collection','Transpiration','Condensation'],correct:3,exp:'Condensation happens when water vapor cools and turns into tiny droplets that form clouds.'},
-  {type:'tf',q:'About 71% of Earth is covered by water.',correct:true,exp:"True! That's why Earth is sometimes called the Blue Planet."},
-  {type:'mc',q:'Rain, snow and hail falling from clouds is called:',opts:['Evaporation','Collection','Precipitation','Transpiration'],correct:2,exp:'Precipitation is any form of water falling from clouds — rain, snow, sleet, or hail!'},
-  {type:'mc',q:'Which sphere contains all living things?',opts:['Atmosphere','Hydrosphere','Geosphere','Biosphere'],correct:3,exp:'The Biosphere includes every organism on Earth — from bacteria to blue whales!'}
+function resetHighlights() {
+  activeSphere = null;
+  document.querySelectorAll('.dash-sphere-card').forEach(card => card.classList.remove('active'));
+  allWcParts.forEach(partId => {
+    const el = document.getElementById(partId);
+    if (el) el.classList.remove('wc-dimmed', 'wc-lit');
+  });
+}
+
+function showTooltipFor(id) {
+  const tooltip = document.getElementById('sim-tooltip');
+  const ttTitle = document.getElementById('tt-title');
+  const ttBody = document.getElementById('tt-body');
+  
+  if (!tooltip || !ttTitle || !ttBody) return;
+  
+  const data = tooltipData[id];
+  ttTitle.innerHTML = `${data.icon} ${data.title}`;
+  ttBody.innerHTML = `
+    <p>${data.desc}</p>
+    <div class="tt-examples">
+      <strong>Examples:</strong>
+      ${data.examples.map(ex => `<span class="tt-pill">${ex}</span>`).join('')}
+    </div>
+    <div class="tt-fact">
+      <strong>⭐ Fun Fact:</strong> ${data.fact}
+    </div>
+  `;
+  
+  const pos = tooltipPositions[id];
+  tooltip.style.left = pos.left;
+  tooltip.style.top = pos.top;
+  tooltip.style.borderTop = `6px solid ${data.color}`;
+  
+  tooltip.setAttribute('aria-hidden', 'false');
+  tooltip.classList.add('visible');
+}
+
+function closeTooltip() {
+  const tooltip = document.getElementById('sim-tooltip');
+  if (tooltip) {
+    tooltip.classList.remove('visible');
+    tooltip.setAttribute('aria-hidden', 'true');
+  }
+}
+
+// Click callback inside the SVG element directly
+function svgItemClicked(sphereId) {
+  selectSphere(sphereId);
+}
+
+// ── GAMIFIED QUEST SYSTEM ──
+const quests = [
+  {
+    title: "Mission 1: The Rainmaker 🌧️",
+    desc: "Move the Sun Heat slider to maximum to trigger a heavy downpour! Discover cause-and-effect: More heat = more evaporation = more clouds = more rain.",
+    hint: "Drag the Sun Heat slider to 80% or higher.",
+    check: () => heatSliderValue >= 80,
+    successMsg: "Superb! Heating up the Sun caused ocean water (Hydrosphere) to evaporate rapidly, forming dark clouds (Atmosphere) and releasing heavy precipitation! You earned a star! ⭐"
+  },
+  {
+    title: "Mission 2: Cloud Watcher ☁️",
+    desc: "Find and explore the sphere responsible for air, clouds, and condensation.",
+    hint: "Click the 'Atmosphere' card in the bottom row.",
+    check: () => activeSphere === 'atmo',
+    successMsg: "Spectacular! The Atmosphere is the air sphere where water vapor cools and condenses to create clouds and release rain! You earned a star! ⭐"
+  },
+  {
+    title: "Mission 3: Plant Power 🍃",
+    desc: "Locate the biosphere where plants absorb groundwater and release vapor back into the air through Transpiration.",
+    hint: "Click the 'Biosphere' card in the bottom row.",
+    check: () => activeSphere === 'bio',
+    successMsg: "Incredible! In the Biosphere, trees and plants draw groundwater and release it into the air as vapor—this is Transpiration! You earned a star! ⭐"
+  },
+  {
+    title: "Mission 4: The Ice Age Freeze ❄️",
+    desc: "Lower the temperature completely to stop all evaporation and freeze the water cycle.",
+    hint: "Move the Sun Heat slider to 10% or lower.",
+    check: () => heatSliderValue <= 10,
+    successMsg: "Wonderful! Lowering the Sun Heat stopped evaporation completely, clearing the clouds and stopping rainfall. The temperature plummeted! You earned a star! ⭐"
+  },
+  {
+    title: "Mission 5: Water Collector 🏔️",
+    desc: "Find the sphere containing soil, mountains, and groundwater where rainfall collects.",
+    hint: "Click the 'Geosphere' card in the bottom row.",
+    check: () => activeSphere === 'geo',
+    successMsg: "Sensational! The Geosphere consists of rocks, soil, and mountains that direct rain runoff into rivers and groundwater storage! You earned a star! ⭐"
+  }
 ];
 
-let answers = Array(questions.length).fill(null);
-let submitted = false;
+let currentQuestIndex = 0;
+let completedQuests = [false, false, false, false, false];
+let starsEarned = 0;
+let exploredSpheres = { atmo: false, hydro: false, geo: false, bio: false };
 
-function buildQuiz(){
-  const f = document.getElementById('q-form');
-  f.innerHTML = '';
-  questions.forEach((q,i)=>{
-    const div = document.createElement('div');
-    div.className = 'q-card'; div.id = `qc-${i}`;
-    const txt = document.createElement('p');
-    txt.className = 'q-text';
-    txt.textContent = `${i+1}. ${q.q}`;
-    div.appendChild(txt);
-    if(q.type==='mc'){
-      const opts = document.createElement('div');
-      opts.className = 'q-opts';
-      q.opts.forEach((o,j)=>{
-        const b = document.createElement('button');
-        b.className='q-opt'; b.textContent=o; b.id=`qo-${i}-${j}`;
-        b.onclick = ()=>pickAnswer(i,j);
-        opts.appendChild(b);
-      });
-      div.appendChild(opts);
-    } else {
-      const tf = document.createElement('div');
-      tf.className = 'q-tf';
-      [['✅ True',true],['❌ False',false]].forEach(([lbl,val],j)=>{
-        const b = document.createElement('button');
-        b.className='q-tf-btn'; b.textContent=lbl; b.id=`qtf-${i}-${j}`;
-        b.onclick=()=>pickAnswer(i,val);
-        tf.appendChild(b);
-      });
-      div.appendChild(tf);
-    }
-    f.appendChild(div);
-  });
+let badgeExplorerUnlocked = false;
+let badgeDetectiveUnlocked = false;
+let badgeExpertUnlocked = false;
+
+function checkActiveQuest() {
+  if (currentQuestIndex >= quests.length) return;
+  const quest = quests[currentQuestIndex];
+  if (quest.check()) {
+    completeQuest(currentQuestIndex);
+  }
 }
 
-function pickAnswer(qi,val){
-  if(submitted) return;
-  answers[qi]=val;
-  const q=questions[qi];
-  if(q.type==='mc'){
-    q.opts.forEach((_,j)=>document.getElementById(`qo-${qi}-${j}`).classList.remove('sel'));
-    document.getElementById(`qo-${qi}-${val}`).classList.add('sel');
+function completeQuest(index) {
+  if (completedQuests[index]) return;
+  completedQuests[index] = true;
+  starsEarned++;
+  
+  // Show congratulatory overlay modal
+  showGameModal("🏆 Mission Accomplished!", quests[index].successMsg, "⭐");
+  
+  // Launch confetti
+  launchConfetti();
+  
+  // Advance quest
+  currentQuestIndex++;
+  
+  // Update progress widgets
+  updateQuestWidget();
+  updateAchievements();
+}
+
+function updateQuestWidget() {
+  const title = document.getElementById('quest-title');
+  const desc = document.getElementById('quest-desc');
+  const hint = document.getElementById('quest-hint');
+  const fill = document.getElementById('quest-progress-fill');
+  const text = document.getElementById('quest-progress-text');
+  const starCount = document.getElementById('quest-stars');
+  const hintBox = document.getElementById('qc-hint-box');
+  const progBar = document.getElementById('quest-prog-bar');
+
+  starCount.textContent = `⭐ ${starsEarned}/5`;
+
+  if (currentQuestIndex < quests.length) {
+    const q = quests[currentQuestIndex];
+    title.textContent = q.title;
+    desc.textContent = q.desc;
+    hint.textContent = q.hint;
+    hintBox.style.display = 'block';
+    
+    const progressPct = (currentQuestIndex / quests.length) * 100;
+    fill.style.width = progressPct + '%';
+    progBar.setAttribute('aria-valuenow', progressPct);
+    text.textContent = `Mission ${currentQuestIndex + 1} of ${quests.length}`;
   } else {
-    [0,1].forEach(j=>document.getElementById(`qtf-${qi}-${j}`).classList.remove('sel'));
-    document.getElementById(`qtf-${qi}-${val===true?0:1}`).classList.add('sel');
+    // All completed
+    title.textContent = "👑 Earth Sciences Champion!";
+    desc.textContent = "Incredible work! You have successfully completed all 5 simulation missions and mastered the spheres & water cycle!";
+    hintBox.style.display = 'none';
+    fill.style.width = '100%';
+    progBar.setAttribute('aria-valuenow', 100);
+    text.textContent = "All Quests Completed!";
+    
+    // Check for expert badge
+    checkExpertBadge();
   }
 }
 
-function submitQuiz(){
-  const unan = answers.filter(a=>a===null).length;
-  if(unan>0){alert(`Please answer all questions! ${unan} left.`);return;}
-  submitted=true;
-  let correct=0;
-  questions.forEach((q,i)=>{
-    const ok = answers[i]===q.correct;
-    if(ok) correct++;
-    const card = document.getElementById(`qc-${i}`);
-    card.classList.add(ok?'q-correct':'q-wrong');
-    if(q.type==='mc'){
-      q.opts.forEach((_,j)=>{
-        const btn=document.getElementById(`qo-${i}-${j}`);
-        if(!btn)return;
-        if(j===q.correct) btn.classList.add('opt-correct');
-        else if(j===answers[i]) btn.classList.add('opt-wrong');
-      });
-    } else {
-      [0,1].forEach(j=>{
-        const btn=document.getElementById(`qtf-${i}-${j}`);
-        const bv=j===0;
-        if(bv===q.correct) btn.classList.add('opt-correct');
-        else if(bv===answers[i]) btn.classList.add('opt-wrong');
-      });
+// Explore All 4 Spheres Badge Check
+function checkDetectiveBadge() {
+  if (badgeDetectiveUnlocked) return;
+  
+  const count = Object.values(exploredSpheres).filter(v => v).length;
+  document.getElementById('stat-spheres').textContent = `${count} / 4`;
+
+  if (count === 4) {
+    badgeDetectiveUnlocked = true;
+    unlockBadge('badge-detective', '🕵️‍♂️ Sphere Detective');
+  }
+}
+
+// 2 Quests Completed Badge Check
+function checkExplorerBadge() {
+  if (badgeExplorerUnlocked) return;
+  if (starsEarned >= 2) {
+    badgeExplorerUnlocked = true;
+    unlockBadge('badge-explorer', '💧 Water Cycle Explorer');
+  }
+}
+
+// 5 Quests Completed Badge Check
+function checkExpertBadge() {
+  if (badgeExpertUnlocked) return;
+  if (starsEarned === 5) {
+    badgeExpertUnlocked = true;
+    unlockBadge('badge-expert', '👑 Earth Expert');
+  }
+}
+
+function unlockBadge(elementId, badgeName) {
+  const el = document.getElementById(elementId);
+  if (el) {
+    el.classList.remove('locked');
+    el.classList.add('unlocked');
+    const nameEl = el.querySelector('.badge-name');
+    nameEl.innerHTML = `${badgeName} <span class="lock-status-icon">✨</span>`;
+    const statusEl = el.querySelector('.badge-status');
+    statusEl.textContent = "Unlocked!";
+  }
+  
+  // Show notification popup
+  showGameModal("🏅 Badge Unlocked!", `Wonderful job! You have earned the <strong>${badgeName}</strong> badge for your research!`, "🎉");
+  launchConfetti();
+}
+
+function updateAchievements() {
+  document.getElementById('stat-stars').textContent = `${starsEarned} / 5`;
+  document.getElementById('stat-quests').textContent = `${starsEarned} / 5`;
+  
+  const exploreCount = Object.values(exploredSpheres).filter(v => v).length;
+  document.getElementById('stat-spheres').textContent = `${exploreCount} / 4`;
+
+  // Run checks
+  checkExplorerBadge();
+  checkDetectiveBadge();
+  checkExpertBadge();
+}
+
+// ── DIALOG OVERLAY HANDLERS ──
+function showGameModal(title, message, emoji) {
+  document.getElementById('gm-emoji').textContent = emoji;
+  document.getElementById('gm-title').textContent = title;
+  document.getElementById('gm-message').innerHTML = message;
+  document.getElementById('game-modal').classList.add('open');
+}
+
+function closeGameModal() {
+  document.getElementById('game-modal').classList.remove('open');
+  // If all quests completed, lead user to achievements tab
+  if (currentQuestIndex >= quests.length && starsEarned === 5) {
+    showSection('quiz', document.getElementById('nav-quiz'));
+  }
+}
+
+function resetGameProgress() {
+  currentQuestIndex = 0;
+  completedQuests = [false, false, false, false, false];
+  starsEarned = 0;
+  exploredSpheres = { atmo: false, hydro: false, geo: false, bio: false };
+
+  badgeExplorerUnlocked = false;
+  badgeDetectiveUnlocked = false;
+  badgeExpertUnlocked = false;
+
+  // Re-lock UI cards
+  const badgeIds = ['badge-explorer', 'badge-detective', 'badge-expert'];
+  const badgeNames = ['Water Cycle Explorer', 'Sphere Detective', 'Earth Expert'];
+  const emojis = ['💧', '🕵️‍♂️', '👑'];
+  
+  badgeIds.forEach((id, idx) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.classList.remove('unlocked');
+      el.classList.add('locked');
+      el.querySelector('.badge-name').innerHTML = `${badgeNames[idx]} <span class="lock-status-icon">🔒</span>`;
+      el.querySelector('.badge-status').textContent = "Locked";
     }
   });
-  const pct=Math.round(correct/questions.length*100);
-  let emoji,msg,grad;
-  if(pct>=90){emoji='⭐';msg='Excellent! You\'re an Earth expert!';grad='linear-gradient(135deg,#FFD54F,#FF8F00)';}
-  else if(pct>=70){emoji='🌟';msg='Great Job! Keep it up!';grad='linear-gradient(135deg,#4CAF50,#1B5E20)';}
-  else{emoji='📚';msg='Keep Learning! You can do it!';grad='linear-gradient(135deg,#2196F3,#0D47A1)';}
 
-  let revHTML='';
-  questions.forEach((q,i)=>{
-    const ok=answers[i]===q.correct;
-    const corrLabel=q.type==='mc'?q.opts[q.correct]:(q.correct?'True':'False');
-    const userLabel=q.type==='mc'?q.opts[answers[i]]:(answers[i]?'True':'False');
-    revHTML+=`<div class="rev-item">
-      <p class="rev-q">${i+1}. ${q.q}</p>
-      ${!ok?`<p class="rev-user rev-wrong">❌ Your answer: ${userLabel}</p>`:''}
-      <p class="rev-user rev-correct">✅ Correct answer: ${corrLabel}</p>
-      <div class="rev-exp">${q.exp}</div>
-    </div>`;
-  });
-
-  const res=document.getElementById('quiz-results');
-  res.innerHTML=`
-    <div class="res-card">
-      <div class="res-emoji">${emoji}</div>
-      <div class="res-msg">${msg}</div>
-      <div class="res-score" style="background:${grad};-webkit-background-clip:text;-webkit-text-fill-color:transparent">${correct}/${questions.length}</div>
-      <div class="res-pct">${pct}%</div>
-      <div class="res-badges">
-        <span class="res-badge rb-ok">✅ ${correct} Correct</span>
-        <span class="res-badge rb-no">❌ ${questions.length-correct} Incorrect</span>
-      </div>
-    </div>
-    <h3 style="font-size:20px;font-weight:900;margin-bottom:14px">📋 Review Your Answers</h3>
-    ${revHTML}
-    <button class="retry-btn" onclick="retryQuiz()">🔄 Try Again!</button>
-  `;
-  res.classList.add('vis');
-  res.scrollIntoView({behavior:'smooth',block:'start'});
-  if(pct>=70) launchConfetti();
+  restartCycle();
+  updateQuestWidget();
+  updateAchievements();
+  
+  showGameModal("🔄 Game Reset!", "The simulation challenges have been reset. Good luck on your learning quest!", "🗺️");
 }
 
-function retryQuiz(){
-  submitted=false; answers=Array(questions.length).fill(null);
-  buildQuiz();
-  const r=document.getElementById('quiz-results');
-  r.classList.remove('vis'); r.innerHTML='';
-  document.getElementById('q-form').scrollIntoView({behavior:'smooth'});
-}
-
-function launchConfetti(){
-  const colors=['#FFD54F','#4FC3F7','#A5D6A7','#FF8A65','#CE93D8','#EF9A9A','#80DEEA','#F48FB1'];
-  const c=document.createElement('div');
-  c.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:9999';
-  document.body.appendChild(c);
-  for(let i=0;i<90;i++){
-    const p=document.createElement('div');
-    p.className='confetti-piece';
-    p.style.left=Math.random()*100+'%';
-    p.style.background=colors[Math.floor(Math.random()*colors.length)];
-    p.style.animationDuration=(Math.random()*2+1.5)+'s';
-    p.style.animationDelay=Math.random()+'s';
-    p.style.transform=`rotate(${Math.random()*360}deg)`;
-    c.appendChild(p);
+// ── CONFETTI ANIMATION ──
+function launchConfetti() {
+  const colors = ['#0277BD', '#2E7D32', '#D84315', '#FFD54F', '#4FC3F7', '#A5D6A7', '#FFAB91', '#CE93D8'];
+  const container = document.createElement('div');
+  container.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999';
+  document.body.appendChild(container);
+  
+  for(let i=0; i<80; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random()*100 + '%';
+    piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+    piece.style.animationDuration = (Math.random()*1.8 + 1.2) + 's';
+    piece.style.animationDelay = Math.random()*0.5 + 's';
+    piece.style.transform = `rotate(${Math.random()*360}deg)`;
+    container.appendChild(piece);
   }
-  setTimeout(()=>c.remove(),4500);
+  setTimeout(() => container.remove(), 4000);
 }
 
-buildQuiz();
+// Keyboard events listener
+document.addEventListener('DOMContentLoaded', () => {
+  // Add keydown listener to elements styled as role=button or tab-navgable
+  const makeAccessible = (selector) => {
+    document.querySelectorAll(selector).forEach(item => {
+      item.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          item.click();
+        }
+      });
+    });
+  };
+  
+  makeAccessible('.sphere-card');
+  makeAccessible('.dash-sphere-card');
+  makeAccessible('.svg-interactive');
+  
+  // Set up meters & start simulation particles loop
+  updateHeat(50);
+  initParticles();
+});
+
+// Start loop
+function initParticles() {
+  particlesList = [];
+  splashes = [];
+  updateSimulation();
+}
+
 </script>
 </body>
 </html>
