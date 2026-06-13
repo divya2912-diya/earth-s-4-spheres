@@ -336,7 +336,87 @@ nav {
   .nav-btn span.nav-label { display: none; }
   .how-inner, .quiz-inner, .home-inner { padding: 20px 12px 32px; }
 }
+
+/* ── EXPLORATION LAB STYLES ── */
+.match-zone.dragover {
+  border-style: solid !important;
+  transform: scale(1.03);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+.draggable-item {
+  padding: 8px 14px;
+  border-radius: 50px;
+  background: white;
+  border: 2px solid #ddd;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: grab;
+  user-select: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-block;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.draggable-item:active {
+  cursor: grabbing;
+}
+.draggable-item.selected-item {
+  border-color: #2196F3 !important;
+  background: #E3F2FD !important;
+  box-shadow: 0 0 10px rgba(33,150,243,0.3) !important;
+}
+.match-zone-glow {
+  animation: matchZoneGlowAnim 0.8s ease-in-out;
+}
+@keyframes matchZoneGlowAnim {
+  0%, 100% { box-shadow: none; }
+  50% { box-shadow: 0 0 20px currentColor; }
+}
+.shake {
+  animation: shakeAnim 0.4s ease;
+}
+@keyframes shakeAnim {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+.puzzle-card {
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: white;
+  border: 2.5px solid #ffcc80;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+  transition: transform 0.2s, background-color 0.2s;
+}
+.puzzle-card:active {
+  cursor: grabbing;
+}
+.puzzle-step-circle {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #bbdefb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  opacity: 0.3;
+  transition: all 0.5s;
+  text-align: center;
+}
+.puzzle-step-circle.active {
+  opacity: 1;
+  border-color: #E65100;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(230,81,0,0.25);
+}
 </style>
+
 </head>
 <body>
 
@@ -346,6 +426,7 @@ nav {
   <button class="nav-btn active" onclick="showSection('home',this)">🏠 <span class="nav-label">Home</span></button>
   <button class="nav-btn" onclick="showSection('how',this)">🔄 <span class="nav-label">How They Work</span></button>
   <button class="nav-btn" onclick="showSection('quiz',this)">📝 <span class="nav-label">Quiz</span></button>
+  <button class="nav-btn" id="nav-lab-btn" onclick="showSection('lab',this)">🔬 <span class="nav-label">Exploration Lab</span></button>
 </nav>
 
 <!-- ══════════ HOME ══════════ -->
@@ -376,8 +457,13 @@ nav {
         <p>All living things</p>
       </div>
     </div>
+    <!-- Exploration Lab Promo Banner -->
+    <div class="home-badge" style="cursor:pointer; margin-top:36px; background:linear-gradient(135deg,#e8f5e9,#e3f2fd); border:2px solid #81c784; color:#1b5e20;" onclick="showSection('lab', document.getElementById('nav-lab-btn'))">
+      🔬 Try the new <strong>Sphere Exploration Lab</strong> games! ➡️
+    </div>
   </div>
 </div>
+
 
 <!-- ══════════ HOW THEY WORK ══════════ -->
 <div class="section" id="how">
@@ -581,7 +667,235 @@ nav {
   </div>
 </div>
 
+<!-- ══════════ SPHERE EXPLORATION LAB ══════════ -->
+<div class="section" id="lab">
+  <div class="lab-inner" style="max-width:1080px; margin:0 auto; padding:32px 20px 48px; font-family:'Nunito', sans-serif;">
+    <h2 class="how-title" style="margin-bottom: 8px;">🌍 Sphere Exploration Lab</h2>
+    <p class="how-sub" style="margin-bottom: 24px;">Dive into hands-on science games to test and balance Earth's spheres!</p>
+
+    <!-- Lab Tab Buttons -->
+    <div class="lab-tabs" style="display:flex; justify-content:center; gap:12px; margin-bottom:24px; flex-wrap:wrap;">
+      <button class="nav-btn active" id="btn-tab-match" onclick="switchLabTab('match')">🧩 Match Challenge</button>
+      <button class="nav-btn" id="btn-tab-balance" onclick="switchLabTab('balance')">⚖️ Balance the Earth</button>
+      <button class="nav-btn" id="btn-tab-puzzle" onclick="switchLabTab('puzzle')">🔗 Connection Puzzle</button>
+    </div>
+
+    <!-- GAME 1: SPHERE MATCH CHALLENGE -->
+    <div class="lab-game active" id="lab-match">
+      <div style="background:white; border-radius:24px; padding:24px; box-shadow:0 8px 32px rgba(0,0,0,0.06); text-align:center; position:relative; min-height:480px;">
+        <h3 style="font-size:20px; font-weight:900; margin-bottom:6px; color:#1565C0;">🧩 Sphere Match Challenge</h3>
+        <p style="font-size:14px; color:#666; margin-bottom:20px;">Drag and drop the items below into their correct Earth spheres!</p>
+        
+        <!-- Score and Progress -->
+        <div style="display:flex; justify-content:space-between; max-width:400px; margin:0 auto 20px; font-weight:800; font-size:14px;">
+          <div>Score: <span id="match-score" style="color:#2E7D32;">0</span> / 12</div>
+          <div>Progress: <span id="match-prog">0%</span></div>
+        </div>
+
+        <!-- Success overlay badge -->
+        <div id="match-success-badge" style="display:none; position:absolute; inset:0; background:rgba(255,255,255,0.95); z-index:10; flex-direction:column; align-items:center; justify-content:center; border-radius:24px;">
+          <div style="font-size:64px; margin-bottom:12px; animation: float 3s ease-in-out infinite;">🏆</div>
+          <h4 style="font-size:24px; font-weight:900; color:#2E7D32; margin-bottom:8px;">Match Challenge Complete!</h4>
+          <p style="color:#555; font-size:14px; max-width:300px; margin-bottom:20px;">Superb! You correctly identified the sphere for every single element!</p>
+          <button class="q-submit" style="max-width:200px; margin:0 auto;" onclick="resetMatchGame()">🔄 Play Again</button>
+        </div>
+
+        <!-- Containers (4 Zones) -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:24px;">
+          <!-- Atmo drop zone -->
+          <div class="match-zone" id="zone-atmo" ondragover="allowDrop(event)" ondrop="handleDrop(event, 'atmo')" onclick="selectZoneClick('atmo')" style="background:var(--atmo-l); border:3px dashed var(--atmo-m); border-radius:18px; padding:16px; min-height:120px; transition:all 0.3s; position:relative;">
+            <div style="font-size:28px; line-height:1;">🌤</div>
+            <h4 style="font-weight:900; font-size:15px; color:var(--atmo-c); margin-top:4px;">Atmosphere</h4>
+            <div class="zone-items" id="match-zone-atmo-items" style="display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:8px;"></div>
+          </div>
+          <!-- Hydro drop zone -->
+          <div class="match-zone" id="zone-hydro" ondragover="allowDrop(event)" ondrop="handleDrop(event, 'hydro')" onclick="selectZoneClick('hydro')" style="background:var(--hydro-l); border:3px dashed var(--hydro-m); border-radius:18px; padding:16px; min-height:120px; transition:all 0.3s; position:relative;">
+            <div style="font-size:28px; line-height:1;">💧</div>
+            <h4 style="font-weight:900; font-size:15px; color:var(--hydro-c); margin-top:4px;">Hydrosphere</h4>
+            <div class="zone-items" id="match-zone-hydro-items" style="display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:8px;"></div>
+          </div>
+          <!-- Geo drop zone -->
+          <div class="match-zone" id="zone-geo" ondragover="allowDrop(event)" ondrop="handleDrop(event, 'geo')" onclick="selectZoneClick('geo')" style="background:var(--geo-l); border:3px dashed var(--geo-m); border-radius:18px; padding:16px; min-height:120px; transition:all 0.3s; position:relative;">
+            <div style="font-size:28px; line-height:1;">🏔</div>
+            <h4 style="font-weight:900; font-size:15px; color:var(--geo-c); margin-top:4px;">Geosphere</h4>
+            <div class="zone-items" id="match-zone-geo-items" style="display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:8px;"></div>
+          </div>
+          <!-- Bio drop zone -->
+          <div class="match-zone" id="zone-bio" ondragover="allowDrop(event)" ondrop="handleDrop(event, 'bio')" onclick="selectZoneClick('bio')" style="background:var(--bio-l); border:3px dashed var(--bio-m); border-radius:18px; padding:16px; min-height:120px; transition:all 0.3s; position:relative;">
+            <div style="font-size:28px; line-height:1;">🌱</div>
+            <h4 style="font-weight:900; font-size:15px; color:var(--bio-c); margin-top:4px;">Biosphere</h4>
+            <div class="zone-items" id="match-zone-bio-items" style="display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:8px;"></div>
+          </div>
+        </div>
+
+        <!-- Draggable Source Items -->
+        <div style="background:#f5faff; border-radius:16px; padding:16px; border:1px solid #e0f2fe; margin-bottom:12px;">
+          <div id="match-help-msg" style="font-size:12px; font-weight:700; color:#5c6bc0; margin-bottom:10px;">💡 Drag items below into the drop-zones above, or click an item then click a zone!</div>
+          <div id="match-source-items" style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center;">
+            <!-- Items injected by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME 2: BALANCE THE EARTH -->
+    <div class="lab-game" id="lab-balance" style="display:none;">
+      <div style="background:white; border-radius:24px; padding:24px; box-shadow:0 8px 32px rgba(0,0,0,0.06); min-height:480px; position:relative;">
+        <h3 style="font-size:20px; font-weight:900; margin-bottom:6px; color:#2E7D32; text-align:center;">⚖️ Balance the Earth</h3>
+        <p style="font-size:14px; color:#666; margin-bottom:20px; text-align:center;">Adjust environmental actions and balance all 4 health meters above 80%!</p>
+        
+        <!-- Success overlay banner -->
+        <div id="balance-success-badge" style="display:none; position:absolute; inset:0; background:rgba(255,255,255,0.95); z-index:10; flex-direction:column; align-items:center; justify-content:center; border-radius:24px;">
+          <div style="font-size:64px; margin-bottom:12px; animation: float 3.5s ease-in-out infinite;">🌟👑🌟</div>
+          <h4 style="font-size:24px; font-weight:900; color:#2E7D32; margin-bottom:8px;">Balanced Ecosystem Achieved!</h4>
+          <p style="color:#555; font-size:14px; max-width:320px; margin-bottom:20px; text-align:center;">Fantastic! You harmonized all spheres (Atmosphere, Hydrosphere, Geosphere, and Biosphere) above 80%!</p>
+          <button class="q-submit" style="max-width:200px; margin:0 auto;" onclick="resetBalanceGame()">🔄 Reset Simulator</button>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:24px; align-items:center;">
+          <!-- Interactive Visual Canvas (Left) -->
+          <div id="balance-canvas" style="background:#e0f7fa; border-radius:20px; height:300px; position:relative; overflow:hidden; border:2px solid #b2ebf2; display:flex; align-items:center; justify-content:center;">
+            <!-- Simulation visual items injected dynamically -->
+            <div id="bal-canvas-bg" style="position:absolute; inset:0; background:linear-gradient(to bottom, #81d4fa 60%, #8bc34a 60%); transition:background 0.5s;"></div>
+            
+            <!-- Dynamic elements -->
+            <!-- Volcano outline in SVG coordinates or absolute divs -->
+            <div id="bal-volcano" style="position:absolute; bottom:80px; left:20px; z-index:2; width:120px; height:60px; overflow:visible;">
+              <svg viewBox="0 0 100 50" style="width:100%; height:100%;">
+                <polygon points="10,50 50,10 90,50" fill="#78909c"></polygon>
+                <polygon points="30,50 50,25 70,50" fill="#90a4ae"></polygon>
+              </svg>
+            </div>
+            <div id="bal-smoke" style="display:none; position:absolute; left:62px; bottom:140px; font-size:32px; animation:float 3s infinite; z-index:3;">🌫️</div>
+            <div id="bal-lava" style="display:none; position:absolute; left:70px; bottom:122px; font-size:14px; animation:sunpulse 1s infinite; z-index:3;">🔥</div>
+
+            <!-- River/Water -->
+            <div id="bal-water" style="position:absolute; bottom:80px; right:40px; width:120px; height:20px; background:#29b6f6; border-radius:10px; transition:all 0.5s;">
+              <span style="position:absolute; right:15px; top:-1px; font-size:13px; pointer-events:none;">💧</span>
+            </div>
+            
+            <!-- City / Human -->
+            <div id="bal-city" style="display:none; position:absolute; right:20px; bottom:100px; font-size:32px;">🏢🏘️</div>
+
+            <!-- Trees / Plants -->
+            <div id="bal-trees" style="position:absolute; left:160px; bottom:100px; display:flex; gap:6px; font-size:24px; transition:all 0.5s;">🌳</div>
+
+            <!-- Clouds / Rain -->
+            <div id="bal-rain-clouds" style="position:absolute; top:20px; left:50%; transform:translateX(-50%); font-size:36px; display:none; animation:float 4s infinite;">☁️☁️</div>
+            <div id="bal-rain-drops" style="position:absolute; top:65px; left:50%; transform:translateX(-50%); font-size:20px; display:none; line-height:1.2; text-align:center; animation:raindrop 1.5s infinite;">💧<br>💧</div>
+
+            <!-- Live Status Text overlay -->
+            <div id="balance-status-text" style="position:absolute; bottom:10px; left:10px; right:10px; text-align:center; background:rgba(255,255,255,0.9); border-radius:10px; padding:6px; font-size:12px; font-weight:800; color:#37474F; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">💚 Earth is currently in stable equilibrium. Keep it balanced!</div>
+          </div>
+
+          <!-- Controls and Health Meters (Right) -->
+          <div>
+            <!-- Health meters list -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+              <!-- Atmo -->
+              <div style="background:var(--atmo-l); border-left:4px solid var(--atmo-c); padding:10px; border-radius:12px;">
+                <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:800; color:var(--atmo-c);">
+                  <span>🌤 Atmosphere</span>
+                  <span id="bal-health-atmo">50%</span>
+                </div>
+                <div style="height:6px; background:rgba(0,0,0,0.1); border-radius:3px; overflow:hidden; margin-top:6px;">
+                  <div id="bal-bar-atmo" style="height:100%; width:50%; background:var(--atmo-c); transition:width 0.3s;"></div>
+                </div>
+              </div>
+              <!-- Hydro -->
+              <div style="background:var(--hydro-l); border-left:4px solid var(--hydro-c); padding:10px; border-radius:12px;">
+                <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:800; color:var(--hydro-c);">
+                  <span>💧 Hydrosphere</span>
+                  <span id="bal-health-hydro">50%</span>
+                </div>
+                <div style="height:6px; background:rgba(0,0,0,0.1); border-radius:3px; overflow:hidden; margin-top:6px;">
+                  <div id="bal-bar-hydro" style="height:100%; width:50%; background:var(--hydro-c); transition:width 0.3s;"></div>
+                </div>
+              </div>
+              <!-- Geo -->
+              <div style="background:var(--geo-l); border-left:4px solid var(--geo-c); padding:10px; border-radius:12px;">
+                <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:800; color:var(--geo-c);">
+                  <span>🏔 Geosphere</span>
+                  <span id="bal-health-geo">50%</span>
+                </div>
+                <div style="height:6px; background:rgba(0,0,0,0.1); border-radius:3px; overflow:hidden; margin-top:6px;">
+                  <div id="bal-bar-geo" style="height:100%; width:50%; background:var(--geo-c); transition:width 0.3s;"></div>
+                </div>
+              </div>
+              <!-- Bio -->
+              <div style="background:var(--bio-l); border-left:4px solid var(--bio-c); padding:10px; border-radius:12px;">
+                <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:800; color:var(--bio-c);">
+                  <span>🌱 Biosphere</span>
+                  <span id="bal-health-bio">50%</span>
+                </div>
+                <div style="height:6px; background:rgba(0,0,0,0.1); border-radius:3px; overflow:hidden; margin-top:6px;">
+                  <div id="bal-bar-bio" style="height:100%; width:50%; background:var(--bio-c); transition:width 0.3s;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive Action buttons -->
+            <div style="font-size:11px; text-transform:uppercase; font-weight:900; opacity:0.6; margin-bottom:8px; letter-spacing:1px;">Action controls</div>
+            <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
+              <button class="nav-btn" style="background:#e8f5e9; border:1px solid #81c784; color:#2e7d32; padding:10px; font-size:13px;" onclick="triggerBalanceAction('plant-trees')">🌳 Plant Trees</button>
+              <button class="nav-btn" style="background:#e3f2fd; border:1px solid #64b5f6; color:#1565c0; padding:10px; font-size:13px;" onclick="triggerBalanceAction('increase-rain')">🌧 Increase Rainfall</button>
+              <button class="nav-btn" style="background:#fafafa; border:1px solid #cfd8dc; color:#37474F; padding:10px; font-size:13px;" onclick="triggerBalanceAction('reduce-pollution')">🧹 Reduce Pollution</button>
+              <button class="nav-btn" style="background:#ffebee; border:1px solid #ef9a9a; color:#c62828; padding:10px; font-size:13px;" onclick="triggerBalanceAction('increase-humans')">🏢 Human Activity</button>
+              <button class="nav-btn" style="background:#fff3e0; border:1px solid #ffcc80; color:#e65100; padding:10px; font-size:13px;" onclick="triggerBalanceAction('trigger-drought')">🏜 Trigger Drought</button>
+              <button class="nav-btn" style="background:#fbe9e7; border:1px solid #ffab91; color:#d84315; padding:10px; font-size:13px;" onclick="triggerBalanceAction('trigger-volcano')">🌋 Volcano Activity</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME 3: SPHERE CONNECTION PUZZLE -->
+    <div class="lab-game" id="lab-puzzle" style="display:none;">
+      <div style="background:white; border-radius:24px; padding:24px; box-shadow:0 8px 32px rgba(0,0,0,0.06); min-height:480px; position:relative;">
+        <h3 style="font-size:20px; font-weight:900; margin-bottom:6px; color:#E65100; text-align:center;">🔗 Sphere Connection Puzzle</h3>
+        <p style="font-size:14px; color:#666; margin-bottom:20px; text-align:center;">Arrange the event cards in the correct cause-and-effect sequence!</p>
+        
+        <!-- Success Badge overlay -->
+        <div id="puzzle-success-badge" style="display:none; position:absolute; inset:0; background:rgba(255,255,255,0.95); z-index:10; flex-direction:column; align-items:center; justify-content:center; border-radius:24px;">
+          <div style="font-size:64px; margin-bottom:12px; animation: float 3s ease-in-out infinite;">🏵️</div>
+          <h4 style="font-size:24px; font-weight:900; color:#E65100; margin-bottom:8px;">Sequence Solved!</h4>
+          <p style="color:#555; font-size:14px; max-width:320px; margin-bottom:20px; text-align:center;">Incredible! You aligned the full sequence of event links perfectly.</p>
+          <button class="q-submit" style="max-width:200px; margin:0 auto;" onclick="resetPuzzleGame()">🔄 Retry Level</button>
+        </div>
+
+        <!-- Level Indicator -->
+        <div style="text-align:center; font-weight:800; font-size:14px; margin-bottom:16px;">
+          Level: <span id="puzzle-level-lbl" style="color:#E65100;">1 (Water Cycle Chain)</span>
+        </div>
+
+        <!-- Drag Cards Area -->
+        <div id="puzzle-cards-deck" style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:30px; background:#fafafa; padding:16px; border-radius:16px; border:1.5px dashed #ffcc80;">
+          <!-- Event Cards injected by JS -->
+        </div>
+
+        <!-- Connection visual feedback block -->
+        <div style="text-align:center; margin-bottom:20px;">
+          <div id="puzzle-hint-lbl" style="font-size:13px; font-weight:700; color:#d84315; min-height:20px; margin-bottom:10px;"></div>
+          <button class="q-submit" style="max-width:240px; margin:0 auto;" onclick="checkPuzzleOrder()">🔗 Validate Sequence</button>
+        </div>
+
+        <!-- Mini Visual Sequence Animation Canvas (Bottom) -->
+        <div id="puzzle-anim-canvas" style="background:#e3f2fd; border-radius:16px; border:1px solid #bbdefb; height:110px; display:flex; align-items:center; justify-content:space-around; padding:10px; overflow:hidden; position:relative;">
+          <!-- Animated visual steps in circles triggered by correct sequencing -->
+          <div class="puzzle-step-circle" id="p-step-1">💧<br><span style="font-size:10px; font-weight:800;">Evaporate</span></div>
+          <div class="puzzle-step-circle" id="p-step-2">☁️<br><span style="font-size:10px; font-weight:800;">Clouds</span></div>
+          <div class="puzzle-step-circle" id="p-step-3">🌧️<br><span style="font-size:10px; font-weight:800;">Rain</span></div>
+          <div class="puzzle-step-circle" id="p-step-4">🏞️<br><span style="font-size:10px; font-weight:800;">River</span></div>
+          <div class="puzzle-step-circle" id="p-step-5">🌳<br><span style="font-size:10px; font-weight:800;">Plants</span></div>
+          <div class="puzzle-step-circle" id="p-step-6">🐰<br><span style="font-size:10px; font-weight:800;">Animals</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══ SPHERE DETAIL MODAL ══ -->
+
 <div class="modal-overlay" id="sphere-modal" onclick="closeModalOutside(event)">
   <div class="modal-box" id="modal-box">
     <button class="modal-close" onclick="closeModal()">✕</button>
@@ -1258,8 +1572,673 @@ function launchConfetti(){
   setTimeout(()=>c.remove(),4500);
 }
 
+// ── EXPLORATION LAB NAVIGATION & GAME SWITCHING ──
+function switchLabTab(tabName) {
+  document.getElementById('lab-match').style.display = tabName === 'match' ? 'block' : 'none';
+  document.getElementById('lab-balance').style.display = tabName === 'balance' ? 'block' : 'none';
+  document.getElementById('lab-puzzle').style.display = tabName === 'puzzle' ? 'block' : 'none';
+
+  document.getElementById('btn-tab-match').classList.toggle('active', tabName === 'match');
+  document.getElementById('btn-tab-balance').classList.toggle('active', tabName === 'balance');
+  document.getElementById('btn-tab-puzzle').classList.toggle('active', tabName === 'puzzle');
+  
+  if (tabName === 'match') {
+    initMatchGame();
+  } else if (tabName === 'balance') {
+    initBalanceGame();
+  } else if (tabName === 'puzzle') {
+    initPuzzleGame();
+  }
+}
+
+// ── GAME 1: SPHERE MATCH CHALLENGE ──
+const matchItemsData = [
+  { id: 'item-atmo-clouds', label: '☁️ Clouds', sphere: 'atmo' },
+  { id: 'item-atmo-wind', label: '💨 Wind', sphere: 'atmo' },
+  { id: 'item-atmo-oxygen', label: '🎈 Helium Gas', sphere: 'atmo' },
+  { id: 'item-hydro-ocean', label: '🌊 Ocean', sphere: 'hydro' },
+  { id: 'item-hydro-glacier', label: '🧊 Glacier', sphere: 'hydro' },
+  { id: 'item-hydro-rain', label: '🌧️ Raindrop', sphere: 'hydro' },
+  { id: 'item-geo-mountain', label: '⛰️ Mountain', sphere: 'geo' },
+  { id: 'item-geo-soil', label: '🌱 Soil', sphere: 'geo' },
+  { id: 'item-geo-volcano', label: '🌋 Volcano', sphere: 'geo' },
+  { id: 'item-bio-tree', label: '🌳 Oak Tree', sphere: 'bio' },
+  { id: 'item-bio-lion', label: '🦁 Lion', sphere: 'bio' },
+  { id: 'item-bio-mushroom', label: '🍄 Mushroom', sphere: 'bio' }
+];
+
+let selectedItemForClick = null;
+
+function initMatchGame() {
+  selectedItemForClick = null;
+  document.getElementById('match-zone-atmo-items').innerHTML = '';
+  document.getElementById('match-zone-hydro-items').innerHTML = '';
+  document.getElementById('match-zone-geo-items').innerHTML = '';
+  document.getElementById('match-zone-bio-items').innerHTML = '';
+  
+  document.getElementById('match-score').textContent = '0';
+  document.getElementById('match-prog').textContent = '0%';
+  document.getElementById('match-success-badge').style.display = 'none';
+  
+  const shuffled = [...matchItemsData].sort(() => Math.random() - 0.5);
+  const sourceContainer = document.getElementById('match-source-items');
+  sourceContainer.innerHTML = '';
+  
+  shuffled.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'draggable-item';
+    el.draggable = true;
+    el.id = item.id;
+    el.textContent = item.label;
+    
+    el.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', item.id);
+    });
+    
+    el.addEventListener('click', () => {
+      handleItemClick(item.id, el);
+    });
+    
+    sourceContainer.appendChild(el);
+  });
+}
+
+function handleItemClick(itemId, el) {
+  document.querySelectorAll('.draggable-item').forEach(item => {
+    item.classList.remove('selected-item');
+  });
+  
+  if (selectedItemForClick === itemId) {
+    selectedItemForClick = null;
+  } else {
+    selectedItemForClick = itemId;
+    el.classList.add('selected-item');
+  }
+}
+
+function selectZoneClick(zoneId) {
+  if (selectedItemForClick) {
+    attemptMatch(selectedItemForClick, zoneId);
+    selectedItemForClick = null;
+  }
+}
+
+function allowDrop(ev) {
+  ev.preventDefault();
+  const zone = ev.currentTarget;
+  zone.classList.add('dragover');
+}
+
+// Remove dragover highlight when leaving zone
+document.querySelectorAll('.match-zone').forEach(zone => {
+  zone.addEventListener('dragleave', () => {
+    zone.classList.remove('dragover');
+  });
+});
+
+function handleDrop(ev, zoneId) {
+  ev.preventDefault();
+  const zone = ev.currentTarget;
+  zone.classList.remove('dragover');
+  
+  const itemId = ev.dataTransfer.getData('text/plain');
+  attemptMatch(itemId, zoneId);
+}
+
+function attemptMatch(itemId, zoneId) {
+  const itemData = matchItemsData.find(item => item.id === itemId);
+  if (!itemData) return;
+  
+  const zoneElement = document.getElementById(`zone-${zoneId}`);
+  const itemElement = document.getElementById(itemId);
+  
+  if (itemData.sphere === zoneId) {
+    const targetZoneItems = document.getElementById(`match-zone-${zoneId}-items`);
+    const pill = document.createElement('span');
+    pill.className = 'modal-ex-pill';
+    pill.style.background = 'rgba(255,255,255,0.7)';
+    pill.style.border = `1.5px solid var(--${zoneId}-m)`;
+    pill.style.fontSize = '12px';
+    pill.style.fontWeight = '800';
+    pill.style.margin = '2px';
+    pill.textContent = itemData.label;
+    targetZoneItems.appendChild(pill);
+    
+    if (itemElement) {
+      itemElement.remove();
+    }
+    
+    zoneElement.classList.add('match-zone-glow');
+    setTimeout(() => zoneElement.classList.remove('match-zone-glow'), 800);
+    
+    triggerMatchAnimation(zoneId);
+    updateMatchScore();
+  } else {
+    if (itemElement) {
+      itemElement.classList.add('shake');
+      setTimeout(() => itemElement.classList.remove('shake'), 400);
+      itemElement.classList.remove('selected-item');
+    }
+    zoneElement.classList.add('shake');
+    setTimeout(() => zoneElement.classList.remove('shake'), 400);
+  }
+}
+
+function triggerMatchAnimation(zoneId) {
+  if (zoneId === 'atmo') {
+    const cloud = document.createElement('div');
+    cloud.style.position = 'absolute';
+    cloud.style.left = '-60px';
+    cloud.style.top = '80px';
+    cloud.style.fontSize = '40px';
+    cloud.style.zIndex = '5';
+    cloud.style.pointerEvents = 'none';
+    cloud.textContent = '☁️';
+    cloud.style.transition = 'transform 2s linear';
+    const matchEl = document.getElementById('lab-match').firstElementChild;
+    if (matchEl) {
+      matchEl.appendChild(cloud);
+      requestAnimationFrame(() => {
+        cloud.style.transform = `translateX(${matchEl.offsetWidth + 100}px)`;
+      });
+    }
+    setTimeout(() => cloud.remove(), 2100);
+  } else if (zoneId === 'hydro') {
+    const ripple = document.createElement('div');
+    ripple.style.position = 'absolute';
+    ripple.style.left = '50%';
+    ripple.style.top = '50%';
+    ripple.style.transform = 'translate(-50%, -50%)';
+    ripple.style.width = '20px';
+    ripple.style.height = '20px';
+    ripple.style.border = '4px solid #4dd0e1';
+    ripple.style.borderRadius = '50%';
+    ripple.style.pointerEvents = 'none';
+    ripple.style.transition = 'all 1s ease-out';
+    ripple.style.opacity = '1';
+    const hydroEl = document.getElementById('zone-hydro');
+    if (hydroEl) {
+      hydroEl.appendChild(ripple);
+      requestAnimationFrame(() => {
+        ripple.style.width = '120px';
+        ripple.style.height = '120px';
+        ripple.style.opacity = '0';
+      });
+    }
+    setTimeout(() => ripple.remove(), 1000);
+  } else if (zoneId === 'geo') {
+    const geoEl = document.getElementById('zone-geo');
+    if (geoEl) {
+      for (let i = 0; i < 6; i++) {
+        const spark = document.createElement('div');
+        spark.style.position = 'absolute';
+        spark.style.left = '50%';
+        spark.style.bottom = '50px';
+        spark.style.width = '10px';
+        spark.style.height = '10px';
+        spark.style.background = '#ff5722';
+        spark.style.borderRadius = '50%';
+        spark.style.pointerEvents = 'none';
+        spark.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        geoEl.appendChild(spark);
+        const angle = (Math.random() * 60 + 60) * (Math.PI / 180);
+        const dist = Math.random() * 80 + 40;
+        const tx = Math.cos(angle) * dist * (Math.random() > 0.5 ? 1 : -1);
+        const ty = -Math.sin(angle) * dist;
+        requestAnimationFrame(() => {
+          spark.style.transform = `translate(${tx}px, ${ty}px) scale(0.3)`;
+          spark.style.opacity = '0';
+        });
+        setTimeout(() => spark.remove(), 850);
+      }
+    }
+  } else if (zoneId === 'bio') {
+    const bioEl = document.getElementById('zone-bio');
+    if (bioEl) {
+      const tree = document.createElement('div');
+      tree.style.position = 'absolute';
+      tree.style.left = '50%';
+      tree.style.top = '10px';
+      tree.style.transform = 'translateX(-50%) scale(0)';
+      tree.style.fontSize = '30px';
+      tree.style.pointerEvents = 'none';
+      tree.style.transition = 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      tree.textContent = '🌳';
+      bioEl.appendChild(tree);
+      requestAnimationFrame(() => {
+        tree.style.transform = 'translateX(-50%) scale(1.5)';
+      });
+      setTimeout(() => {
+        tree.style.transition = 'opacity 0.4s';
+        tree.style.opacity = '0';
+        setTimeout(() => tree.remove(), 400);
+      }, 1200);
+    }
+  }
+}
+
+function updateMatchScore() {
+  const targetCount = matchItemsData.length;
+  const atmoItems = document.getElementById('match-zone-atmo-items').children.length;
+  const hydroItems = document.getElementById('match-zone-hydro-items').children.length;
+  const geoItems = document.getElementById('match-zone-geo-items').children.length;
+  const bioItems = document.getElementById('match-zone-bio-items').children.length;
+  
+  const currentScore = atmoItems + hydroItems + geoItems + bioItems;
+  document.getElementById('match-score').textContent = currentScore;
+  const pct = Math.round((currentScore / targetCount) * 100);
+  document.getElementById('match-prog').textContent = pct + '%';
+  
+  if (currentScore === targetCount) {
+    document.getElementById('match-success-badge').style.display = 'flex';
+    launchConfetti();
+  }
+}
+
+function resetMatchGame() {
+  initMatchGame();
+}
+
+// ── GAME 2: BALANCE THE EARTH ──
+let balState = { atmo: 50, hydro: 50, geo: 50, bio: 50 };
+
+function initBalanceGame() {
+  balState = { atmo: 50, hydro: 50, geo: 50, bio: 50 };
+  document.getElementById('balance-success-badge').style.display = 'none';
+  
+  document.getElementById('bal-city').style.display = 'none';
+  document.getElementById('bal-smoke').style.display = 'none';
+  document.getElementById('bal-lava').style.display = 'none';
+  document.getElementById('bal-rain-clouds').style.display = 'none';
+  document.getElementById('bal-rain-drops').style.display = 'none';
+  
+  updateBalanceUI();
+}
+
+function triggerBalanceAction(type) {
+  if (balState.atmo >= 80 && balState.hydro >= 80 && balState.geo >= 80 && balState.bio >= 80) {
+    return;
+  }
+  
+  let statusMsg = "";
+  
+  if (type === 'plant-trees') {
+    balState.bio = Math.min(100, balState.bio + 20);
+    balState.geo = Math.min(100, balState.geo + 10);
+    balState.atmo = Math.min(100, balState.atmo + 5);
+    balState.hydro = Math.min(100, balState.hydro + 5);
+    statusMsg = "🌳 Planted trees! Biosphere grows, roots stabilize soil, and plants purify air.";
+    triggerCanvasGrowEffect('bal-trees');
+  } else if (type === 'increase-rain') {
+    balState.hydro = Math.min(100, balState.hydro + 25);
+    balState.bio = Math.min(100, balState.bio + 10);
+    balState.geo = Math.min(100, balState.geo + 5);
+    balState.atmo = Math.max(0, balState.atmo - 5);
+    statusMsg = "🌧️ Increased rainfall! Hydrosphere replenished, soil hydrated, plants watered.";
+    triggerCanvasRainEffect();
+  } else if (type === 'reduce-pollution') {
+    balState.atmo = Math.min(100, balState.atmo + 20);
+    balState.hydro = Math.min(100, balState.hydro + 10);
+    balState.bio = Math.min(100, balState.bio + 10);
+    balState.geo = Math.min(100, balState.geo + 5);
+    statusMsg = "🧹 Cleaned up waste & reduced pollution! Air quality increases, water bodies clear.";
+  } else if (type === 'increase-humans') {
+    balState.atmo = Math.max(0, balState.atmo - 20);
+    balState.hydro = Math.max(0, balState.hydro - 15);
+    balState.bio = Math.max(0, balState.bio - 15);
+    balState.geo = Math.max(0, balState.geo - 10);
+    statusMsg = "🏢 Urban expansion increases pollution, cuts down forests, and depletes freshwater reservoirs.";
+    triggerCanvasCityEffect();
+  } else if (type === 'trigger-drought') {
+    balState.hydro = Math.max(0, balState.hydro - 25);
+    balState.bio = Math.max(0, balState.bio - 20);
+    balState.geo = Math.max(0, balState.geo - 10);
+    balState.atmo = Math.max(0, balState.atmo - 10);
+    statusMsg = "🏜️ A severe drought is triggered. Rivers dry up, plants wither, and soil cracks.";
+  } else if (type === 'trigger-volcano') {
+    balState.atmo = Math.max(0, balState.atmo - 25);
+    balState.bio = Math.max(0, balState.bio - 15);
+    balState.hydro = Math.max(0, balState.hydro - 5);
+    balState.geo = Math.min(100, balState.geo + 10);
+    statusMsg = "🌋 Volcanic eruption emits toxic ash into the atmosphere, scorches forests, but adds soil minerals.";
+    triggerCanvasVolcanoEffect();
+  }
+  
+  updateBalanceUI(statusMsg);
+  checkBalanceWinCondition();
+}
+
+function getSkyColorForAtmosphere(atmoVal) {
+  if (atmoVal < 30) {
+    return '#455a64'; // dark pollution smog
+  } else if (atmoVal < 60) {
+    return '#b0bec5'; // hazy grey sky
+  } else if (atmoVal < 85) {
+    return '#81d4fa'; // clear sky blue
+  } else {
+    return '#e1f5fe'; // vibrant bright sky
+  }
+}
+
+function getGroundColorForGeosphere(geoVal) {
+  if (geoVal < 30) {
+    return '#a1887f'; // dry brown/cracked sand
+  } else if (geoVal < 60) {
+    return '#8bc34a'; // normal grassy green
+  } else {
+    return '#4caf50'; // rich dark green
+  }
+}
+
+function updateBalanceUI(customMsg) {
+  const spheres = ['atmo', 'hydro', 'geo', 'bio'];
+  spheres.forEach(s => {
+    document.getElementById(`bal-health-${s}`).textContent = balState[s] + '%';
+    const bar = document.getElementById(`bal-bar-${s}`);
+    if (bar) {
+      bar.style.width = balState[s] + '%';
+      if (balState[s] < 30) {
+        bar.style.backgroundColor = '#f44336';
+      } else if (balState[s] < 60) {
+        bar.style.backgroundColor = '#ff9800';
+      } else {
+        bar.style.backgroundColor = `var(--${s}-c)`;
+      }
+    }
+  });
+  
+  const skyColor = getSkyColorForAtmosphere(balState.atmo);
+  const groundColor = getGroundColorForGeosphere(balState.geo);
+  const canvasBg = document.getElementById('bal-canvas-bg');
+  if (canvasBg) {
+    canvasBg.style.background = `linear-gradient(to bottom, ${skyColor} 60%, ${groundColor} 60%)`;
+  }
+  
+  const waterEl = document.getElementById('bal-water');
+  if (waterEl) {
+    const wWidth = 40 + (balState.hydro / 100) * 160;
+    const wHeight = 10 + (balState.hydro / 100) * 30;
+    waterEl.style.width = wWidth + 'px';
+    waterEl.style.height = wHeight + 'px';
+    if (balState.hydro < 30) {
+      waterEl.style.background = '#8d6e63';
+    } else {
+      waterEl.style.background = '#29b6f6';
+    }
+  }
+  
+  const treesEl = document.getElementById('bal-trees');
+  if (treesEl) {
+    if (balState.bio < 15) {
+      treesEl.textContent = '🍂';
+    } else if (balState.bio < 40) {
+      treesEl.textContent = '🌳';
+    } else if (balState.bio < 70) {
+      treesEl.textContent = '🌳🌳';
+    } else {
+      treesEl.textContent = '🌳🌳🌳🌳';
+    }
+    treesEl.style.transform = `scale(${0.5 + (balState.bio / 100) * 0.75})`;
+  }
+  
+  const statusLabel = document.getElementById('balance-status-text');
+  if (statusLabel) {
+    if (customMsg) {
+      statusLabel.innerHTML = customMsg;
+    } else {
+      let minVal = Math.min(balState.atmo, balState.hydro, balState.geo, balState.bio);
+      if (minVal >= 80) {
+        statusLabel.innerHTML = "✨ <strong>Perfect Balance!</strong> The Earth is flourishing in complete harmony!";
+      } else if (minVal < 30) {
+        statusLabel.innerHTML = "⚠️ <strong>Ecosystem Crisis!</strong> One or more spheres are critically low. Take action immediately!";
+      } else {
+        statusLabel.innerHTML = "🌱 Keep balancing! Plant trees, manage water levels, and control industrial pollution.";
+      }
+    }
+  }
+}
+
+function triggerCanvasGrowEffect(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.transform = `${el.style.transform} scale(1.3)`;
+  setTimeout(() => {
+    el.style.transform = el.style.transform.replace(' scale(1.3)', '');
+  }, 400);
+}
+
+function triggerCanvasRainEffect() {
+  const clouds = document.getElementById('bal-rain-clouds');
+  const drops = document.getElementById('bal-rain-drops');
+  if (!clouds || !drops) return;
+  
+  clouds.style.display = 'block';
+  drops.style.display = 'block';
+  
+  setTimeout(() => {
+    clouds.style.display = 'none';
+    drops.style.display = 'none';
+  }, 3000);
+}
+
+function triggerCanvasVolcanoEffect() {
+  const smoke = document.getElementById('bal-smoke');
+  const lava = document.getElementById('bal-lava');
+  if (!smoke || !lava) return;
+  
+  smoke.style.display = 'block';
+  lava.style.display = 'block';
+  
+  setTimeout(() => {
+    smoke.style.display = 'none';
+    lava.style.display = 'none';
+  }, 3000);
+}
+
+function triggerCanvasCityEffect() {
+  const city = document.getElementById('bal-city');
+  if (!city) return;
+  city.style.display = 'block';
+  city.style.animation = 'float 2s 1';
+  setTimeout(() => {
+    city.style.animation = '';
+  }, 2000);
+}
+
+function checkBalanceWinCondition() {
+  if (balState.atmo >= 80 && balState.hydro >= 80 && balState.geo >= 80 && balState.bio >= 80) {
+    document.getElementById('balance-success-badge').style.display = 'flex';
+    launchConfetti();
+  }
+}
+
+function resetBalanceGame() {
+  initBalanceGame();
+}
+
+
+// ── GAME 3: SPHERE CONNECTION PUZZLE ──
+const puzzleLevels = [
+  {
+    name: "1 (Water Cycle & Life)",
+    steps: [
+      { id: 'p1-1', label: '💧 Water Evaporates', order: 0, icon: '💧', desc: 'Evaporate' },
+      { id: 'p1-2', label: '☁️ Clouds Form', order: 1, icon: '☁️', desc: 'Clouds' },
+      { id: 'p1-3', label: '🌧️ Rain Falls', order: 2, icon: '🌧️', desc: 'Rain' },
+      { id: 'p1-4', label: '🏞️ River Fills', order: 3, icon: '🏞️', desc: 'River' },
+      { id: 'p1-5', label: '🌳 Plants Grow', order: 4, icon: '🌳', desc: 'Plants' },
+      { id: 'p1-6', label: '🐰 Animals Thrive', order: 5, icon: '🐰', desc: 'Animals' }
+    ]
+  },
+  {
+    name: "2 (Volcanic Climate Change)",
+    steps: [
+      { id: 'p2-1', label: '🌋 Volcano Erupts', order: 0, icon: '🌋', desc: 'Erupts' },
+      { id: 'p2-2', label: '🌫️ Ash Blocks Sun', order: 1, icon: '🌫️', desc: 'Block Sun' },
+      { id: 'p2-3', label: '❄️ Temps Drop', order: 2, icon: '❄️', desc: 'Temps' },
+      { id: 'p2-4', label: '🍂 Plants Wither', order: 3, icon: '🍂', desc: 'Wither' },
+      { id: 'p2-5', label: '🦌 Animals Migrate', order: 4, icon: '🦌', desc: 'Migrate' },
+      { id: 'p2-6', label: '🌿 Soil Recovers', order: 5, icon: '🌿', desc: 'Soil Rec' }
+    ]
+  }
+];
+
+let currentPuzzleLevelIdx = 0;
+let currentPuzzleCards = [];
+let selectedPuzzleCardIdx = null;
+
+function initPuzzleGame() {
+  document.getElementById('puzzle-success-badge').style.display = 'none';
+  document.getElementById('puzzle-hint-lbl').textContent = '';
+  document.getElementById('puzzle-hint-lbl').style.color = '#d84315';
+  
+  const lvl = puzzleLevels[currentPuzzleLevelIdx];
+  document.getElementById('puzzle-level-lbl').textContent = lvl.name;
+  
+  lvl.steps.forEach((step, idx) => {
+    const circle = document.getElementById(`p-step-${idx + 1}`);
+    if (circle) {
+      circle.innerHTML = `${step.icon}<br><span style="font-size:10px; font-weight:800;">${step.desc}</span>`;
+      circle.classList.remove('active');
+    }
+  });
+  
+  currentPuzzleCards = [...lvl.steps].sort(() => Math.random() - 0.5);
+  renderPuzzleCards();
+}
+
+function renderPuzzleCards() {
+  const deck = document.getElementById('puzzle-cards-deck');
+  deck.innerHTML = '';
+  selectedPuzzleCardIdx = null;
+  
+  currentPuzzleCards.forEach((card, idx) => {
+    const el = document.createElement('div');
+    el.className = 'puzzle-card';
+    el.draggable = true;
+    el.textContent = card.label;
+    el.id = `puzzle-card-${card.id}`;
+    
+    el.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', idx);
+      el.style.opacity = '0.5';
+    });
+    
+    el.addEventListener('dragend', () => {
+      el.style.opacity = '1';
+    });
+    
+    el.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+    
+    el.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
+      const toIdx = idx;
+      if (fromIdx !== toIdx) {
+        const temp = currentPuzzleCards[fromIdx];
+        currentPuzzleCards.splice(fromIdx, 1);
+        currentPuzzleCards.splice(toIdx, 0, temp);
+        renderPuzzleCards();
+      }
+    });
+    
+    el.addEventListener('click', () => {
+      if (selectedPuzzleCardIdx === null) {
+        selectedPuzzleCardIdx = idx;
+        el.style.borderColor = '#2196F3';
+        el.style.backgroundColor = '#E3F2FD';
+      } else {
+        const fromIdx = selectedPuzzleCardIdx;
+        const toIdx = idx;
+        if (fromIdx !== toIdx) {
+          const temp = currentPuzzleCards[fromIdx];
+          currentPuzzleCards[fromIdx] = currentPuzzleCards[toIdx];
+          currentPuzzleCards[toIdx] = temp;
+        }
+        renderPuzzleCards();
+      }
+    });
+    
+    deck.appendChild(el);
+  });
+}
+
+function checkPuzzleOrder() {
+  const lvl = puzzleLevels[currentPuzzleLevelIdx];
+  let isCorrect = true;
+  
+  currentPuzzleCards.forEach((card, idx) => {
+    if (card.order !== idx) {
+      isCorrect = false;
+    }
+  });
+  
+  const hintLbl = document.getElementById('puzzle-hint-lbl');
+  
+  if (isCorrect) {
+    hintLbl.textContent = '🎉 Correct sequence!';
+    hintLbl.style.color = '#2e7d32';
+    
+    triggerSequentialPuzzleAnimation(() => {
+      document.getElementById('puzzle-success-badge').style.display = 'flex';
+      launchConfetti();
+    });
+  } else {
+    hintLbl.textContent = '❌ Incorrect sequence. Hint: Think about ecological cause-and-effect (e.g., event loops like rain falling before a river fills!). Click two cards to swap, or drag to reorder.';
+    hintLbl.style.color = '#c62828';
+    
+    const deck = document.getElementById('puzzle-cards-deck');
+    if (deck) {
+      deck.classList.add('shake');
+      setTimeout(() => deck.classList.remove('shake'), 400);
+    }
+  }
+}
+
+function triggerSequentialPuzzleAnimation(callback) {
+  const lvl = puzzleLevels[currentPuzzleLevelIdx];
+  let currentStep = 0;
+  
+  function animateNextStep() {
+    if (currentStep < lvl.steps.length) {
+      const circle = document.getElementById(`p-step-${currentStep + 1}`);
+      if (circle) {
+        circle.classList.add('active');
+        circle.style.transform = 'scale(1.25)';
+        setTimeout(() => {
+          circle.style.transform = 'scale(1.1)';
+        }, 300);
+      }
+      currentStep++;
+      setTimeout(animateNextStep, 800);
+    } else {
+      if (callback) callback();
+    }
+  }
+  
+  for (let i = 1; i <= 6; i++) {
+    const circle = document.getElementById(`p-step-${i}`);
+    if (circle) circle.classList.remove('active');
+  }
+  
+  setTimeout(animateNextStep, 200);
+}
+
+function resetPuzzleGame() {
+  const successBadge = document.getElementById('puzzle-success-badge');
+  if (successBadge && successBadge.style.display === 'flex') {
+    currentPuzzleLevelIdx = (currentPuzzleLevelIdx + 1) % puzzleLevels.length;
+  }
+  initPuzzleGame();
+}
+
 buildQuiz();
 runSimulationLogic();
+initMatchGame();
+initBalanceGame();
+initPuzzleGame();
 </script>
 
 </body>
